@@ -5,7 +5,7 @@
 ##SBATCH --account=es_yourgroup        # Euler: group share, NOT your username; usually auto-selected
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=12G              # 4 x 12G = 48G total (activations cache ~15G + overhead)
-#SBATCH --time=12:00:00                # shorter wall time -> much better backfill priority
+#SBATCH --time=18:00:00                # headroom for slower GPUs; keep <=24h (same Euler queue class)
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
 
