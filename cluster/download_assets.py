@@ -27,6 +27,16 @@ def main():
                              "(default: llama3-8b-sft llama3-8b-instruct)")
     args = parser.parse_args()
 
+    hf_home = os.environ.get("HF_HOME")
+    if hf_home:
+        print(f"HF cache: {hf_home}")
+    else:
+        print("WARNING: HF_HOME is not set — downloads will go to ~/.cache/huggingface,")
+        print("which on Euler fills your $HOME quota. Set it first, e.g.:")
+        print("  export HF_HOME=/cluster/scratch/$USER/hf_cache")
+        if input("Continue anyway? [y/N] ").strip().lower() != "y":
+            sys.exit(1)
+
     print("Downloading HH-RLHF (harmless-base)...")
     load_dataset("Anthropic/hh-rlhf", data_dir="harmless-base")
 
@@ -50,7 +60,9 @@ def main():
         repo_id = MODEL_CONFIGS[name]["model_path"]
         print(f"Downloading model weights: {repo_id} ...")
         try:
-            snapshot_download(repo_id)
+            # original/* holds Meta's raw-format checkpoints (consolidated*.pth,
+            # ~16GB) which transformers never loads; skip them.
+            snapshot_download(repo_id, ignore_patterns=["original/*", "*.pth"])
         except Exception as e:
             print(f"ERROR downloading {repo_id}: {e}")
             if "meta-llama" in repo_id:
