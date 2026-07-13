@@ -30,8 +30,9 @@ if [ -d "/cluster/scratch/$USER" ]; then
 else
     export HF_HOME="${HF_HOME:-$HOME/hf_cache}"
 fi
-export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
-export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"
+# Online mode: see note in train_siren.sbatch (offline breaks data_dir cache lookup)
+export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-0}"
+export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-0}"
 export TOKENIZERS_PARALLELISM=false
 
 # 0 = harmful prompts only (read RECALL as the detection rate) [default]

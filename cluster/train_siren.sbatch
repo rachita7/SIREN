@@ -31,8 +31,11 @@ if [ -d "/cluster/scratch/$USER" ]; then
 else
     export HF_HOME="${HF_HOME:-$HOME/hf_cache}"
 fi
-export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"   # compute nodes read the prefetched cache
-export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"
+# Online mode: eth_proxy gives Euler compute nodes internet, and offline mode
+# breaks datasets' cache lookup for load_dataset(..., data_dir=...) (config-name
+# hash mismatch). Downloads still hit the prefetched cache, so this is cheap.
+export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-0}"
+export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-0}"
 export TOKENIZERS_PARALLELISM=false
 
 # Number of HH-RLHF preference pairs used for train+val (2 texts each)
