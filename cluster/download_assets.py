@@ -22,6 +22,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip_instruct", action="store_true",
                         help="Skip the gated meta-llama Instruct model")
+    parser.add_argument("--models", type=str, nargs="+", default=None,
+                        help="Config names from utils/config.py to prefetch "
+                             "(default: llama3-8b-sft llama3-8b-instruct)")
     args = parser.parse_args()
 
     print("Downloading HH-RLHF (harmless-base)...")
@@ -36,9 +39,12 @@ def main():
     print("Downloading AdvBench behaviors CSV...")
     _load_csv(ADVBENCH_CSV_URL)
 
-    models = ["llama3-8b-sft"]
-    if not args.skip_instruct:
-        models.append("llama3-8b-instruct")
+    if args.models:
+        models = args.models
+    else:
+        models = ["llama3-8b-sft"]
+        if not args.skip_instruct:
+            models.append("llama3-8b-instruct")
 
     for name in models:
         repo_id = MODEL_CONFIGS[name]["model_path"]

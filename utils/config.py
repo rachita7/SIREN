@@ -71,7 +71,15 @@ MODEL_CONFIGS = {
     },
     # Unaligned Llama-3-8B: base model + supervised fine-tuning only (no RLHF/DPO)
     "llama3-8b-sft": {
-        "model_path": "meta-llama/Llama-3-Base-8B",
+        "model_path": "princeton-nlp/Llama-3-Base-8B-SFT",
+        "model_type": "llama",
+        "num_layers": 32,
+        "hidden_size": 4096,
+        "intermediate_size": 14336
+    },
+    # Raw pretrained base model, no fine-tuning at all (gated on HF)
+    "llama3-8b-base": {
+        "model_path": "meta-llama/Meta-Llama-3-8B",
         "model_type": "llama",
         "num_layers": 32,
         "hidden_size": 4096,
