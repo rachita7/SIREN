@@ -157,22 +157,34 @@ def _preprocess_aegis(val_ratio: float = 0.2) -> DatasetDict:
 
 
 def _preprocess_aegis2(val_ratio: float = 0.2) -> DatasetDict:
+    """
+    Aegis 2.0 (Nemotron Content Safety Dataset V2). Full official splits are
+    30,007 train / 1,445 validation / 1,964 test. AEGIS2_MAX_TRAIN caps the
+    TRAIN split only (validation/test kept full so metrics stay comparable);
+    default 10000 keeps the job well within the 18h wall time. Set to 0 to use
+    the full train split.
+    """
     ds = load_dataset("nvidia/Aegis-AI-Content-Safety-Dataset-2.0")
+
+    train_split = ds["train"]
+    max_train = int(os.environ.get("AEGIS2_MAX_TRAIN", "10000"))
+    if max_train and max_train < train_split.num_rows:
+        train_split = train_split.shuffle(seed=42).select(range(max_train))
+
     out = DatasetDict(
         {
-            "train": ds["train"],
+            "train": train_split,
             "validation": ds["validation"],
             "test": ds["test"],
         }
     )
 
+    # Keep only rows with a usable binary prompt label.
+    out = DatasetDict({k: v.filter(lambda x: x["prompt_label"] in ("safe", "unsafe"))
+                       for k, v in out.items()})
+
     def to_binary_label(example):
-        v = example["label"]
-        if v == "unsafe":
-            return {"label": 1}
-        if v == "safe":
-            return {"label": 0}
-        raise ValueError(f"Invalid dataset: {v}")
+        return {"label": 1 if example["label"] == "unsafe" else 0}
 
     for k in out.keys():
         out[k] = out[k].rename_column("prompt", "text")

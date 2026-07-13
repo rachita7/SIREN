@@ -24,6 +24,9 @@ REP_TYPES="${3:-residual_mean}"
 
 DEVICE="cuda"
 BATCH_SIZE="${BATCH_SIZE:-16}"   # 8 fits a 24GB GPU; 16 needs ~40GB
+
+# Cap the Aegis 2.0 train split (val/test stay full). 0 = full 30k train.
+export AEGIS2_MAX_TRAIN="${AEGIS2_MAX_TRAIN:-10000}"
 C_VALUES="200.0 500.0 1000.0"
 THRESHOLDS="0.6 0.8 0.9"
 N_TRIALS=32

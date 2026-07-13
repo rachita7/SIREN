@@ -37,6 +37,9 @@ export TOKENIZERS_PARALLELISM=false
 
 export BATCH_SIZE="${BATCH_SIZE:-8}"
 
+# Cap the Aegis 2.0 train split (val/test stay full). 0 = full 30k train.
+export AEGIS2_MAX_TRAIN="${AEGIS2_MAX_TRAIN:-10000}"
+
 cd "$SLURM_SUBMIT_DIR"
 mkdir -p logs
 
