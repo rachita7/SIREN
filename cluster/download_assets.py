@@ -14,7 +14,7 @@ import argparse
 from datasets import load_dataset
 from huggingface_hub import snapshot_download
 
-from train.preprocess import _load_csv, HARMBENCH_CSV_URL, ADVBENCH_CSV_URL
+from train.preprocess import _load_csv, preprocess_dataset, HARMBENCH_CSV_URL, ADVBENCH_CSV_URL
 from utils.config import MODEL_CONFIGS
 
 
@@ -25,6 +25,9 @@ def main():
     parser.add_argument("--models", type=str, nargs="+", default=None,
                         help="Config names from utils/config.py to prefetch "
                              "(default: llama3-8b-sft llama3-8b-instruct)")
+    parser.add_argument("--paper_datasets", type=str, nargs="+", default=None,
+                        help="Paper datasets to prefetch (e.g. wildguard aegis2). "
+                             "Some are gated on HF and need access + HF_TOKEN.")
     args = parser.parse_args()
 
     hf_home = os.environ.get("HF_HOME")
@@ -48,6 +51,17 @@ def main():
 
     print("Downloading AdvBench behaviors CSV...")
     _load_csv(ADVBENCH_CSV_URL)
+
+    if args.paper_datasets:
+        for ds_name in args.paper_datasets:
+            print(f"Prefetching paper dataset: {ds_name} ...")
+            try:
+                preprocess_dataset(ds_name)
+            except Exception as e:
+                print(f"ERROR prefetching {ds_name}: {e}")
+                print("If this is a gating error, accept the dataset terms on its "
+                      "HF page and make sure HF_TOKEN is set.")
+                raise
 
     if args.models:
         models = args.models
