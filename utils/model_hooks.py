@@ -21,7 +21,10 @@ class Qwen3RepresentationExtractor:
         self.num_layers = len(self.model.model.layers)
         self.residual_outputs = []
         self.mlp_outputs = []
+        self.mlpneuron_outputs = []
         self.hooks = []
+        # down_proj input = per-neuron MLP activations (intermediate_size-dim)
+        self.need_mlpneuron = any(r.startswith("mlpneuron") for r in self.rep_types)
 
     def _residual_hook(self, layer_idx):
         def hook(module, input, output):
@@ -49,12 +52,24 @@ class Qwen3RepresentationExtractor:
                 self.mlp_outputs[layer_idx] = mlp_output
         return hook
 
+    def _mlpneuron_hook(self, layer_idx):
+        def hook(module, input):
+            activations = input[0].detach()
+            if len(self.mlpneuron_outputs) <= layer_idx:
+                self.mlpneuron_outputs.append(activations)
+            else:
+                self.mlpneuron_outputs[layer_idx] = activations
+        return hook
+
     def register_hooks(self):
         for idx, layer in enumerate(self.model.model.layers):
             residual_hook = layer.register_forward_hook(self._residual_hook(idx))
             mlp_hook = layer.mlp.register_forward_hook(self._mlp_hook(idx))
             self.hooks.append(residual_hook)
             self.hooks.append(mlp_hook)
+            if self.need_mlpneuron:
+                mlpneuron_hook = layer.mlp.down_proj.register_forward_pre_hook(self._mlpneuron_hook(idx))
+                self.hooks.append(mlpneuron_hook)
 
     def remove_hooks(self):
         for hook in self.hooks:
@@ -66,6 +81,7 @@ class Qwen3RepresentationExtractor:
 
         self.residual_outputs = []
         self.mlp_outputs = []
+        self.mlpneuron_outputs = []
 
         inputs = self.tokenizer(
             texts,
@@ -115,6 +131,14 @@ class Qwen3RepresentationExtractor:
                     layer_rep["residual_mean"] = residual_valid.mean(dim=0).cpu().float().numpy()
                 if "mlp_mean" in self.rep_types:
                     layer_rep["mlp_mean"] = mlp_valid.mean(dim=0).cpu().float().numpy()
+                if "mlpneuron_mean" in self.rep_types:
+                    mlpneuron_tensor = self.mlpneuron_outputs[layer_idx]
+                    if mlpneuron_tensor.dim() == 2:
+                        mlpneuron_tensor = mlpneuron_tensor.unsqueeze(0)
+                    if mlpneuron_tensor.shape[0] != actual_batch_size and mlpneuron_tensor.shape[1] == actual_batch_size:
+                        mlpneuron_tensor = mlpneuron_tensor.transpose(0, 1)
+                    mlpneuron_valid = mlpneuron_tensor[batch_idx][:valid_len]
+                    layer_rep["mlpneuron_mean"] = mlpneuron_valid.mean(dim=0).cpu().float().numpy()
                 representations[layer_idx] = layer_rep
             batch_representations.append(representations)
 

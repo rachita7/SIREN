@@ -42,13 +42,13 @@ def load_general_siren(model_name):
         siren_model = pickle.load(f)
     return siren_model
 
-def extract_representations(texts, model_name, device, batch_size=256):
+def extract_representations(texts, model_name, device, batch_size=256, rep_types=None):
     model_config = MODEL_CONFIGS[model_name]
     extractor = Qwen3RepresentationExtractor(
         model_config["model_path"],
         device=device,
         batch_size=batch_size,
-        rep_types=["residual_mean", "mlp_mean"]
+        rep_types=rep_types if rep_types else ["residual_mean", "mlp_mean"]
     )
     extractor.register_hooks()
 
@@ -120,7 +120,7 @@ def evaluate_on_dataset(model_name, eval_dataset, siren_model, device, batch_siz
     print(f"Positive (harmful): {np.sum(labels == 1)}")
     print(f"Negative (safe): {np.sum(labels == 0)}")
 
-    representations = extract_representations(texts, model_name, device, batch_size)
+    representations = extract_representations(texts, model_name, device, batch_size, rep_types=[pooling_type])
     predictions = get_siren_predictions(representations, siren_model, pooling_type, selected_neurons_dict)
 
     f1_macro = f1_score(labels, predictions, average='macro', zero_division=0)
