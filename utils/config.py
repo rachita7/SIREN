@@ -69,7 +69,25 @@ MODEL_CONFIGS = {
         "hidden_size": 4096,
         "intermediate_size": 14336
     },
+    # Unaligned Llama-3-8B: base model + supervised fine-tuning only (no RLHF/DPO)
+    "llama3-8b-sft": {
+        "model_path": "meta-llama/Llama-3-Base-8B",
+        "model_type": "llama",
+        "num_layers": 32,
+        "hidden_size": 4096,
+        "intermediate_size": 14336
+    },
+    # Aligned counterpart (gated on HF: requires approved access + token)
+    "llama3-8b-instruct": {
+        "model_path": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "model_type": "llama",
+        "num_layers": 32,
+        "hidden_size": 4096,
+        "intermediate_size": 14336
+    },
 }
 
 POOLING_STRATEGIES = ["mean"]
-REPRESENTATION_TYPES = ["residual", "mlp"]
+# "mlpneuron" = input to mlp.down_proj (intermediate_size-dim, the per-neuron
+# MLP activations used in our earlier RMS change-score analysis)
+REPRESENTATION_TYPES = ["residual", "mlp", "mlpneuron"]

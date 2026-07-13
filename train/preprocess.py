@@ -9,8 +9,18 @@ WildguardTest: https://huggingface.co/datasets/allenai/wildguardmix
 SafeRLHF: https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF
 Beavertails: https://huggingface.co/datasets/PKU-Alignment/BeaverTails
 XSTest: https://huggingface.co/datasets/Paul/XSTest       # Only has test set
+HH-RLHF: https://huggingface.co/datasets/Anthropic/hh-rlhf                                  # harmless-base; chosen=safe / rejected=harmful
+HarmBench (CSV): https://github.com/centerforaisafety/HarmBench                             # Only has harmful examples
+AdvBench (CSV): https://github.com/llm-attacks/llm-attacks                                  # Only has harmful examples
 """
-from datasets import DatasetDict, load_dataset
+import os
+import random
+
+from datasets import Dataset, DatasetDict, load_dataset
+
+HARMBENCH_CSV_URL = "https://raw.githubusercontent.com/centerforaisafety/HarmBench/main/data/behavior_datasets/harmbench_behaviors_text_all.csv"
+ADVBENCH_CSV_URL = "https://raw.githubusercontent.com/llm-attacks/llm-attacks/main/data/advbench/harmful_behaviors.csv"
+_DATA_CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 
 
 def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
@@ -30,6 +40,12 @@ def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
         return _preprocess_beavertails(val_ratio)
     elif dataset == "xstest":
         return _preprocess_xstest(val_ratio)
+    elif dataset == "hh_rlhf":
+        return _preprocess_hh_rlhf(val_ratio)
+    elif dataset == "harmbench":
+        return _preprocess_harmbench(val_ratio)
+    elif dataset == "advbench":
+        return _preprocess_advbench(val_ratio)
     else:
         raise ValueError(f"Invalid dataset: {dataset}")
 
@@ -276,3 +292,109 @@ def _preprocess_xstest(val_ratio: float = 0.2) -> DatasetDict:
         out[k] = out[k].map(to_binary_label)
 
     return out
+
+
+def _first_exchange(transcript: str) -> str:
+    """Keep only the first Human/Assistant exchange of an HH-RLHF transcript."""
+    assistant_pos = transcript.find("\n\nAssistant:")
+    if assistant_pos == -1:
+        return transcript.strip()
+    next_human = transcript.find("\n\nHuman:", assistant_pos)
+    if next_human == -1:
+        return transcript.strip()
+    return transcript[:next_human].strip()
+
+
+def _preprocess_hh_rlhf(val_ratio: float = 0.2) -> DatasetDict:
+    """
+    Anthropic HH-RLHF, harmless-base split. Weak labels: the first exchange of
+    the `chosen` transcript is treated as safe (0) and of the `rejected`
+    transcript as harmful (1). Pairs whose first exchanges are identical
+    (preference differs only in later turns) are dropped.
+
+    HH_RLHF_MAX_ROWS caps the number of preference pairs sampled from the train
+    split (each pair yields 2 examples). Default 8000 -> 16k train+val texts.
+    """
+    max_rows = int(os.environ.get("HH_RLHF_MAX_ROWS", "8000"))
+    ds = load_dataset("Anthropic/hh-rlhf", data_dir="harmless-base")
+
+    def build(split, cap=None):
+        rows = ds[split]
+        indices = list(range(len(rows)))
+        random.Random(42).shuffle(indices)
+        if cap is not None:
+            indices = indices[:cap]
+        texts, labels = [], []
+        for i in indices:
+            row = rows[int(i)]
+            chosen = _first_exchange(row["chosen"])
+            rejected = _first_exchange(row["rejected"])
+            if not chosen or not rejected or chosen == rejected:
+                continue
+            texts.extend([chosen, rejected])
+            labels.extend([0, 1])
+        return Dataset.from_dict({"text": texts, "label": labels})
+
+    train_full = build("train", cap=max_rows)
+    split = train_full.train_test_split(test_size=val_ratio, shuffle=True, seed=42)
+    return DatasetDict(
+        {
+            "train": split["train"],
+            "validation": split["test"],
+            "test": build("test"),
+        }
+    )
+
+
+def _load_csv(url: str):
+    """Read a CSV, caching the file under data/ so compute nodes without
+    internet access can reuse a copy fetched on the login node."""
+    import pandas as pd
+
+    os.makedirs(_DATA_CACHE_DIR, exist_ok=True)
+    local_path = os.path.join(_DATA_CACHE_DIR, os.path.basename(url))
+    if not os.path.exists(local_path):
+        import urllib.request
+        urllib.request.urlretrieve(url, local_path)
+    df = pd.read_csv(local_path)
+    return df
+
+
+def _safe_prompts_alpaca(n: int, seed: int = 42) -> list:
+    ds = load_dataset("tatsu-lab/alpaca")["train"]
+    ds = ds.filter(lambda x: x["input"] == "")
+    indices = list(range(len(ds)))
+    random.Random(seed).shuffle(indices)
+    return [ds[int(i)]["instruction"] for i in indices[:n]]
+
+
+def _harmful_only_eval_dataset(harmful_prompts: list) -> DatasetDict:
+    """Build an eval-only DatasetDict from a harmful-only prompt list.
+
+    HarmBench/AdvBench contain no safe examples, so by default an equal number
+    of safe Alpaca instructions is mixed in (label 0) to make F1/precision
+    meaningful. Set HARM_EVAL_ADD_SAFE=0 to evaluate on harmful prompts only
+    (recall == detection rate is then the primary metric).
+    """
+    texts = list(harmful_prompts)
+    labels = [1] * len(texts)
+    if os.environ.get("HARM_EVAL_ADD_SAFE", "1") == "1":
+        safe = _safe_prompts_alpaca(len(texts))
+        texts.extend(safe)
+        labels.extend([0] * len(safe))
+    d = Dataset.from_dict({"text": texts, "label": labels})
+    return DatasetDict({"train": d, "validation": d, "test": d})
+
+
+def _preprocess_harmbench(val_ratio: float = 0.2) -> DatasetDict:
+    df = _load_csv(HARMBENCH_CSV_URL)
+    if "FunctionalCategory" in df.columns:
+        df = df[df["FunctionalCategory"] == "standard"]
+    prompts = df["Behavior"].dropna().astype(str).tolist()
+    return _harmful_only_eval_dataset(prompts)
+
+
+def _preprocess_advbench(val_ratio: float = 0.2) -> DatasetDict:
+    df = _load_csv(ADVBENCH_CSV_URL)
+    prompts = df["goal"].dropna().astype(str).tolist()
+    return _harmful_only_eval_dataset(prompts)
