@@ -24,7 +24,12 @@ module load eth_proxy 2>/dev/null || true
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate siren
 
-export HF_HOME="${HF_HOME:-$HOME/scratch/hf_cache}"
+# Must match the HF_HOME used in cluster/setup_env.sh (Euler scratch if present)
+if [ -d "/cluster/scratch/$USER" ]; then
+    export HF_HOME="${HF_HOME:-/cluster/scratch/$USER/hf_cache}"
+else
+    export HF_HOME="${HF_HOME:-$HOME/hf_cache}"
+fi
 export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
 export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"
 export TOKENIZERS_PARALLELISM=false
