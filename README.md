@@ -93,6 +93,36 @@ bash eval_general_siren.sh
 
 The script loads `train/probes/optuna/{MODEL}_general/best_model.pkl`, extracts representations, runs inference on each test set, and writes per-dataset metrics to `train/probes/optuna/{MODEL}_general/eval_results.json`. Set `MODEL` in `eval_general_siren.sh` to match the trained backbone.
 
+## HH-RLHF -> HarmBench/AdvBench experiment (SFT vs. Instruct)
+
+This fork adds an experiment that applies SIREN's safety-neuron identification to compare an unaligned and an aligned Llama-3-8B:
+
+- **Backbones**: `llama3-8b-sft` (`princeton-nlp/Llama-3-Base-8B-SFT`, no RLHF/DPO) and `llama3-8b-instruct` (`meta-llama/Meta-Llama-3-8B-Instruct`, gated on HF).
+- **Training data**: `hh_rlhf` — Anthropic HH-RLHF harmless-base, weak-labeled per preference pair (first exchange of `chosen` = safe, `rejected` = harmful). Sample size is controlled with `HH_RLHF_MAX_ROWS` (default 8000 pairs = 16k texts).
+- **Evaluation data**: `harmbench` (HarmBench standard behaviors) and `advbench` (AdvBench harmful behaviors), loaded from their public GitHub CSVs and cached under `data/`. Both are harmful-only, so equal-sized safe Alpaca instructions are mixed in as negatives by default (`HARM_EVAL_ADD_SAFE=0` disables this).
+- **Representation types**: besides `residual_mean` and `mlp_mean`, this fork adds `mlpneuron_mean`, the input to `mlp.down_proj` (14336-dim per-neuron MLP activations) — the same space as our earlier RMS change-score analysis.
+
+Run locally:
+
+```bash
+cd train && bash run_hh_siren.sh llama3-8b-sft residual_mean
+cd ../test && bash eval_harm_siren.sh llama3-8b-sft
+python ../analysis/plot_layer_probes.py --models llama3-8b-sft llama3-8b-instruct --threshold 0.9
+```
+
+On a SLURM cluster:
+
+```bash
+export HF_TOKEN=hf_...                      # needed for the gated Instruct model
+bash cluster/setup_env.sh                   # login node: env + prefetch data/models
+sbatch cluster/train_siren.sbatch llama3-8b-sft
+sbatch cluster/train_siren.sbatch llama3-8b-instruct
+sbatch cluster/eval_siren.sbatch llama3-8b-sft        # after training finishes
+sbatch cluster/eval_siren.sbatch llama3-8b-instruct
+```
+
+`analysis/plot_layer_probes.py` plots the per-layer probe F1 and the layer distribution of selected safety neurons, and reports the per-layer Jaccard overlap of the selected neurons between the two backbones.
+
 <!-- ## Main Results
 
 Performance comparison (Macro F1) of SIREN against safety-specialized guard models on standard harmfulness detection benchmarks:
