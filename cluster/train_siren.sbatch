@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=siren-train
 #SBATCH --gpus=1                       # 1 GPU; no partition tag needed on ETH Euler
-#SBATCH --gres=gpumem:40g              # require >=40GB GPU memory (80GB comfortable)
+#SBATCH --gres=gpumem:20g              # >=20GB GPU mem: opens RTX 3090/4090 (24GB), far more available than A100s
 ##SBATCH --account=es_yourgroup        # Euler: group share, NOT your username; usually auto-selected
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=16G              # 8 x 16G = 128G total
-#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=12G              # 4 x 12G = 48G total (activations cache ~15G + overhead)
+#SBATCH --time=12:00:00                # shorter wall time -> much better backfill priority
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
 
@@ -37,6 +37,10 @@ export TOKENIZERS_PARALLELISM=false
 
 # Number of HH-RLHF preference pairs used for train+val (2 texts each)
 export HH_RLHF_MAX_ROWS="${HH_RLHF_MAX_ROWS:-8000}"
+
+# Extraction batch size 8 keeps peak GPU memory ~20GB so the job fits 24GB
+# cards (raise to 16 if you request gpumem:40g instead).
+export BATCH_SIZE="${BATCH_SIZE:-8}"
 
 cd "$SLURM_SUBMIT_DIR"
 mkdir -p logs

@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=siren-eval
 #SBATCH --gpus=1                       # 1 GPU; no partition tag needed on ETH Euler
-#SBATCH --gres=gpumem:40g              # require >=40GB GPU memory
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=8G               # 8 x 8G = 64G total
-#SBATCH --time=04:00:00
+#SBATCH --gres=gpumem:20g              # 24GB cards are plenty for batch-8 extraction
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G               # 4 x 8G = 32G total
+#SBATCH --time=02:00:00                # ~720 prompts, well under 2h
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
 

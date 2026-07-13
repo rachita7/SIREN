@@ -13,7 +13,7 @@
 
 MODEL="${1:-llama3-8b-sft}"
 DEVICE="cuda"
-BATCH_SIZE=16
+BATCH_SIZE="${BATCH_SIZE:-8}"
 
 export HARM_EVAL_ADD_SAFE="${HARM_EVAL_ADD_SAFE:-0}"
 

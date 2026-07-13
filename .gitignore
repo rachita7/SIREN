@@ -209,6 +209,7 @@ probes/
 data/
 logs/
 analysis/results/
+EXPERIMENT_LOG.md
 
 
 *.pkl
