@@ -40,12 +40,8 @@ mkdir -p "$HF_HOME"
 # Keep pip's cache off $HOME too (used during conda env create's pip stage)
 export PIP_CACHE_DIR="${PIP_CACHE_DIR:-$HF_HOME/../pip_cache}"
 
-REPO_URL="https://github.com/rachita7/SIREN.git"
-REPO_DIR="${REPO_DIR:-$HOME/SIREN}"
-
-if [ ! -d "$REPO_DIR" ]; then
-    git clone "$REPO_URL" "$REPO_DIR"
-fi
+# This script lives in the repo (cluster/), so the repo root is one level up.
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_DIR"
 
 if ! conda env list | grep -q "^siren "; then
