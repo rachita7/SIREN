@@ -371,14 +371,14 @@ def _safe_prompts_alpaca(n: int, seed: int = 42) -> list:
 def _harmful_only_eval_dataset(harmful_prompts: list) -> DatasetDict:
     """Build an eval-only DatasetDict from a harmful-only prompt list.
 
-    HarmBench/AdvBench contain no safe examples, so by default an equal number
-    of safe Alpaca instructions is mixed in (label 0) to make F1/precision
-    meaningful. Set HARM_EVAL_ADD_SAFE=0 to evaluate on harmful prompts only
-    (recall == detection rate is then the primary metric).
+    HarmBench/AdvBench contain no safe examples, so by default the eval set is
+    harmful-only and recall == detection rate is the primary metric
+    (F1/precision are degenerate). Set HARM_EVAL_ADD_SAFE=1 to mix in an equal
+    number of safe Alpaca instructions (label 0) so F1/precision are meaningful.
     """
     texts = list(harmful_prompts)
     labels = [1] * len(texts)
-    if os.environ.get("HARM_EVAL_ADD_SAFE", "1") == "1":
+    if os.environ.get("HARM_EVAL_ADD_SAFE", "0") == "1":
         safe = _safe_prompts_alpaca(len(texts))
         texts.extend(safe)
         labels.extend([0] * len(safe))

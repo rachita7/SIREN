@@ -9,7 +9,10 @@
 
 set -e
 
-# TODO: adjust to your cluster's module system (or remove if conda is on PATH)
+# ETH Euler: login nodes have internet, no eth_proxy needed here. Conda is not
+# a module on Euler; install miniconda into your $HOME or scratch first if you
+# don't have it (https://docs.conda.io/en/latest/miniconda.html).
+# On other clusters, load your conda/cuda modules here, e.g.:
 # module load miniconda3
 # module load cuda/12.6
 

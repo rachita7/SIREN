@@ -1,10 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=siren-eval
-#SBATCH --partition=gpu                # TODO: your GPU partition
-##SBATCH --account=YOUR_ACCOUNT        # TODO: uncomment + set if required
-#SBATCH --gres=gpu:1
+#SBATCH --gpus=1                       # 1 GPU; no partition tag needed on ETH Euler
+#SBATCH --gres=gpumem:40g              # require >=40GB GPU memory
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
+#SBATCH --mem-per-cpu=8G               # 8 x 8G = 64G total
 #SBATCH --time=04:00:00
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
@@ -18,9 +17,9 @@
 set -e
 MODEL="${1:-llama3-8b-sft}"
 
-# TODO: adjust to your cluster's module system
-# module load miniconda3
-# module load cuda/12.6
+# ETH Euler: eth_proxy gives compute nodes internet access (safe to keep even
+# with the offline flags below; remove the line on non-ETH clusters).
+module load eth_proxy 2>/dev/null || true
 
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate siren
@@ -30,9 +29,9 @@ export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
 export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"
 export TOKENIZERS_PARALLELISM=false
 
+# 0 = harmful prompts only (read RECALL as the detection rate) [default]
 # 1 = mix in equal number of safe Alpaca prompts as negatives (F1 meaningful)
-# 0 = harmful prompts only (read recall as the detection rate)
-export HARM_EVAL_ADD_SAFE="${HARM_EVAL_ADD_SAFE:-1}"
+export HARM_EVAL_ADD_SAFE="${HARM_EVAL_ADD_SAFE:-0}"
 
 cd "$SLURM_SUBMIT_DIR"
 mkdir -p logs

@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=siren-train
-#SBATCH --partition=gpu                # TODO: your GPU partition
-##SBATCH --account=YOUR_ACCOUNT        # TODO: uncomment + set if required
-#SBATCH --gres=gpu:1                   # 1x A100/H100 (>=40GB, 80GB comfortable)
+#SBATCH --gpus=1                       # 1 GPU; no partition tag needed on ETH Euler
+#SBATCH --gres=gpumem:40g              # require >=40GB GPU memory (80GB comfortable)
+##SBATCH --account=es_yourgroup        # Euler: group share, NOT your username; usually auto-selected
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=128G
+#SBATCH --mem-per-cpu=16G              # 8 x 16G = 128G total
 #SBATCH --time=24:00:00
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
@@ -18,9 +18,9 @@ set -e
 MODEL="${1:-llama3-8b-sft}"
 REP_TYPE="${2:-residual_mean}"
 
-# TODO: adjust to your cluster's module system
-# module load miniconda3
-# module load cuda/12.6
+# ETH Euler: eth_proxy gives compute nodes internet access (safe to keep even
+# with the offline flags below; remove the line on non-ETH clusters).
+module load eth_proxy 2>/dev/null || true
 
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate siren

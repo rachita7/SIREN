@@ -99,7 +99,7 @@ This fork adds an experiment that applies SIREN's safety-neuron identification t
 
 - **Backbones**: `llama3-8b-sft` (`princeton-nlp/Llama-3-Base-8B-SFT`, no RLHF/DPO) and `llama3-8b-instruct` (`meta-llama/Meta-Llama-3-8B-Instruct`, gated on HF).
 - **Training data**: `hh_rlhf` — Anthropic HH-RLHF harmless-base, weak-labeled per preference pair (first exchange of `chosen` = safe, `rejected` = harmful). Sample size is controlled with `HH_RLHF_MAX_ROWS` (default 8000 pairs = 16k texts).
-- **Evaluation data**: `harmbench` (HarmBench standard behaviors) and `advbench` (AdvBench harmful behaviors), loaded from their public GitHub CSVs and cached under `data/`. Both are harmful-only, so equal-sized safe Alpaca instructions are mixed in as negatives by default (`HARM_EVAL_ADD_SAFE=0` disables this).
+- **Evaluation data**: `harmbench` (HarmBench standard behaviors) and `advbench` (AdvBench harmful behaviors), loaded from their public GitHub CSVs and cached under `data/`. Both are harmful-only, so by default recall == detection rate is the metric to report. Set `HARM_EVAL_ADD_SAFE=1` to mix in equal-sized safe Alpaca instructions as negatives, which makes F1/precision meaningful.
 - **Representation types**: besides `residual_mean` and `mlp_mean`, this fork adds `mlpneuron_mean`, the input to `mlp.down_proj` (14336-dim per-neuron MLP activations) — the same space as our earlier RMS change-score analysis.
 
 Run locally:
