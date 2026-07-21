@@ -1,0 +1,9 @@
+# Minimal deps for analysis/plot_method_overlap.py (and plot_layer_probes.py).
+# Versions match environment.yaml.
+numpy==2.2.6
+pandas==2.3.1
+matplotlib==3.10.3
+
+# Only needed for the Jaccard heatmap part, which unpickles the trained
+# probes (they contain torch tensors). Not needed for the CSV counts plot.
+torch==2.7.0
