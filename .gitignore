@@ -208,11 +208,9 @@ __marimo__/
 probes/
 data/
 logs/
-analysis/results/
 EXPERIMENT_LOG.md
 .venv-*/
 
-*.pkl
 *.json
 # *.sh
 *.html

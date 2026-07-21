@@ -37,6 +37,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import argparse
+import io
 import pickle
 
 import numpy as np
@@ -60,10 +61,21 @@ def select_salient_neurons(probe, threshold):
     return selected
 
 
+class CPUUnpickler(pickle.Unpickler):
+    """Unpickler that maps CUDA tensors to CPU (probes were saved on GPU)."""
+
+    def find_class(self, module, name):
+        if module == "torch.storage" and name == "_load_from_bytes":
+            import torch
+            return lambda b: torch.load(io.BytesIO(b), map_location="cpu",
+                                        weights_only=False)
+        return super().find_class(module, name)
+
+
 def load_selected_neurons(probe_path, pooling_type, threshold):
     """Return {layer_idx: set(neuron indices)} from a probes pickle."""
     with open(probe_path, "rb") as f:
-        data = pickle.load(f)
+        data = CPUUnpickler(f).load()
     best_probes = data["best_probes"]
 
     neurons = {}
