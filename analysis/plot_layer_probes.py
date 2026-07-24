@@ -10,8 +10,8 @@ For each trained backbone this script plots, per layer:
 Overlaying llama3-8b-sft and llama3-8b-instruct shows how alignment shifts the
 layer distribution of safety-relevant neurons (mid vs. late layers).
 
-Run on a machine with a GPU (the pickled probes contain CUDA tensors), after
-train/run_hh_siren.sh has finished:
+Run after train/run_hh_siren.sh has finished (CUDA tensors in the pickles are
+mapped to CPU automatically, so no GPU is needed):
 
     python analysis/plot_layer_probes.py --models llama3-8b-sft llama3-8b-instruct --threshold 0.9
 """
@@ -20,6 +20,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import argparse
+import io
 import pickle
 
 import numpy as np
@@ -29,6 +30,18 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from utils.config import MODEL_CONFIGS
+
+
+class CPUUnpickler(pickle.Unpickler):
+    """Unpickler that maps CUDA tensors to CPU, so the pickled probes can be
+    loaded on machines without a GPU."""
+
+    def find_class(self, module, name):
+        if module == "torch.storage" and name == "_load_from_bytes":
+            import torch
+            return lambda b: torch.load(io.BytesIO(b), map_location="cpu",
+                                        weights_only=False)
+        return super().find_class(module, name)
 
 
 def select_salient_neurons(probe, threshold):
@@ -48,7 +61,7 @@ def select_salient_neurons(probe, threshold):
 def load_layer_stats(model_name, probes_dir, pooling_type, threshold):
     probe_path = os.path.join(probes_dir, f"{model_name}_general_probes.pkl")
     with open(probe_path, "rb") as f:
-        data = pickle.load(f)
+        data = CPUUnpickler(f).load()
     best_probes = data["best_probes"]
 
     num_layers = MODEL_CONFIGS[model_name]["num_layers"]
