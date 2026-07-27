@@ -1,8 +1,10 @@
-# Minimal deps for analysis/plot_method_overlap.py (and plot_layer_probes.py).
+# Minimal deps for the analysis/ scripts (plot_method_overlap.py,
+# plot_layer_probes.py, neuron_importance_eval.py).
 # Versions match environment.yaml.
 numpy==2.2.6
 pandas==2.3.1
 matplotlib==3.10.3
+scikit-learn==1.9.0
 
 # Only needed for the Jaccard heatmap part, which unpickles the trained
 # probes (they contain torch tensors). Not needed for the CSV counts plot.

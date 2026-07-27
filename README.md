@@ -123,6 +123,41 @@ sbatch cluster/eval_siren.sbatch llama3-8b-instruct
 
 `analysis/plot_layer_probes.py` plots the per-layer probe F1 and the layer distribution of selected safety neurons, and reports the per-layer Jaccard overlap of the selected neurons between the two backbones.
 
+## Neuron-importance evaluation (Dalvi et al. 2019)
+
+`analysis/neuron_importance_eval.py` is a layer-wise adaptation of the
+neuron ranking and ablation evaluation of ["What Is One Grain of
+Sand in the Desert?"](https://arxiv.org/pdf/1812.09355) (Dalvi et al., AAAI
+2019), applied independently to one linear probe per layer. Neurons are ranked
+by absolute probe weight (the paper's Algorithm 1 for multi-class probes) and
+the full per-layer ranking is saved. Given activations, the ranking is
+validated with the paper's masking-out ablation (Table 2, with the paper's
+majority baseline) and an elastic-net retraining ablation (Table 4;
+`--retrain_backend siren` reuses SIREN's own probe trainer instead).
+
+On SIREN probes:
+
+```bash
+python analysis/neuron_importance_eval.py \
+    --probes train/probes/llama3-8b-instruct_general_probes.pkl \
+    --pooling_type residual_mean --label llama3-8b-instruct
+```
+
+On any other codebase, export your probe weights (and optionally activations)
+to npz — no SIREN code needed:
+
+```python
+np.savez("weights.npz", layer0=w0, layer1=w1, ...)          # (D,) or (num_classes, D)
+np.savez("eval_features.npz", labels=y, layer0=X0, ...)     # (N, D) per layer
+```
+
+```bash
+python analysis/neuron_importance_eval.py --weights weights.npz \
+    --features eval_features.npz --label mymodel
+```
+
+See the module docstring for the full input format and options.
+
 <!-- ## Main Results
 
 Performance comparison (Macro F1) of SIREN against safety-specialized guard models on standard harmfulness detection benchmarks:
