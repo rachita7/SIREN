@@ -3,10 +3,14 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # Hook class to extract representations catering for Qwen-3 model architecture
 class Qwen3RepresentationExtractor:
-    def __init__(self, model_path, device="cuda", batch_size=16, rep_types=None):
+    def __init__(self, model_path, device="cuda", batch_size=16, rep_types=None,
+                 add_special_tokens=True):
         self.device = device
         self.batch_size = batch_size
         self.rep_types = rep_types if rep_types else ["residual_mean", "mlp_mean"]
+        # Set False when texts are already chat-templated (contain literal
+        # <|begin_of_text|>/header special tokens) to avoid a duplicate BOS.
+        self.add_special_tokens = add_special_tokens
         self.model = AutoModelForCausalLM.from_pretrained(
             model_path,
             torch_dtype=torch.bfloat16,
@@ -77,7 +81,13 @@ class Qwen3RepresentationExtractor:
         self.hooks = []
 
     def extract_batch(self, texts):
-        texts = [t.strip() if t.strip() else " " for t in texts]
+        if self.add_special_tokens:
+            texts = [t.strip() if t.strip() else " " for t in texts]
+        else:
+            # Pre-templated inputs: keep the string verbatim (trailing "\n\n"
+            # after the assistant header is part of the template) and only
+            # guard against empty/whitespace-only rows.
+            texts = [t if (isinstance(t, str) and t.strip()) else " " for t in texts]
 
         self.residual_outputs = []
         self.mlp_outputs = []
@@ -88,7 +98,8 @@ class Qwen3RepresentationExtractor:
             return_tensors="pt",
             truncation=True,
             max_length=512,
-            padding=True
+            padding=True,
+            add_special_tokens=self.add_special_tokens
         )
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
 

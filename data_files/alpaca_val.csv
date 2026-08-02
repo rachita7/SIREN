@@ -1,0 +1,315 @@
+instruction,input,output,prompt,formatted_input
+What are the best strategies to complete a project on time?,,"The best strategies for completing a project on time include breaking down the tasks into manageable chunks, setting deadlines for each task and making sure to keep track of progress. Additionally, identifying any potential roadblocks and planning for them in advance can help ensure the project is completed on schedule. Additionally, if possible, delegating some of the tasks or procuring external services can also help expedite the project.",What are the best strategies to complete a project on time?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What are the best strategies to complete a project on time?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Make a list of 5 people in history who changed the world,,"1. Albert Einstein – A revolutionary scientist who revolutionized physics and the 20th century understanding of nature.
+2. Martin Luther King Jr. – A leader who pioneered the civil rights movement in America.
+3. Mahatma Gandhi – A leader who used non-violent principles to advocate for civil rights in India.
+4. Marie Curie – A scientist whose groundbreaking discoveries in radioactivity and X-ray technology revolutionized medicine and science.
+5. Nelson Mandela – A leader who fought for peaceful political reforms in South Africa.",Make a list of 5 people in history who changed the world,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Make a list of 5 people in history who changed the world<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Recommend three books on psychology,,"Three books on psychology that I would recommend are: 1) Thinking, Fast and Slow by Daniel Kahneman; 2) The End of Sannd by Dr. Paul Dolan; and 3) The Power of Habit by Charles Duhigg.",Recommend three books on psychology,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Recommend three books on psychology<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Tell me about the African savanna elephant.,,"The African savanna elephant is the largest land animal in the world, and is one of the most iconic African species.It is characterized by its large ears, a long trunk, and awe-inspiring tusks. Savanna elephants can weigh up to 7 tons, and can grow up to 10 feet tall. They live in the grasslands and woodlands of sub-Saharan Africa, and are mainly herbivores that feed on grass, foliage, fruits, and bark. They live in herds led by an older matriarch, and are highly intelligent, sometimes using tools and demonstrating complex social behavior.",Tell me about the African savanna elephant.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Tell me about the African savanna elephant.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a list of 10 non-traditional holiday dishes.,,"1. Grilled Asian-style tacos
+2. Halloumi sliders with roasted garlic aioli
+3. Roasted carrot and eggplant salad
+4. Lentil stew with roasted peppers
+5. Polenta and vegetable bake
+6. Stuffed mushrooms with spinach and cheese
+7. Smoked salmon and melon salad
+8. Broccoli and roasted garlic quesadilla
+9. Red pepper and feta frittata
+10. Roasted vegetable and mozzarella strudel.",Generate a list of 10 non-traditional holiday dishes.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a list of 10 non-traditional holiday dishes.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Predict what would happen if the sentence changes according to the given replacement.,"The board of directors has approved the new policy. 
+Replacement: investors","If the sentence was changed to ""The board of investors has approved the new policy,"" it would imply that a group of investors, instead of the board of directors, has approved the policy.","Predict what would happen if the sentence changes according to the given replacement.
+
+The board of directors has approved the new policy. 
+Replacement: investors","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Predict what would happen if the sentence changes according to the given replacement.
+
+The board of directors has approved the new policy. 
+Replacement: investors<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the square root of 156.,<no input>,The square root of 156 is 12.48664.,"Find the square root of 156.
+
+<no input>","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the square root of 156.
+
+<no input><|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+How would you improve this design?,[Image of a logo],"I would make the font more modern by using a different typeface, slightly adjust the hierarchy of the fonts to create contrast, and play around with the color palette to create more contrast and movement in the logo.","How would you improve this design?
+
+[Image of a logo]","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+How would you improve this design?
+
+[Image of a logo]<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Provide examples of a metaphor, a simile, and a hyperbole.",,"Metaphor: He is a tiger in the classroom.
+Simile: His eyes were as sharp as knives.
+Hyperbole: I have a million things to do today!","Provide examples of a metaphor, a simile, and a hyperbole.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide examples of a metaphor, a simile, and a hyperbole.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give a tagline to the product.,Product - Face masks,Stay safe and stylish with face masks!,"Give a tagline to the product.
+
+Product - Face masks","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give a tagline to the product.
+
+Product - Face masks<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the features of a Mercedes-Benz S-Class car.,,"The Mercedes-Benz S-Class is a full-size luxury sedan. It features an elegant exterior design with aggressive styling, as well as a luxurious interior with premium materials and craftsmanship. The S-Class is equipped with advanced technology such as a fully digital cockpit with a 12.3-inch infotainment screen, as well as a hybrid powertrain with a 48-volt mild-hybrid system. It also offers advanced driver-assist features such as lane-keeping assist and semi-autonomous cruise control. The S-Class is also equipped with an advanced air suspension system that automatically adjusts the suspension to provide a comfortable ride.",Describe the features of a Mercedes-Benz S-Class car.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the features of a Mercedes-Benz S-Class car.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the biggest number in the following array and output its index.,"[2, 13, 7, 17, 4]",3,"Find the biggest number in the following array and output its index.
+
+[2, 13, 7, 17, 4]","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the biggest number in the following array and output its index.
+
+[2, 13, 7, 17, 4]<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide the adjectives that describe the coffee.,The coffee is rich and full-bodied.,"Rich, full-bodied, robust, flavorful, aromatic.","Provide the adjectives that describe the coffee.
+
+The coffee is rich and full-bodied.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide the adjectives that describe the coffee.
+
+The coffee is rich and full-bodied.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Classify the sentiment of the sentence ""I'm so pleased with my work"".",,Positive sentiment.,"Classify the sentiment of the sentence ""I'm so pleased with my work"".","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify the sentiment of the sentence ""I'm so pleased with my work"".<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a brainstorm list of things related to the topic of artificial intelligence.,,"1. Machine Learning 
+2. Natural Language Processing (NLP)
+3. Computer vision
+4. Robotics
+5. Automation
+6. Automated Decision Making
+7. Speech Recognition
+8. Pattern Recognition
+9. Knowledge Representation
+10. Expert Systems
+11. Neural Networks
+12. Deep Learning 
+13. Reinforcement Learning 
+14. Predictive Analytics 
+15. Chatbots 
+16. Facial Recognition
+17. Image Classification
+18. Text Summarization
+19. Virtual Assistants",Generate a brainstorm list of things related to the topic of artificial intelligence.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a brainstorm list of things related to the topic of artificial intelligence.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest four ways to make a travel experience more memorable,,"- Capture the experience with photographs.
+- Make connections with locals.
+- Explore at your own pace and discover hidden gems.
+- Take time to savor the destination and enjoy the journey.",Suggest four ways to make a travel experience more memorable,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest four ways to make a travel experience more memorable<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Rewrite the following sentence in the form of an imperative command: Please keep your cellphones off during the lecture.,,Keep your cellphones off during the lecture.,Rewrite the following sentence in the form of an imperative command: Please keep your cellphones off during the lecture.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite the following sentence in the form of an imperative command: Please keep your cellphones off during the lecture.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest a new re-branding strategy for the following company.,Company: ABC Technologies,"ABC Technologies could focus on promoting their commitment to sustainability and harnessing their team of experts to provide innovative technological solutions to social and environmental problems. They could partner with local organizations to raise awareness and promote their sustainability efforts. Additionally, they could run promotional campaigns that involve loyalty rewards, social media campaigns, and discounts to show their appreciation to their customers.","Suggest a new re-branding strategy for the following company.
+
+Company: ABC Technologies","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest a new re-branding strategy for the following company.
+
+Company: ABC Technologies<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Verify the accuracy of the data.,The 16th President of the United States was Abraham Lincoln.,Correct. Abraham Lincoln was the 16th President of the United States.,"Verify the accuracy of the data.
+
+The 16th President of the United States was Abraham Lincoln.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Verify the accuracy of the data.
+
+The 16th President of the United States was Abraham Lincoln.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide two steps to prevent cyber bullying.,,"1. Develop a policy prohibiting cyberbullying and posting of inappropriate content by staff and students.
+2. Educate staff, students and parents on what cyberbullying is and how they can prevent it.",Provide two steps to prevent cyber bullying.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide two steps to prevent cyber bullying.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a website, identify potential elements that you may want to improve.",,"Potential elements that could be improved on this website include navigation, usability, design, content, and performance. Navigation should be intuitive and easy to use, usability should be improved to ensure users understand how to interact with the website, design should be modern and visually appealing, content should contain accurate and relevant information, and performance should be optimized to reduce loading times and improve overall speed.","Given a website, identify potential elements that you may want to improve.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a website, identify potential elements that you may want to improve.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Design a program to identify potential problems in a data-driven decision-making process.,,"A program to identify potential problems in a data-driven decision-making process should include the following steps:
+1. Perform a risk assessment of the data sources and analyze the quality, accuracy, and security of the data. 
+2. Develop strategies to ensure the data is not biased, or vulnerable to attack or manipulation.  
+3. Create data validation procedures to check the validity, reliability and accuracy of the data. 
+4. Review the algorithm to ensure it is optimized for accuracy and fairness.
+5. Monitor results of the implemented systems to detect any potential issues.",Design a program to identify potential problems in a data-driven decision-making process.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Design a program to identify potential problems in a data-driven decision-making process.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Compare and contrast the American Flag and the Flag of Mexico.,,"The American Flag is made up of 13 red and white stripes, representing the 13 original colonies. It also has a blue rectangle in the top left corner with a circle of 50 white stars, representing all 50 states. The Flag of Mexico has three vertical stripes in red, green, and white in a very specific order, as well as a large golden eagle eating a snake in the center. Both flags represent their respective countries and have deep symbolism.",Compare and contrast the American Flag and the Flag of Mexico.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compare and contrast the American Flag and the Flag of Mexico.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a sentence, replace the adjective with a more appropriate one.",The terrible music made him sleepy.,The irritating music made him sleepy.,"Given a sentence, replace the adjective with a more appropriate one.
+
+The terrible music made him sleepy.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a sentence, replace the adjective with a more appropriate one.
+
+The terrible music made him sleepy.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the development of the film industry since 1975.,,"Since 1975, the film industry has undergone a significant transformation. The number of films released annually has grown exponentially, as technological advances make it easier for films to be produced and distributed. Innovations such as digital distribution, streaming technology, and 3D projection have opened up new avenues for the film industry, allowing for unprecedented access and reach. Additionally, increasing amounts of international collaboration and collaboration between studios and filmmakers have enabled ambitious projects to become reality. Increased access to production and post-production services and resources has made it easier for independent filmmakers to enter the field. Films also increasingly rely on modern screenwriting software and CGI technology to create lifelike, immersive visuals, further enhancing the movie-going experience.",Describe the development of the film industry since 1975.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the development of the film industry since 1975.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Summarize the benefits of a digital advertising campaign,,"Digital advertising campaigns offer a number of benefits, such as the ability to reach a wide and global audience, create targeted campaigns, track and measure performance in real-time, and adjust campaigns on the fly. Digital advertising can also help establish a personal connection with potential customers, as ads can be tailored to the needs and preferences of the target audience. Additionally, digital advertising is more cost-effective as it requires less resources than traditional advertising, and have higher conversion rates as ads can be displayed to potential customers who are more likely to take action.",Summarize the benefits of a digital advertising campaign,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Summarize the benefits of a digital advertising campaign<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Reformulate the given statement to reflect a feeling of dismay.,I am surprised.,I am dismayed.,"Reformulate the given statement to reflect a feeling of dismay.
+
+I am surprised.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Reformulate the given statement to reflect a feeling of dismay.
+
+I am surprised.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+List 3 popular rap artists.,,"Three popular rap artists are Kendrick Lamar, Drake, and Eminem.",List 3 popular rap artists.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+List 3 popular rap artists.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a data structure to represent a grocery store checkout system.,,"A queue of customers and a single register to process the purchases would work well for a grocery store checkout system. The queue would contain information about each customer, such as the items they are purchasing, the total cost and the payment method. The register would process the transactions, and add up and print out prices for each customer.",Create a data structure to represent a grocery store checkout system.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a data structure to represent a grocery store checkout system.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Translate this sentence from English to French: ""I ate lunch at noon"".",,J'ai mangé mon déjeuner à midi.,"Translate this sentence from English to French: ""I ate lunch at noon"".","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Translate this sentence from English to French: ""I ate lunch at noon"".<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe what the world would be like in a perfect utopian society.,,"In a perfect utopian society, everyone would be living in harmony, free from fear and oppression. There would be an abundance of resources, so everyone would be able to fulfill their needs and desires. Everybody would feel safe and secure, free from the fear of violence. People would be free to work, create, and express their personalities. Education would be accessible to all and there would be opportunities for everyone to develop their talents. All people would be respected for the unique and wonderful individuals that they are. There would be no hierarchies or organizations to oppress any one group. Everyone would have equal opportunities to pursue their passions and talents. In this utopian world, all people would work together to keep it a warm and inviting place to live.",Describe what the world would be like in a perfect utopian society.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe what the world would be like in a perfect utopian society.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give an example of how an efficiency score can be useful for an organisation.,,"An efficiency score can be useful for an organisation to measure and track the overall effectiveness of its operations. For example, a company can use an efficiency score to evaluate the performance of its teams and departments. The score can be based on a number of different factors, such as the amount of money spent on each task, the number of tasks completed, the amount of time taken to complete tasks and the amount of resources used. An efficiency score can help the organisation identify areas where they can improve and make more efficient use of their resources.",Give an example of how an efficiency score can be useful for an organisation.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give an example of how an efficiency score can be useful for an organisation.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Compose a paragraph about the Hindenburg Disaster.,,"The Hindenburg Disaster happened on May 6th, 1937 when the German airship, known as a zeppelin, named the Hindenburg was attempting to dock at the Lakehurst Naval Air Station. Unfortunately, a spark from the landing area caused the hydrogen within the Hindenburg to ignite. In a matter of seconds, the massive zeppelin was engulfed in flames and fell to the ground. All but 37 of the 97 people on board were killed and news of the disaster spread quickly, becoming one of the most remembered events of the 1930s. The tragedy was both a public and financial blow to the future of airships, and to this day, still serves as a reminder of the human cost of technological catastrophes.",Compose a paragraph about the Hindenburg Disaster.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compose a paragraph about the Hindenburg Disaster.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a list of three interview questions for a Software Engineer job.,,"1. What experience do you have working with software development?
+2. Tell me about a difficult problem you had to solve in your software engineering role.
+3. How do you stay up to date on the latest software development trends?",Create a list of three interview questions for a Software Engineer job.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a list of three interview questions for a Software Engineer job.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide a recipe for a vegan potato wedges.,,"Ingredients: 
+- 4 large potatoes, washed and cut into wedges
+- 3 tbsp olive oil
+- 2 tsp garlic powder
+- 2 tsp smoked paprika
+- 1/2 tsp onion powder
+- 1/2 tsp ground cumin
+- Salt and pepper to taste
+
+Instructions: 
+
+1. Preheat oven to 400°F (200°C).
+2. Place potato wedges on a non-stick baking sheet.
+3. Drizzle with olive oil and sprinkle with garlic powder, smoked paprika, onion powder, cumin and salt and pepper.
+4. Gently toss the potato wedges so that they are evenly coated.
+5. Bake for 30 minutes, or until potatoes are golden and crispy.",Provide a recipe for a vegan potato wedges.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide a recipe for a vegan potato wedges.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a list of 3 cities, list 3 places that could be visited in each city.","San Francisco, New York, and Los Angeles","San Francisco: Golden Gate Bridge, Fisherman's Wharf, Alcatraz 
+New York: Statue of Liberty, Empire State Building, Central Park 
+Los Angeles: Hollywood Boulevard, The Getty Museum, Universal Studios Hollywood","Given a list of 3 cities, list 3 places that could be visited in each city.
+
+San Francisco, New York, and Los Angeles","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a list of 3 cities, list 3 places that could be visited in each city.
+
+San Francisco, New York, and Los Angeles<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Categorize the following animals: elephant, bee, dolphin.",,"Elephant: Mammal 
+Bee: Insect
+Dolphin: Mammal","Categorize the following animals: elephant, bee, dolphin.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Categorize the following animals: elephant, bee, dolphin.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a list of possible causes for the following phenomenon.,Economic stagnation,"Possible causes of economic stagnation include: a decrease in aggregate demand, trade imbalances, high levels of government spending, undersaving, inadequate investment, a decrease in the availability of capital, overly-tight monetary policy, and high taxes.","Generate a list of possible causes for the following phenomenon.
+
+Economic stagnation","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a list of possible causes for the following phenomenon.
+
+Economic stagnation<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Where is Stonehenge located?,,"Stonehenge is located in Wiltshire, England.",Where is Stonehenge located?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Where is Stonehenge located?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a headline that captures the news of the day.,,Scientists Discover Breakthrough Treatment for Coronavirus!,Generate a headline that captures the news of the day.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a headline that captures the news of the day.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"

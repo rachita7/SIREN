@@ -22,6 +22,18 @@ HARMBENCH_CSV_URL = "https://raw.githubusercontent.com/centerforaisafety/HarmBen
 ADVBENCH_CSV_URL = "https://raw.githubusercontent.com/llm-attacks/llm-attacks/main/data/advbench/harmful_behaviors.csv"
 _DATA_CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 
+# Directory holding the teammate-standardized, pre-split, chat-templated CSVs
+# (harmbench_{train,val,test}.csv + alpaca_{train,val,test}.csv). Committed to
+# the repo under data_files/ so compute nodes read them straight from git.
+_STANDARD_DIR = os.environ.get(
+    "SIREN_STANDARD_DIR",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data_files"),
+)
+# Which CSV column to feed the model. "formatted_input" is the Llama-3 chat
+# template (with literal special tokens) -> must be tokenized with
+# add_special_tokens=False. "prompt" is the raw prompt (add_special_tokens=True).
+_STANDARD_TEXT_COLUMN = os.environ.get("SIREN_TEXT_COLUMN", "formatted_input")
+
 
 def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
     if dataset == "toxic_chat":
@@ -46,6 +58,8 @@ def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
         return _preprocess_harmbench(val_ratio)
     elif dataset == "advbench":
         return _preprocess_advbench(val_ratio)
+    elif dataset == "standard":
+        return _preprocess_standard(val_ratio)
     else:
         raise ValueError(f"Invalid dataset: {dataset}")
 
@@ -410,3 +424,39 @@ def _preprocess_advbench(val_ratio: float = 0.2) -> DatasetDict:
     df = _load_csv(ADVBENCH_CSV_URL)
     prompts = df["goal"].dropna().astype(str).tolist()
     return _harmful_only_eval_dataset(prompts)
+
+
+def _preprocess_standard(val_ratio: float = 0.2) -> DatasetDict:
+    """Teammate-standardized HarmBench (harmful=1) + Alpaca (safe=0) benchmark.
+
+    Reads the fixed, pre-split, chat-templated CSVs under data_files/
+    (260 train / 40 val / 100 test per corpus, so each split is class-balanced).
+    HarmBench and Alpaca are merged into a *single* dataset id per split -- they
+    are a matched pair forming one balanced benchmark, and keeping them separate
+    would make each dataset single-class (degenerate per-dataset F1).
+
+    By default the `formatted_input` column is used (Llama-3 chat template with
+    literal special tokens), so downstream extraction must run with
+    add_special_tokens=False -- i.e. pass --pre_templated 1 to the train/eval
+    scripts. Set SIREN_TEXT_COLUMN=prompt to use raw prompts instead.
+
+    val_ratio is ignored; the splits are fixed by the CSV files.
+    """
+    import pandas as pd
+
+    col = _STANDARD_TEXT_COLUMN
+    file_tag = {"train": "train", "validation": "val", "test": "test"}
+    out = {}
+    for split_name, tag in file_tag.items():
+        harm = pd.read_csv(os.path.join(_STANDARD_DIR, f"harmbench_{tag}.csv"))
+        safe = pd.read_csv(os.path.join(_STANDARD_DIR, f"alpaca_{tag}.csv"))
+        for name, frame in (("harmbench", harm), ("alpaca", safe)):
+            if col not in frame.columns:
+                raise ValueError(
+                    f"column '{col}' not in {name}_{tag}.csv "
+                    f"(have {list(frame.columns)}); set SIREN_TEXT_COLUMN"
+                )
+        texts = harm[col].astype(str).tolist() + safe[col].astype(str).tolist()
+        labels = [1] * len(harm) + [0] * len(safe)
+        out[split_name] = Dataset.from_dict({"text": texts, "label": labels})
+    return DatasetDict(out)

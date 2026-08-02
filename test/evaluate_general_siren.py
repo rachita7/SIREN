@@ -42,13 +42,14 @@ def load_general_siren(model_name):
         siren_model = pickle.load(f)
     return siren_model
 
-def extract_representations(texts, model_name, device, batch_size=256, rep_types=None):
+def extract_representations(texts, model_name, device, batch_size=256, rep_types=None, pre_templated=False):
     model_config = MODEL_CONFIGS[model_name]
     extractor = Qwen3RepresentationExtractor(
         model_config["model_path"],
         device=device,
         batch_size=batch_size,
-        rep_types=rep_types if rep_types else ["residual_mean", "mlp_mean"]
+        rep_types=rep_types if rep_types else ["residual_mean", "mlp_mean"],
+        add_special_tokens=not pre_templated
     )
     extractor.register_hooks()
 
@@ -103,7 +104,7 @@ def get_siren_predictions(representations, siren_model, pooling_type, selected_n
             predictions.extend(batch_preds)
     return np.array(predictions)
 
-def evaluate_on_dataset(model_name, eval_dataset, siren_model, device, batch_size=128):
+def evaluate_on_dataset(model_name, eval_dataset, siren_model, device, batch_size=128, pre_templated=False):
     print(f"\nEvaluating on: {eval_dataset}")
     print("="*60)
 
@@ -120,7 +121,7 @@ def evaluate_on_dataset(model_name, eval_dataset, siren_model, device, batch_siz
     print(f"Positive (harmful): {np.sum(labels == 1)}")
     print(f"Negative (safe): {np.sum(labels == 0)}")
 
-    representations = extract_representations(texts, model_name, device, batch_size, rep_types=[pooling_type])
+    representations = extract_representations(texts, model_name, device, batch_size, rep_types=[pooling_type], pre_templated=pre_templated)
     predictions = get_siren_predictions(representations, siren_model, pooling_type, selected_neurons_dict)
 
     f1_macro = f1_score(labels, predictions, average='macro', zero_division=0)
@@ -150,6 +151,9 @@ def main():
     parser.add_argument('--datasets', type=str, nargs="+", required=True)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--pre_templated', type=int, default=0,
+                        help="1 if texts are already chat-templated -> tokenize "
+                             "with add_special_tokens=False. Use with 'standard'.")
     args = parser.parse_args()
 
     print(f"Loading Trained SIREN for {args.model}...")
@@ -157,7 +161,7 @@ def main():
 
     all_results = []
     for dataset in args.datasets:
-        result = evaluate_on_dataset(args.model, dataset, siren_model, args.device, args.batch_size)
+        result = evaluate_on_dataset(args.model, dataset, siren_model, args.device, args.batch_size, pre_templated=bool(args.pre_templated))
         result["model"] = args.model
         all_results.append(result)
 

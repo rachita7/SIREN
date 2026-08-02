@@ -54,13 +54,14 @@ class AdaptiveMLPClassifier(nn.Module):
     def forward(self, x):
         return self.network(x)
 
-def extract_all_representations(model_name, datasets, device, batch_size, rep_types, val_ratio=0.2):
+def extract_all_representations(model_name, datasets, device, batch_size, rep_types, val_ratio=0.2, pre_templated=False):
     model_config = MODEL_CONFIGS[model_name]
     extractor = Qwen3RepresentationExtractor(
         model_config["model_path"],
         device=device,
         batch_size=batch_size,
-        rep_types=rep_types
+        rep_types=rep_types,
+        add_special_tokens=not pre_templated
     )
     extractor.register_hooks()
 
@@ -397,6 +398,10 @@ def main():
     parser.add_argument("--val_ratio", type=float, default=0.2)
     parser.add_argument("--use_gpu_data", type=int, default=0)
     parser.add_argument("--device", type=str, default="cuda")
+    parser.add_argument("--pre_templated", type=int, default=0,
+                        help="1 if texts are already chat-templated (contain "
+                             "literal special tokens) -> tokenize with "
+                             "add_special_tokens=False. Use with the 'standard' dataset.")
     args = parser.parse_args()
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
@@ -405,7 +410,7 @@ def main():
     print(f"Device: {device}")
 
     print("\n[1/3] Extracting representations...")
-    all_reps = extract_all_representations(args.model, args.datasets, args.device, args.batch_size, args.pooling_types, args.val_ratio)
+    all_reps = extract_all_representations(args.model, args.datasets, args.device, args.batch_size, args.pooling_types, args.val_ratio, pre_templated=bool(args.pre_templated))
 
     print("\n[2/3] Training sparse probes...")
     best_probes = train_probes(all_reps["train"]["representations"], all_reps["train"]["labels"], all_reps["validation"]["representations"], all_reps["validation"]["labels"], all_reps["validation"]["dataset_ids"], all_reps["test"]["representations"], all_reps["test"]["labels"], all_reps["test"]["dataset_ids"], all_reps["train"]["num_layers"], args.c_values, args.pooling_types, device)
