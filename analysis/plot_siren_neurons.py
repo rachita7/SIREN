@@ -122,6 +122,15 @@ def main():
             counts[t].append(len(select_salient_neurons(probe, t)))
         selected_at_heatmap[layer_idx] = select_salient_neurons(probe, args.heatmap_threshold)
 
+    # --- Save the actual selected neuron indices per layer (heatmap threshold) ---
+    idx_path = os.path.join(
+        args.output_dir,
+        f"{args.model}_{args.pooling_type}_selected_neurons_t{args.heatmap_threshold}.json")
+    import json
+    with open(idx_path, "w") as f:
+        json.dump({f"layer{k}": v for k, v in selected_at_heatmap.items()}, f, indent=2)
+    print(f"Saved {idx_path}")
+
     # --- Save per-layer counts CSV ---
     csv_path = os.path.join(args.output_dir, f"{args.model}_{args.pooling_type}_neuron_counts.csv")
     with open(csv_path, "w", newline="") as f:
