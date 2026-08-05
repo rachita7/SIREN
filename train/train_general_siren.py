@@ -402,6 +402,10 @@ def main():
                         help="1 if texts are already chat-templated (contain "
                              "literal special tokens) -> tokenize with "
                              "add_special_tokens=False. Use with the 'standard' dataset.")
+    parser.add_argument("--output_suffix", type=str, default="",
+                        help="Appended to output names so runs don't overwrite "
+                             "each other: probes/{model}_general_probes{suffix}.pkl "
+                             "and probes/optuna/{model}_general{suffix}/.")
     args = parser.parse_args()
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
@@ -416,7 +420,7 @@ def main():
     best_probes = train_probes(all_reps["train"]["representations"], all_reps["train"]["labels"], all_reps["validation"]["representations"], all_reps["validation"]["labels"], all_reps["validation"]["dataset_ids"], all_reps["test"]["representations"], all_reps["test"]["labels"], all_reps["test"]["dataset_ids"], all_reps["train"]["num_layers"], args.c_values, args.pooling_types, device)
 
     os.makedirs("probes", exist_ok=True)
-    probe_path = f"probes/{args.model}_general_probes.pkl"
+    probe_path = f"probes/{args.model}_general_probes{args.output_suffix}.pkl"
     with open(probe_path, "wb") as f:
         pickle.dump({"best_probes": best_probes, "model": args.model, "dataset": "general"}, f)
     print(f"\nSaved probes to {probe_path}")
@@ -452,7 +456,7 @@ def main():
             print(f"\nResult for pooling={pooling_type}, threshold={threshold}: val_f1={final_val_f1:.4f}, test_f1={test_f1:.4f}, test_acc={test_acc:.4f}")
 
     best_overall = max(all_results, key=lambda x: x['val_f1'])
-    output_dir = f"probes/optuna/{args.model}_general"
+    output_dir = f"probes/optuna/{args.model}_general{args.output_suffix}"
     os.makedirs(output_dir, exist_ok=True)
     with open(f"{output_dir}/best_model.pkl", "wb") as f:
         pickle.dump(best_overall, f)

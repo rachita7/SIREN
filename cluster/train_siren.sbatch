@@ -13,6 +13,15 @@
 #   sbatch cluster/train_siren.sbatch llama3-8b-sft
 #   sbatch cluster/train_siren.sbatch llama3-8b-instruct
 #   sbatch cluster/train_siren.sbatch llama3-8b-sft mlpneuron_mean   # down_proj-input neurons
+#
+# mlpneuron_mean (14336-dim, ~3.5x residual_mean's memory) needs more RAM:
+#   - threshold 0.9 selects ~266k features and OOMs stage 3 below ~96GB total,
+#     so either drop it (THRESHOLDS="0.6 0.8") or submit with --mem-per-cpu=24G.
+# C_VALUES / THRESHOLDS / OUTPUT_SUFFIX are read from the submit-time env
+# (sbatch exports it to the job by default), e.g. a C-tuning run:
+#   C_VALUES="1000.0 5000.0 20000.0" THRESHOLDS="0.6 0.8" \
+#     OUTPUT_SUFFIX="-mlpneuron_mean-c20k" \
+#     sbatch --mem-per-cpu=16G cluster/train_siren.sbatch llama3-8b-instruct mlpneuron_mean
 
 set -e
 MODEL="${1:-llama3-8b-sft}"
@@ -50,6 +59,7 @@ mkdir -p logs
 
 echo "Job $SLURM_JOB_ID on $(hostname), GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader)"
 echo "MODEL=$MODEL REP_TYPE=$REP_TYPE HH_RLHF_MAX_ROWS=$HH_RLHF_MAX_ROWS"
+echo "C_VALUES=${C_VALUES:-<default>} THRESHOLDS=${THRESHOLDS:-<default>} OUTPUT_SUFFIX=${OUTPUT_SUFFIX-<auto>}"
 
 cd train
 bash run_hh_siren.sh "$MODEL" "$REP_TYPE"

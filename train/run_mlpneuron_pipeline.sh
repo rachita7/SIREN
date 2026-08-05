@@ -21,21 +21,27 @@ MODEL="${1:-llama3-8b-instruct}"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
+# On cluster login nodes `python` is only available inside the conda env.
+if ! command -v python >/dev/null 2>&1; then
+    source "$(conda info --base)/etc/profile.d/conda.sh" 2>/dev/null || true
+    conda activate siren 2>/dev/null || true
+fi
+PYTHON="$(command -v python || command -v python3)"
+
 # mlpneuron_mean activations are 14336-dim vs residual_mean's 4096-dim
 # (~3.5x GPU memory per sample): batch 8 fits a 24GB card.
 export BATCH_SIZE="${BATCH_SIZE:-8}"
 
-PROBES_SRC="train/probes/${MODEL}_general_probes.pkl"
-RESULTS_SRC="train/probes/optuna/${MODEL}_general/results.json"
-PROBES_DST="results/${MODEL}_general_probes-hhrlhf-mlpneuron.pkl"
-JSON_DST="results/SIREN_detected_Neurons_mlpneuron.json"
+# Must match run_hh_siren.sh's OUTPUT_SUFFIX for the run being post-processed
+# (default for a plain mlpneuron_mean run is "-mlpneuron_mean").
+export OUTPUT_SUFFIX="${OUTPUT_SUFFIX:--mlpneuron_mean}"
+
+PROBES_SRC="train/probes/${MODEL}_general_probes${OUTPUT_SUFFIX}.pkl"
+RESULTS_SRC="train/probes/optuna/${MODEL}_general${OUTPUT_SUFFIX}/results.json"
+PROBES_DST="results/${MODEL}_general_probes-hhrlhf${OUTPUT_SUFFIX}.pkl"
+JSON_DST="results/SIREN_detected_Neurons${OUTPUT_SUFFIX}.json"
 
 if [ "${SKIP_TRAIN:-0}" != "1" ]; then
-    # Training overwrites the generic probes pkl; keep the previous
-    # (residual_mean) run around just in case.
-    if [ -f "$PROBES_SRC" ]; then
-        cp "$PROBES_SRC" "${PROBES_SRC%.pkl}.pre-mlpneuron-backup.pkl"
-    fi
     ( cd train && bash run_hh_siren.sh "$MODEL" mlpneuron_mean )
 fi
 
@@ -47,7 +53,7 @@ echo "Exported JSON      -> $JSON_DST   <-- send this file"
 
 echo ""
 echo "Rendering FFN-space overlap plots (SIREN mlpneuron vs zhao/svea ffn)..."
-python analysis/plot_ffn_space_overlap.py \
+"$PYTHON" analysis/plot_ffn_space_overlap.py \
     --siren_probes "$PROBES_DST" \
     --svea results/probes-svea.pkl \
     --threshold "${PLOT_THRESHOLD:-0.9}"

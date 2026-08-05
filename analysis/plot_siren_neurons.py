@@ -62,8 +62,8 @@ def select_salient_neurons(probe, threshold):
     return selected
 
 
-def load_probes(model_name, probes_dir, pooling_type):
-    probe_path = os.path.join(probes_dir, f"{model_name}_general_probes.pkl")
+def load_probes(model_name, probes_dir, pooling_type, suffix=""):
+    probe_path = os.path.join(probes_dir, f"{model_name}_general_probes{suffix}.pkl")
     if not os.path.exists(probe_path):
         raise FileNotFoundError(
             f"{probe_path} not found. Run training first "
@@ -101,6 +101,9 @@ def main():
     parser.add_argument("--thresholds", type=float, nargs="+", default=[0.6, 0.8, 0.9])
     parser.add_argument("--heatmap_threshold", type=float, default=0.9,
                         help="Threshold used for the layer x layer Jaccard heatmap.")
+    parser.add_argument("--suffix", type=str, default="",
+                        help="Training-run suffix in the pkl filename, e.g. "
+                             "'-mlpneuron_mean' (see run_hh_siren.sh OUTPUT_SUFFIX).")
     parser.add_argument("--probes_dir", type=str,
                         default=os.path.join(os.path.dirname(__file__), "..", "train", "probes"))
     parser.add_argument("--output_dir", type=str,
@@ -110,7 +113,7 @@ def main():
     args = parser.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
-    layers, probes = load_probes(args.model, args.probes_dir, args.pooling_type)
+    layers, probes = load_probes(args.model, args.probes_dir, args.pooling_type, args.suffix)
 
     # counts[threshold] = list of #selected per layer; selected_at_heatmap keeps
     # the actual index sets for the overlap heatmap.
@@ -125,14 +128,14 @@ def main():
     # --- Save the actual selected neuron indices per layer (heatmap threshold) ---
     idx_path = os.path.join(
         args.output_dir,
-        f"{args.model}_{args.pooling_type}_selected_neurons_t{args.heatmap_threshold}.json")
+        f"{args.model}_{args.pooling_type}{args.suffix}_selected_neurons_t{args.heatmap_threshold}.json")
     import json
     with open(idx_path, "w") as f:
         json.dump({f"layer{k}": v for k, v in selected_at_heatmap.items()}, f, indent=2)
     print(f"Saved {idx_path}")
 
     # --- Save per-layer counts CSV ---
-    csv_path = os.path.join(args.output_dir, f"{args.model}_{args.pooling_type}_neuron_counts.csv")
+    csv_path = os.path.join(args.output_dir, f"{args.model}_{args.pooling_type}{args.suffix}_neuron_counts.csv")
     with open(csv_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["layer"] + [f"num_selected_t{t}" for t in args.thresholds])
@@ -167,7 +170,7 @@ def main():
     fig.colorbar(im, ax=axes[1], fraction=0.046, pad=0.04, label="Jaccard")
 
     plt.tight_layout()
-    plot_path = os.path.join(args.output_dir, f"{args.model}_siren_neurons_{args.pooling_type}.png")
+    plot_path = os.path.join(args.output_dir, f"{args.model}_siren_neurons_{args.pooling_type}{args.suffix}.png")
     plt.savefig(plot_path, dpi=200)
     print(f"Saved {plot_path}")
 

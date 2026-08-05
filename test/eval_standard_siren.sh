@@ -17,6 +17,9 @@ DEVICE="cuda"
 BATCH_SIZE="${BATCH_SIZE:-8}"
 # Must match training: 1 for the chat-templated formatted_input column.
 PRE_TEMPLATED="${PRE_TEMPLATED:-1}"
+# Suffix of the training run to evaluate (see run_hh_siren.sh OUTPUT_SUFFIX),
+# e.g. OUTPUT_SUFFIX="-mlpneuron_mean". Empty = the default residual_mean run.
+OUTPUT_SUFFIX="${OUTPUT_SUFFIX:-}"
 
 DATASETS=(
     "standard"
@@ -34,7 +37,8 @@ python evaluate_general_siren.py \
     --datasets ${DATASETS[@]} \
     --device $DEVICE \
     --batch_size $BATCH_SIZE \
-    --pre_templated $PRE_TEMPLATED
+    --pre_templated $PRE_TEMPLATED \
+    --output_suffix "$OUTPUT_SUFFIX"
 
 echo ""
 echo "Done!"

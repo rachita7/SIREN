@@ -58,8 +58,8 @@ def select_salient_neurons(probe, threshold):
     return selected
 
 
-def load_layer_stats(model_name, probes_dir, pooling_type, threshold):
-    probe_path = os.path.join(probes_dir, f"{model_name}_general_probes.pkl")
+def load_layer_stats(model_name, probes_dir, pooling_type, threshold, suffix=""):
+    probe_path = os.path.join(probes_dir, f"{model_name}_general_probes{suffix}.pkl")
     with open(probe_path, "rb") as f:
         data = CPUUnpickler(f).load()
     best_probes = data["best_probes"]
@@ -90,6 +90,9 @@ def main():
     parser.add_argument("--models", type=str, nargs="+", required=True)
     parser.add_argument("--pooling_type", type=str, default="residual_mean")
     parser.add_argument("--threshold", type=float, default=0.9)
+    parser.add_argument("--suffix", type=str, default="",
+                        help="Training-run suffix in the pkl filename, e.g. "
+                             "'-mlpneuron_mean' (see run_hh_siren.sh OUTPUT_SUFFIX).")
     parser.add_argument("--probes_dir", type=str,
                         default=os.path.join(os.path.dirname(__file__), "..", "train", "probes"))
     parser.add_argument("--output_dir", type=str,
@@ -100,9 +103,9 @@ def main():
 
     all_stats = []
     for model_name in args.models:
-        df = load_layer_stats(model_name, args.probes_dir, args.pooling_type, args.threshold)
+        df = load_layer_stats(model_name, args.probes_dir, args.pooling_type, args.threshold, args.suffix)
         all_stats.append(df)
-        csv_path = os.path.join(args.output_dir, f"{model_name}_{args.pooling_type}_layer_stats.csv")
+        csv_path = os.path.join(args.output_dir, f"{model_name}_{args.pooling_type}{args.suffix}_layer_stats.csv")
         df.drop(columns=["selected_neurons"]).to_csv(csv_path, index=False)
         print(f"Saved {csv_path}")
 
@@ -128,7 +131,7 @@ def main():
     axes[1].grid(alpha=0.3)
 
     plt.tight_layout()
-    plot_path = os.path.join(args.output_dir, f"layer_probes_{args.pooling_type}_t{args.threshold}.png")
+    plot_path = os.path.join(args.output_dir, f"layer_probes_{args.pooling_type}{args.suffix}_t{args.threshold}.png")
     plt.savefig(plot_path, dpi=200)
     print(f"Saved {plot_path}")
 

@@ -36,8 +36,8 @@ class AdaptiveMLPClassifier(nn.Module):
     def forward(self, x):
         return self.network(x)
 
-def load_general_siren(model_name):
-    model_path = f"../train/probes/optuna/{model_name}_general/best_model.pkl"
+def load_general_siren(model_name, output_suffix=""):
+    model_path = f"../train/probes/optuna/{model_name}_general{output_suffix}/best_model.pkl"
     with open(model_path, 'rb') as f:
         siren_model = pickle.load(f)
     return siren_model
@@ -154,10 +154,14 @@ def main():
     parser.add_argument('--pre_templated', type=int, default=0,
                         help="1 if texts are already chat-templated -> tokenize "
                              "with add_special_tokens=False. Use with 'standard'.")
+    parser.add_argument('--output_suffix', type=str, default="",
+                        help="Suffix of the training run to evaluate, matching "
+                             "train_general_siren.py's --output_suffix "
+                             "(e.g. '-mlpneuron_mean').")
     args = parser.parse_args()
 
     print(f"Loading Trained SIREN for {args.model}...")
-    siren_model = load_general_siren(args.model)
+    siren_model = load_general_siren(args.model, args.output_suffix)
 
     all_results = []
     for dataset in args.datasets:
@@ -182,7 +186,7 @@ def main():
     print(f"{'AVERAGE':<20} {avg_f1_macro:<10.4f} {avg_accuracy:<10.4f} {avg_precision:<10.4f} {avg_recall:<10.4f}")
 
     import json
-    output_dir = f"../train/probes/optuna/{args.model}_general"
+    output_dir = f"../train/probes/optuna/{args.model}_general{args.output_suffix}"
     output_path = f"{output_dir}/eval_results.json"
     with open(output_path, 'w') as f:
         json.dump({
