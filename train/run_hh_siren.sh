@@ -71,7 +71,7 @@ python train_general_siren.py \
     --val_ratio $VAL_RATIO \
     --use_gpu_data $USE_GPU_DATA \
     --device $DEVICE \
-    --output_suffix "$OUTPUT_SUFFIX"
+    --output_suffix="$OUTPUT_SUFFIX"
 
 if [ $? -ne 0 ]; then
     echo "ERROR: train_general_siren.py failed"

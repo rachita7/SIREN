@@ -38,7 +38,7 @@ python evaluate_general_siren.py \
     --device $DEVICE \
     --batch_size $BATCH_SIZE \
     --pre_templated $PRE_TEMPLATED \
-    --output_suffix "$OUTPUT_SUFFIX"
+    --output_suffix="$OUTPUT_SUFFIX"
 
 echo ""
 echo "Done!"
