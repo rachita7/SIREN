@@ -1,0 +1,236 @@
+instruction,input,output,prompt,formatted_input
+Classify the following animals into mammals or reptiles.,Lion,Mammal.,"Classify the following animals into mammals or reptiles.
+
+Lion","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify the following animals into mammals or reptiles.
+
+Lion<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe how to drive safely in rain.,,"Driving in rain requires extra attention and caution. Be sure to slow down and increase your following distance from the car ahead of you to give yourself more time to stop. Turn on your headlights to increase visibility. Avoid making sudden turns, rapid stops and acceleration. Stay in the far right lane if possible, and avoid puddles as much as possible as they can impair visibility and increase the possibility of hydroplaning. Make sure your windshield wipers are in good condition and check your tires for proper air pressure. Finally, be aware of your surroundings, such as other cars in your vicinity and the road conditions.",Describe how to drive safely in rain.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe how to drive safely in rain.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain why investors love Nasdaq.,,"Investors love Nasdaq because it has many of the biggest and most famous companies listed on the exchange. It allows them to easily diversify their investments across various industries, sectors, and geographies. Nasdaq is also known for its transparency, liquidity and technology which makes it an attractive trading platform. Its real-time quotes, 24-hour trading capabilities, low transaction costs and easy access to research data and analytics make Nasdaq an attractive platform for investors to take advantage of trading opportunities. Additionally, Nasdaq provides a wide range of investment tools such as automated trading, algorithmic trading, risk management tools and the ability to trade in multiple shares and currencies.",Explain why investors love Nasdaq.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain why investors love Nasdaq.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a joke that involves a carrot.,,"What do you call a carrot that wants to be a singer?
+A “Vee-g carrot!”",Write a joke that involves a carrot.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a joke that involves a carrot.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the tenth largest city in the world in terms of population.,,"The tenth largest city in the world in terms of population is Dhaka, Bangladesh, with a population of 8.9 million.",Find the tenth largest city in the world in terms of population.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the tenth largest city in the world in terms of population.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Classify the following statements as true or false: “Most cats are afraid of water.”,,"False. Most cats are not afraid of water, and some even enjoy swimming.",Classify the following statements as true or false: “Most cats are afraid of water.”,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify the following statements as true or false: “Most cats are afraid of water.”<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Come up with a realistic conflict between two characters.,John and Alex,"John and Alex are two brothers who have been embroiled in a long-standing feud. Despite coming from the same family, they have fundamentally different viewpoints on investments and financial advice. John often tries to give Alex advice, while Alex insists that it is his life and he should make his own decisions. This has created a rift between the siblings, with neither side willing to budge on their beliefs.","Come up with a realistic conflict between two characters.
+
+John and Alex","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Come up with a realistic conflict between two characters.
+
+John and Alex<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Input a number and double it.,5,10,"Input a number and double it.
+
+5","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Input a number and double it.
+
+5<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Compose a three-word sentence using the words ""colorful"", ""nest"" and ""lovely"".",,Lovely colorful nest.,"Compose a three-word sentence using the words ""colorful"", ""nest"" and ""lovely"".","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compose a three-word sentence using the words ""colorful"", ""nest"" and ""lovely"".<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What was the turning point in the American Civil War?,,"The Battle of Gettysburg (July 1-3, 1863) is generally regarded as the turning point in the American Civil War. The Union victory at this battle, coupled with General Ulysses S. Grant's successful Vicksburg Campaign and the surrender of Confederate forces at Port Hudson, Louisiana on July 9, 1863, ultimately led to a Union victory in the war.",What was the turning point in the American Civil War?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What was the turning point in the American Civil War?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Change the underlined words to its opposite form.,Beneath the tower lies truth,Beneath the tower lies falsehood.,"Change the underlined words to its opposite form.
+
+Beneath the tower lies truth","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Change the underlined words to its opposite form.
+
+Beneath the tower lies truth<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe an example of collective action.,,"An example of collective action is a group of people coming together to work towards a common goal. A good example of this would be a citizens’ campaign that rallies people around a political cause, such as a petition to end the use of a certain type of pollutant. Collective action can also take the form of protests and strikes, such as protests to increase the minimum wage or strikes to ensure better working conditions.",Describe an example of collective action.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe an example of collective action.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What kind of plants prefer sandy soil?,,"Plants that prefer sandy soil are those adapted to xeric (dry) environments, such as succulents, cacti, and drought-tolerant perennials like drought succulents and drought-tolerant grasses. Other plants that prefer sandy soil include herbs such as lavender and sage, vegetables like tomatoes and peppers, and shrubs such as red twig dogwood and yaupon holly.",What kind of plants prefer sandy soil?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What kind of plants prefer sandy soil?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write an algorithm to sort a list of numbers from smallest to largest.,,"Step 1: Create a function to compare two numbers - a and b
+Step 2: Create an empty list for the sorted numbers
+Step 3: Loop through the list of numbers
+Step 4: For every two numbers, use the comparison function to determine which one is smaller
+Step 5: Append the smaller number to the sorted list
+Step 6: Repeat step 3 until all numbers have been sorted
+Step 7: Return the sorted list",Write an algorithm to sort a list of numbers from smallest to largest.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write an algorithm to sort a list of numbers from smallest to largest.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a list of three daily habits that could lead to creativity breakthroughs.,,"1. Challenge yourself with an unfamiliar task or problem each day.
+2. Take occasional breaks to relax and allow your mind to wander. 
+3. Everyday, record one idea that comes to your mind and develop it further.",Create a list of three daily habits that could lead to creativity breakthroughs.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a list of three daily habits that could lead to creativity breakthroughs.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name three main customers of a delivery service.,,"The three main customers of a delivery service are businesses, individuals, and institutions. Businesses may use the delivery service for business purposes, such as sending documents or products to customers. Individuals may use the delivery service for personal reasons, such as sending a gift or documents to a friend or family member. Institutions such as hospitals and universities may use the delivery service for medical supplies or documents.",Name three main customers of a delivery service.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name three main customers of a delivery service.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest a possible solution to the given problem.,The company is not able to attract customers due to outdated website design.,"A possible solution would be to redesign the website to make it more modern and visually appealing, utilizing the latest trends and technologies.","Suggest a possible solution to the given problem.
+
+The company is not able to attract customers due to outdated website design.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest a possible solution to the given problem.
+
+The company is not able to attract customers due to outdated website design.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"You are provided with a text, and you have to edit it and make it grammatically correct with correct punctuation and correct capitalization.",example of a bad error in this sentence don’t use example,Example of a bad error in this sentence? Don't use example.,"You are provided with a text, and you have to edit it and make it grammatically correct with correct punctuation and correct capitalization.
+
+example of a bad error in this sentence don’t use example","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+You are provided with a text, and you have to edit it and make it grammatically correct with correct punctuation and correct capitalization.
+
+example of a bad error in this sentence don’t use example<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Compose a tune that conveys a feeling of happiness.,,"A happy melody with a major key and a bouncy, upbeat tempo.",Compose a tune that conveys a feeling of happiness.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compose a tune that conveys a feeling of happiness.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Formulate a hypothesis about the following statement: ""Gender diversity in the workplace can improve productivity.""",,"I hypothesize that having gender diversity in the workplace is positively correlated with improved productivity. By creating a workplace environment that values diversity, organizations can reduce interpersonal biases, enabling workers to make better decisions and utilize their various skills and experiences to come up with new psychological perspectives on the same problems. This can result in the development of innovative solutions, leading to improved efficiency, productivity, and profitability.","Formulate a hypothesis about the following statement: ""Gender diversity in the workplace can improve productivity.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Formulate a hypothesis about the following statement: ""Gender diversity in the workplace can improve productivity.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a list of words, identify the words with similar meanings.","Destruction, devastation",Destruction and devastation are words with similar meanings.,"Given a list of words, identify the words with similar meanings.
+
+Destruction, devastation","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a list of words, identify the words with similar meanings.
+
+Destruction, devastation<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the character of Professor Charles Xavier from X-Men.,,"Professor Charles Xavier is the leader of the X-Men, a team of mutants with superhuman abilities. He is a powerful telepath, able to read, control and influence the minds of anyone around him. Charles is a wise and compassionate leader who strives to protect the world and help mutants find their place in it. He often comes off as fatherly and trusts in the potential of mutants to make a difference in the world. Charles is well-educated and an accomplished scientist in his own right, which helps him when facing scientific conundrums. But despite his formidable mental abilities, Charles values morality more than victory. He seeks peace between mutants and humans and truly believes that cooperation and understanding are the way forward.",Describe the character of Professor Charles Xavier from X-Men.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the character of Professor Charles Xavier from X-Men.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a creative story about a pirate who finds a hidden treasure.,,"Captain Halcyon was always on the hunt for new adventures. But alas, it seemed like all of his searches were fruitless and he was about to give up hope. 
+
+One evening, he ventured into a forgotten cave and stumbled upon an ancient map. Its familiar looking symbols seemed almost alive, and a tingle of excitement filled him as he realized this map could lead to something worthwhile. 
+
+He and the crew followed the map, leading them through treacherous storms and hidden shoals. Finally, they arrived at a tiny island with a lonely mountain at its center. Clutching the map, they climbed the mountain and found a deep crevice. In it, they uncovered a hidden treasure trove of gold and jewels that had been untouched for centuries. 
+
+Halcyon and his men loaded up the treasure, and they sailed off into the night, feeling a sense of accomplishment that was more valuable than any amount of gold.",Write a creative story about a pirate who finds a hidden treasure.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a creative story about a pirate who finds a hidden treasure.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Determine the most common programming language used in data science.,,"The most common programming language used in data science is Python. Python is used for many tasks such as data analysis, visualization, machine learning, and natural language processing. Other programming languages that are commonly used in data science include R, Java, Scala and MATLAB.",Determine the most common programming language used in data science.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Determine the most common programming language used in data science.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Outline the risks associated with using social media.,,"Using social media carries a number of risks associated with it. These risks include cyberbullying, identity theft, data breaches, and the spread of fake news. Additionally, overuse of social media can lead to addiction, learning difficulties, and poor sleep habits. Social media can also cause anxiety and stress due to the pressure of maintaining an online image and comparison with other users. It can also lead to a feeling of loneliness due to perceived lack of real connection with other users. It’s important to use social media in moderation and be aware of its potential risks.",Outline the risks associated with using social media.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Outline the risks associated with using social media.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Calculate the difference between two numbers.,12 and 5,7,"Calculate the difference between two numbers.
+
+12 and 5","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Calculate the difference between two numbers.
+
+12 and 5<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give an example of a recipe involving an apple.,,"Apple Cinnamon Muffins: Preheat the oven to 375 degrees. In a bowl, mix together 2 cups of all-purpose flour, 2 teaspoons of baking powder, 1 teaspoon of baking soda, 1 teaspoon of ground cinnamon, 1/4 teaspoon of salt, 1/4 cup of white sugar, and 1/4 cup of brown sugar. In a separate bowl, mix together 1/2 cup of milk, 1/2 cup of vegetable oil, 1 egg, and 1 teaspoon of vanilla extract. Combine the wet and dry ingredients. Peel and cube an apple, then add to the batter. Spoon the batter into muffin cups and bake for 18-20 minutes, or until a toothpick inserted into the center of the muffins comes out clean. Let cool before serving.",Give an example of a recipe involving an apple.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give an example of a recipe involving an apple.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Update this web page's content.,This web page is about a small business that sells crafts.,"This web page is about a small business, Crafts by Cindy, that specializes in hand-crafted items. Customers can find a selection of ceramic, woodwork, and fabric items, all created with care by Cindy. Cindy also offers custom orders to meet customers’ individual needs. All orders are shipped promptly and with detailed instructions on how the crafted items should be handled. Crafts by Cindy offers a perfect way to give one-of-a-kind gifts or decorate your home with unique items.","Update this web page's content.
+
+This web page is about a small business that sells crafts.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Update this web page's content.
+
+This web page is about a small business that sells crafts.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Transform the following sentence into one using a different verb.,She saw the bird.,She observed the bird.,"Transform the following sentence into one using a different verb.
+
+She saw the bird.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Transform the following sentence into one using a different verb.
+
+She saw the bird.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain the impact of hard work and dedication on a person's career.,,"Hard work and dedication are integral to long-term career success. People who work hard and are dedicated to their goals are able to develop their skills and increase their knowledge base. Through this process of pushing oneself, new opportunities become available and greater levels of success can be achieved. Hard work is also an essential ingredient when it comes to climbing the ladder in one's profession. Those who are willing to put in more time are likely to be the first to be considered for promotions and other special projects. Additionally, dedication is required to maintain one's motivation and focus on achieving professional goals.",Explain the impact of hard work and dedication on a person's career.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain the impact of hard work and dedication on a person's career.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name five animals found in the rainforest.,,"Monkeys, sloths, toucans, jaguars, frogs.",Name five animals found in the rainforest.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name five animals found in the rainforest.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a story about fairies who come to help humans.,,"Once upon a time, in a land far away, the fairies had been watching humans struggling and toiling away day after day. They felt a calling and decided it was time to help.
+
+So the fairies flew down one day, bringing gifts and magic to help humans. They shimmered in the moonlight, sprinkling fairy dust and spreading love and kindness throughout the land. Everyone marveled at the beauty and power of the creatures and were grateful for their help. 
+
+The fairies brought extra joy and wisdom, helping humans to remember the importance of moments spent in nature, to be kind to one another, and to not take life too seriously. 
+
+The humans never forgot the kindness and magic of the fairies, and the fairies have never forgotten the humans.",Generate a story about fairies who come to help humans.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a story about fairies who come to help humans.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Select the odd one out with respect to the others.,"Pizza, Tacos, Hamburger, Burrito",Pizza,"Select the odd one out with respect to the others.
+
+Pizza, Tacos, Hamburger, Burrito","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Select the odd one out with respect to the others.
+
+Pizza, Tacos, Hamburger, Burrito<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Can you give an example of a word that is a homophone?,,Pair and pear are homophones.,Can you give an example of a word that is a homophone?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Can you give an example of a word that is a homophone?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"

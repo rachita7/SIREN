@@ -406,6 +406,10 @@ def main():
                         help="Appended to output names so runs don't overwrite "
                              "each other: probes/{model}_general_probes{suffix}.pkl "
                              "and probes/optuna/{model}_general{suffix}/.")
+    parser.add_argument("--skip_final", type=int, default=0,
+                        help="1 = stop after stage 2 (per-layer probes saved); "
+                             "skip neuron aggregation + final MLP. Used by the "
+                             "stability protocol, which only needs the probes.")
     args = parser.parse_args()
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
@@ -424,6 +428,10 @@ def main():
     with open(probe_path, "wb") as f:
         pickle.dump({"best_probes": best_probes, "model": args.model, "dataset": "general"}, f)
     print(f"\nSaved probes to {probe_path}")
+
+    if args.skip_final:
+        print("\n--skip_final set: stopping after stage 2 (probes saved).")
+        return
 
     print("\n[3/3] Training final MLP with neuron aggregation...")
     all_results = []

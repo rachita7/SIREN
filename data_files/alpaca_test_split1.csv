@@ -1,0 +1,296 @@
+instruction,input,output,prompt,formatted_input
+Reformulate this sentence to make it less formal.,I would be extremely grateful if you were to provide me with a response by Friday.,I'd really appreciate it if you could get back to me by Friday.,"Reformulate this sentence to make it less formal.
+
+I would be extremely grateful if you were to provide me with a response by Friday.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Reformulate this sentence to make it less formal.
+
+I would be extremely grateful if you were to provide me with a response by Friday.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate humorous or punny silly jokes.,,"Q: What did the fish say when it swam into the wall?
+A: Dam!",Generate humorous or punny silly jokes.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate humorous or punny silly jokes.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a list of 5 sports involving a ball.,,"- Football
+- Basketball
+- Baseball
+- Volleyball
+- Soccer",Generate a list of 5 sports involving a ball.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a list of 5 sports involving a ball.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a set of instructions to teach a robot how to assemble a lego structure.,,"Instructions to Assemble a Lego Structure: 
+1. Gather all the pieces you will need for the Lego structure. 
+2. Lay out all the pieces in the order they will be put together. 
+3. Start with the largest piece and connect it with the second largest piece. 
+4. Connect the bordering pieces of the same size. 
+5. Continue connecting the pieces, working from the largest to the smallest. 
+6. Once you have connected all the pieces together, ensure that the structure is stable and does not have any loose pieces. 
+7. Add additional pieces as necessary to complete the structure. 
+8. Stand back to admire your work.",Create a set of instructions to teach a robot how to assemble a lego structure.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a set of instructions to teach a robot how to assemble a lego structure.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the hypotenuse of the right triangle.,"Side A = 8 cm, Side B = 6 cm",The hypotenuse of the right triangle is 10 cm.,"Find the hypotenuse of the right triangle.
+
+Side A = 8 cm, Side B = 6 cm","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the hypotenuse of the right triangle.
+
+Side A = 8 cm, Side B = 6 cm<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe in detail the process of making olive oil.,,"The process of making olive oil begins with harvesting the olives. The olives are cleaned and sorted, and then ground into a paste in a grinder. The paste is placed in a machine called a centrifuge that separates the oil from the other components of the paste. The oil is then filtered and stored in a container before being bottled and sold.",Describe in detail the process of making olive oil.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe in detail the process of making olive oil.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest a unique gift for a teenage girl,,"A personalized jewelry box with a meaningful engraving, such as her birthdate or initials. It is a timeless keepsake that she can treasure forever.",Suggest a unique gift for a teenage girl,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest a unique gift for a teenage girl<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the five senses in a forest setting.,,"The sound of the breeze rustling through the leaves, the smell of pine trees, the feel of moss and mud beneath the feet, the sight of sunbeams filtering through the canopy, the taste of wild berries on the tongue--a forest is a symphony of senses.",Describe the five senses in a forest setting.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the five senses in a forest setting.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Rewrite the following text using a different writing style,"The cake was sitting in the oven, waiting to be taken out","The cake's timer was ringing, signaling that it was ready to be removed from the oven.","Rewrite the following text using a different writing style
+
+The cake was sitting in the oven, waiting to be taken out","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite the following text using a different writing style
+
+The cake was sitting in the oven, waiting to be taken out<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+When did fall of the Berlin Wall take place?,,"The fall of the Berlin Wall took place on November 9th, 1989.",When did fall of the Berlin Wall take place?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+When did fall of the Berlin Wall take place?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name the commonly used software development methods.,,"Common software development methods include Waterfall, Agile, Scrum, Extreme Programming (XP), Rapid Application Development (RAD), Feature Driven Development (FDD), and Iterative and Incremental Development (IID).",Name the commonly used software development methods.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name the commonly used software development methods.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Modify this sentence to add emphasis.,I need to finish this project by tomorrow.,I absolutely need to finish this project by tomorrow.,"Modify this sentence to add emphasis.
+
+I need to finish this project by tomorrow.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Modify this sentence to add emphasis.
+
+I need to finish this project by tomorrow.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Translate the phrase ""beaucoup de travail"" to English",,"The phrase ""beaucoup de travail"" translates to ""a lot of work"" in English.","Translate the phrase ""beaucoup de travail"" to English","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Translate the phrase ""beaucoup de travail"" to English<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Reorganize the sentences below to form a cohesive paragraph.,"It's easy to see the incredible variety of flora and fauna. Despite the scientific consensus that global warming is a problem, many people do not take the necessary steps. The effects of global warming are becoming more noticeable every day. We are polluting the Earth at an alarming rate that threatens the lives of countless species.","Despite the scientific consensus that global warming is a problem, many people do not take the necessary steps, even though the effects of global warming are becoming more noticeable every day. We are polluting the Earth at an alarming rate, threatening the lives of countless species, and it's easy to see the incredible variety of flora and fauna put at risk.","Reorganize the sentences below to form a cohesive paragraph.
+
+It's easy to see the incredible variety of flora and fauna. Despite the scientific consensus that global warming is a problem, many people do not take the necessary steps. The effects of global warming are becoming more noticeable every day. We are polluting the Earth at an alarming rate that threatens the lives of countless species.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Reorganize the sentences below to form a cohesive paragraph.
+
+It's easy to see the incredible variety of flora and fauna. Despite the scientific consensus that global warming is a problem, many people do not take the necessary steps. The effects of global warming are becoming more noticeable every day. We are polluting the Earth at an alarming rate that threatens the lives of countless species.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Restructure the poem by adding rhyme and meter.,"I have a dream
+I want to succeed
+I won't stop till I'm fulfilled","I have a dream, of a life supreme
+I want to succeed, with a heart so keen
+I won't stop 'till my wishes fulfilled
+My goals adorned and my visions instilled","Restructure the poem by adding rhyme and meter.
+
+I have a dream
+I want to succeed
+I won't stop till I'm fulfilled","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Restructure the poem by adding rhyme and meter.
+
+I have a dream
+I want to succeed
+I won't stop till I'm fulfilled<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Compile a list of the top 5 most popular films from the past 10 years.,,"The top 5 most popular films from the past 10 years are: 
+1. Avatar (2009)
+2. Avengers: Endgame (2019)
+3. The Dark Knight (2008)
+4. Jurassic World (2015)
+5. Black Panther (2018)",Compile a list of the top 5 most popular films from the past 10 years.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compile a list of the top 5 most popular films from the past 10 years.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a Python program to check if a given string is a palindrome or not.,,"def is_palindrome(string):
+    # remove punctuation and whitespace
+    cleaned_string = """".join(filter(str.isalnum, string)).lower() 
+    # check if the string is the same in reverse
+    return cleaned_string == cleaned_string[::-1]",Write a Python program to check if a given string is a palindrome or not.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a Python program to check if a given string is a palindrome or not.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Transport the following sentence from the present to the future tense:,I am going to the store.,I will go to the store.,"Transport the following sentence from the present to the future tense:
+
+I am going to the store.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Transport the following sentence from the present to the future tense:
+
+I am going to the store.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Transform the sentence using a compound adjective.,He bought a bike that had a strong frame.,He bought a strong-framed bike.,"Transform the sentence using a compound adjective.
+
+He bought a bike that had a strong frame.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Transform the sentence using a compound adjective.
+
+He bought a bike that had a strong frame.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe what the Internet of Things does.,,"The Internet of Things (IoT) is a network of physical objects, such as sensors and devices, that connect to the internet to collect and exchange data. It allows physical objects to be connected to each other and the internet, enabling them to interact with each other and share data. This helps to create a smarter and more efficient world, where devices can be remotely monitored and controlled, and processes can be automated.",Describe what the Internet of Things does.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe what the Internet of Things does.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Connect the words in the sentence with a hyphen,The dog ran through the field,The-dog-ran-through-the-field.,"Connect the words in the sentence with a hyphen
+
+The dog ran through the field","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Connect the words in the sentence with a hyphen
+
+The dog ran through the field<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a spreadsheet of the following sales data,"Product: Beer
+Number of Units Sold: 30
+Revenue Generated: $420","| Product | Number of Units Sold | Revenue Generated |
+|---------|---------------------|------------------|
+| Beer   | 30                  | $420             |","Create a spreadsheet of the following sales data
+
+Product: Beer
+Number of Units Sold: 30
+Revenue Generated: $420","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a spreadsheet of the following sales data
+
+Product: Beer
+Number of Units Sold: 30
+Revenue Generated: $420<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Construct an outline for persuasive speech about going green.,,"I. Introduction 
+A. Introduction of Topic 
+B. Thesis Statement 
+
+II. Body 
+A. The Impact of Climate Change 
+1. Evidence of Climate Change 
+2. Potential Effects of Climate Change 
+B. Benefits of Going Green 
+1. Economic Benefits 
+2. Health Benefits 
+3. Environmental Benefits 
+
+III. Conclusion 
+A. Summary 
+B. Call to Action 
+C. Impactful Quote",Construct an outline for persuasive speech about going green.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Construct an outline for persuasive speech about going green.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Convert the equation to standard form.,y=-5x+2,5x+y=-2,"Convert the equation to standard form.
+
+y=-5x+2","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Convert the equation to standard form.
+
+y=-5x+2<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Reverse engineer the following function using debugging techniques:
+f(x)=x^2+3",,"Step 1: Start the debugger and set a breakpoint on the line containing the function.
+Step 2: Step through the program and watch the value of x as it changes.
+Step 3: Notice that the value of x^2 increases as x increases.
+Step 4: Notice that 3 is added to the output of the function, no matter what value x is.
+Step 5: The function can now be expressed as: f(x)=x^2+3.","Reverse engineer the following function using debugging techniques:
+f(x)=x^2+3","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Reverse engineer the following function using debugging techniques:
+f(x)=x^2+3<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name a programming concept which helps in making the development process efficient.,,"Object-oriented programming (OOP) is a programming paradigm which helps in making the development process more efficient. It allows for the creation of complex projects that are composed of modularized and reusable components. OOP is used for development of desktop, web, and mobile applications. OOP facilitates code organization and reduces the amount of code required to build complex systems.",Name a programming concept which helps in making the development process efficient.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name a programming concept which helps in making the development process efficient.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What is the derivative of the function y = cos(x)?,,-sin(x),What is the derivative of the function y = cos(x)?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What is the derivative of the function y = cos(x)?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Identify the potential classes of a given data set.,Data Set: Bacterial Growth in Petri Dishes,"The potential classes of the given data set are: no growth, slow growth, moderate growth, and rapid growth.","Identify the potential classes of a given data set.
+
+Data Set: Bacterial Growth in Petri Dishes","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Identify the potential classes of a given data set.
+
+Data Set: Bacterial Growth in Petri Dishes<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find orthographic errors in the sentence.,I luved going to the beachy last summer,I loved going to the beach last summer.,"Find orthographic errors in the sentence.
+
+I luved going to the beachy last summer","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find orthographic errors in the sentence.
+
+I luved going to the beachy last summer<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Calculate the area of this triangle using the given measurenments.,The base of the triangle is 10 cm and the height is 12 cm.,60 cm^2,"Calculate the area of this triangle using the given measurenments.
+
+The base of the triangle is 10 cm and the height is 12 cm.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Calculate the area of this triangle using the given measurenments.
+
+The base of the triangle is 10 cm and the height is 12 cm.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a product, create an advertisement slogan for it.",toothpaste,"""Brush better with toothpaste – for healthier teeth and happier smiles!""","Given a product, create an advertisement slogan for it.
+
+toothpaste","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a product, create an advertisement slogan for it.
+
+toothpaste<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the synonyms for the words below.,Determined,"Resolute, persistent, staunch, decisive.","Find the synonyms for the words below.
+
+Determined","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the synonyms for the words below.
+
+Determined<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a travel itinerary for a 5-day trip to Las Vegas,,"Day 1: Arrive in Las Vegas. Explore the city. 
+Day 2: Visit the Grand Canyon. 
+Day 3: Visit the Valley of Fire or Red Rock Canyon. 
+Day 4: Visit some of the casinos and take a show at one of the resorts. 
+Day 5: Visit Old Las Vegas, the Neon Museum, and Freemont Street.",Create a travel itinerary for a 5-day trip to Las Vegas,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a travel itinerary for a 5-day trip to Las Vegas<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"

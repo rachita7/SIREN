@@ -60,6 +60,10 @@ def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
         return _preprocess_advbench(val_ratio)
     elif dataset == "standard":
         return _preprocess_standard(val_ratio)
+    elif dataset.startswith("standard_trainsplit"):
+        return _preprocess_standard_trainsplit(int(dataset[len("standard_trainsplit"):]))
+    elif dataset.startswith("standard_split"):
+        return _preprocess_standard_split(int(dataset[len("standard_split"):]))
     else:
         raise ValueError(f"Invalid dataset: {dataset}")
 
@@ -424,6 +428,81 @@ def _preprocess_advbench(val_ratio: float = 0.2) -> DatasetDict:
     df = _load_csv(ADVBENCH_CSV_URL)
     prompts = df["goal"].dropna().astype(str).tolist()
     return _harmful_only_eval_dataset(prompts)
+
+
+def _preprocess_standard_trainsplit(split_idx: int) -> DatasetDict:
+    """Stability protocol over TRAIN-set thirds (split_idx in {1,2,3}).
+
+    The standardized train files (260 harmful + 260 safe) are shuffled with a
+    fixed seed and cut into three disjoint thirds; probes trained on each
+    third yield three independent selections whose layer profiles are then
+    compared for stability. Validation and test keep their normal roles:
+
+    - train:      one third of harmbench_train + alpaca_train (~173 texts)
+    - validation: the standard val files (C selection / early stopping)
+    - test:       the standard test files (reporting only)
+    """
+    import pandas as pd
+
+    col = _STANDARD_TEXT_COLUMN
+
+    def load(name):
+        frame = pd.read_csv(os.path.join(_STANDARD_DIR, f"{name}.csv"))
+        if col not in frame.columns:
+            raise ValueError(f"column '{col}' not in {name}.csv "
+                             f"(have {list(frame.columns)}); set SIREN_TEXT_COLUMN")
+        return frame
+
+    def to_ds(harm, safe):
+        texts = harm[col].astype(str).tolist() + safe[col].astype(str).tolist()
+        labels = [1] * len(harm) + [0] * len(safe)
+        return Dataset.from_dict({"text": texts, "label": labels})
+
+    def third(frame):
+        shuffled = frame.sample(frac=1, random_state=42).reset_index(drop=True)
+        thirds = [shuffled.iloc[i::3] for i in range(3)]
+        return thirds[split_idx - 1]
+
+    return DatasetDict({
+        "train": to_ds(third(load("harmbench_train")), third(load("alpaca_train"))),
+        "validation": to_ds(load("harmbench_val"), load("alpaca_val")),
+        "test": to_ds(load("harmbench_test"), load("alpaca_test")),
+    })
+
+
+def _preprocess_standard_split(split_idx: int) -> DatasetDict:
+    """One third of the standardized test set as TRAIN data, for the
+    stability protocol: selections are derived independently from each test
+    split i in {1,2,3} and intersected afterwards (mirrors the Wang/Zhao
+    reproduction, which scores neurons on these same three splits).
+
+    - train:      harmbench_test_split{i} + alpaca_test_split{i} (~66 texts)
+    - validation: the fixed standard val files (80 texts) -- shared across the
+      three runs so C selection / early stopping isn't fit on 13 samples
+    - test:       the standard TRAIN files (520 texts), used purely for
+      reporting a stable F1 estimate; unused for fitting in this protocol
+    """
+    import pandas as pd
+
+    col = _STANDARD_TEXT_COLUMN
+
+    def load_pair(harm_name, safe_name):
+        harm = pd.read_csv(os.path.join(_STANDARD_DIR, f"{harm_name}.csv"))
+        safe = pd.read_csv(os.path.join(_STANDARD_DIR, f"{safe_name}.csv"))
+        for name, frame in ((harm_name, harm), (safe_name, safe)):
+            if col not in frame.columns:
+                raise ValueError(f"column '{col}' not in {name}.csv "
+                                 f"(have {list(frame.columns)}); set SIREN_TEXT_COLUMN")
+        texts = harm[col].astype(str).tolist() + safe[col].astype(str).tolist()
+        labels = [1] * len(harm) + [0] * len(safe)
+        return Dataset.from_dict({"text": texts, "label": labels})
+
+    return DatasetDict({
+        "train": load_pair(f"harmbench_test_split{split_idx}",
+                           f"alpaca_test_split{split_idx}"),
+        "validation": load_pair("harmbench_val", "alpaca_val"),
+        "test": load_pair("harmbench_train", "alpaca_train"),
+    })
 
 
 def _preprocess_standard(val_ratio: float = 0.2) -> DatasetDict:

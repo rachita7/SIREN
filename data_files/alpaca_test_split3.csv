@@ -1,0 +1,257 @@
+instruction,input,output,prompt,formatted_input
+Give a speech about the importance of healthy eating.,,"Good evening everyone! Today, I want to talk to you about the importance of healthy eating. Eating healthy foods can help us maintain a healthy weight, give us more energy, and improve our overall physical and mental wellbeing. Eating a balanced diet of lean proteins, fruits, vegetables, and whole grains can help us reach our health goals and keep us in top shape. So let's all work together to make healthy eating a part of our everyday lives!",Give a speech about the importance of healthy eating.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give a speech about the importance of healthy eating.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Create a list of three animals starting with the letter ""a"".",,"Antelope, aardvark, armadillo.","Create a list of three animals starting with the letter ""a"".","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a list of three animals starting with the letter ""a"".<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write an email introducing yourself to an employer.,,"Dear [Employer],
+
+My name is [Your Name] and I am writing to introduce myself as a potential candidate for the [Position] position at [Company Name]. I am a highly motivated and energetic individual with extensive knowledge and experience in [Relevant Industry] that I believe could be a great asset to the company.
+
+My current position at [Company Name] has enabled me to develop my skills in [Relevant Skill], and I have also worked on several projects that showcase my expertise in this field. I am confident my experience and qualifications will make me an ideal fit for the job. 
+
+If you have any questions, please do not hesitate to contact me. I look forward to hearing from you and discussing the position further.
+
+Sincerely,
+[Your Name]",Write an email introducing yourself to an employer.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write an email introducing yourself to an employer.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a sentence about time management for college students.,,Time management is crucial for college students to be successful – learning to prioritize tasks and dedicate specific time slots to different subjects can significantly boost productivity.,Generate a sentence about time management for college students.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a sentence about time management for college students.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Identify three strategies to improve learning,,"Three strategies to improve learning are: 
+1. Identify personal learning and study goals, objectives and success criteria. This provides focus, motivation and direction for learning. 
+2. Utilize active learning techniques, such as discussion, practice, analyzing examples and reflecting. 
+3. Use varied assessment methods that recognize all learning styles to provide feedback on learning goals and objectives, such as written exams, presentations and practical assignments.",Identify three strategies to improve learning,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Identify three strategies to improve learning<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Compare the following two items: a car and a boat.,"car,boat","A car is best for traveling on land, while a boat is better for traveling on water. Cars are typically faster and come in many more varieties compared to boats, but boats can hold more cargo and are more suited for longer distances.","Compare the following two items: a car and a boat.
+
+car,boat","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compare the following two items: a car and a boat.
+
+car,boat<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Tell me how the digestive system works.,,"The digestive system is responsible for breaking down and absorbing food and liquids so that the nutrients can be transported to cells throughout the body. It begins with the mouth where food enters and is chewed and mixed with saliva. The chewed food then travels to the stomach where it is broken down even further by strong acids. From there, it passes through the small intestine, where the majority of digestion and absorption into the bloodstream takes place. The partially digested food then moves to the large intestine where water and vitamins are absorbed. Finally, it is passed out of the body as waste.",Tell me how the digestive system works.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Tell me how the digestive system works.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a rap verse based off this prompt,"""Life moves fast and so must you""","Life moves fast and nothing can slow it down, 
+Gotta keep grinding and push through the crowd. 
+It's a hustle and bustle, racing the clock, 
+Makin' moves and never stoppin' to rock.","Create a rap verse based off this prompt
+
+""Life moves fast and so must you""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a rap verse based off this prompt
+
+""Life moves fast and so must you""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Using the input below, develop an algorithm to detect suspicious online activities.","Online platforms often have to deal with malicious activities such as fraud, scams, and other abusive behavior.","My proposed algorithm to detect suspicious online activities will involve monitoring user activity for signs of malicious behavior such as unusual account activity or changes in usage patterns. It will also analyze user behavior over time to identify patterns that are inconsistent with normal user behavior. Additionally, the algorithm will check for links to suspicious websites or other online accounts, any attempts to access restricted data, or any sudden influx of spam. The algorithm should also make use of machine learning techniques to learn the user's normal behavior and accurately detect abnormal behavior.","Using the input below, develop an algorithm to detect suspicious online activities.
+
+Online platforms often have to deal with malicious activities such as fraud, scams, and other abusive behavior.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Using the input below, develop an algorithm to detect suspicious online activities.
+
+Online platforms often have to deal with malicious activities such as fraud, scams, and other abusive behavior.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name three characteristics of tropical rainforests.,,"Tropical rainforests are characterized by high levels of rainfall, diverse plant life, and high biodiversity. They are typically very humid, warm environments with a variety of climates ranging from tropical in the lower levels to temperate on the top canopy. They are home to a wide range of species, with more endemic species than any other ecosystem in the world.",Name three characteristics of tropical rainforests.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name three characteristics of tropical rainforests.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a menu with three healthy lunch items using the given ingredients.,"Ingredients: bananas, eggs, kale","1. Kale and Egg Salad: Start with a base of kale and mix in two boiled eggs, diced. Top with sliced bananas and drizzle with olive oil and a dash of salt and pepper. 
+2. Banana and Egg Sandwich: Preheat a skillet and lightly spray with cooking oil. Fry two eggs to desired level of doneness. Meanwhile, toast two slices of wheat bread. Layer the eggs, banana slices, and shredded kale onto the toast and season with desired condiments.
+3. Banana Kale Omelet: Heat a skillet with a teaspoon of oil. Crack two eggs into the pan and whip together. Add in diced banana pieces, kale, and desired spices to taste. Flip the omelet, heat through, and enjoy.","Create a menu with three healthy lunch items using the given ingredients.
+
+Ingredients: bananas, eggs, kale","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a menu with three healthy lunch items using the given ingredients.
+
+Ingredients: bananas, eggs, kale<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Classify the following two sentences into either positive or negative sentiment.,"I love this product!
+I don't like this product.","Positive, Negative","Classify the following two sentences into either positive or negative sentiment.
+
+I love this product!
+I don't like this product.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify the following two sentences into either positive or negative sentiment.
+
+I love this product!
+I don't like this product.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a function to calculate the mean of an array.,,"function findMean(array) {
+  let sum = 0;
+  for (let i=0; i<array.length; i++) {
+    sum += array[i];
+  }
+  return sum/array.length;
+}",Create a function to calculate the mean of an array.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a function to calculate the mean of an array.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a computer program to add two vectors of size 5.,"[3, 2, 1, 5, 7], [4, 1, 6, 9, 0]","def add_vector(v1, v2):
+    if len(v1) != len(v2):
+        raise Exception(""Vectors are of different lengths"")
+    result = []
+    for i in range(len(v1)):
+        result.append(v1[i] + v2[i])
+    return result","Generate a computer program to add two vectors of size 5.
+
+[3, 2, 1, 5, 7], [4, 1, 6, 9, 0]","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a computer program to add two vectors of size 5.
+
+[3, 2, 1, 5, 7], [4, 1, 6, 9, 0]<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain how a virtual assistant can help you with your daily tasks.,,"A virtual assistant can help you with a wide variety of tasks, making your life easier and freeing up more of your time. For example, a virtual assistant can send out emails, conduct research, organize meetings and appointments, take notes, book travel, and even handle customer service inquiries. They can also automate mundane, repetitive tasks, like responding to basic customer service inquiries or scheduling, so you don't have to worry about it. With the help of a virtual assistant, you can get all your daily tasks completed quickly and easily, freeing up more of your time to focus on the things that truly matter to you.",Explain how a virtual assistant can help you with your daily tasks.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain how a virtual assistant can help you with your daily tasks.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Categorize the following two items as either a mammal or a reptile:,"Axolotl, Dolphin","Axolotl: Reptile 
+Dolphin: Mammal","Categorize the following two items as either a mammal or a reptile:
+
+Axolotl, Dolphin","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Categorize the following two items as either a mammal or a reptile:
+
+Axolotl, Dolphin<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a summary of the following article that is no more than 10 sentences.,"Climate change is becoming an increasing concern across the world as temperatures continue to rise and record levels of extreme weather events are recorded. This is due to the human action of creating greenhouse gas emissions such as carbon dioxide, which trap heat and act like a blanket around the Earth’s atmosphere. The effects of climate change are already being witnessed, from floods to droughts, and are expected to even worsen if the climate is allowed to continue heating up. Therefore, it is vital for people to reduce the production of greenhouse gases, through sustainable and renewable energy sources, as well as other proactive measures.","Climate change has become a global concern, as temperatures continue to rise and human-caused greenhouse gas emissions trap heat and work like a blanket completely surrounding the atmosphere. This is already leading to extreme weather events such as floods and droughts, and the situation is expected to worsen if the climate continues to heat up. To mitigate the consequences of climate change and reduce greenhouse gas emissions, it is essential to transition to more sustainable and renewable energy sources and take other proactive measures.","Create a summary of the following article that is no more than 10 sentences.
+
+Climate change is becoming an increasing concern across the world as temperatures continue to rise and record levels of extreme weather events are recorded. This is due to the human action of creating greenhouse gas emissions such as carbon dioxide, which trap heat and act like a blanket around the Earth’s atmosphere. The effects of climate change are already being witnessed, from floods to droughts, and are expected to even worsen if the climate is allowed to continue heating up. Therefore, it is vital for people to reduce the production of greenhouse gases, through sustainable and renewable energy sources, as well as other proactive measures.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a summary of the following article that is no more than 10 sentences.
+
+Climate change is becoming an increasing concern across the world as temperatures continue to rise and record levels of extreme weather events are recorded. This is due to the human action of creating greenhouse gas emissions such as carbon dioxide, which trap heat and act like a blanket around the Earth’s atmosphere. The effects of climate change are already being witnessed, from floods to droughts, and are expected to even worsen if the climate is allowed to continue heating up. Therefore, it is vital for people to reduce the production of greenhouse gases, through sustainable and renewable energy sources, as well as other proactive measures.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Reverse engineer the following sentence so it's in the passive voice.,She wrote about her experience,Her experience was written about by her.,"Reverse engineer the following sentence so it's in the passive voice.
+
+She wrote about her experience","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Reverse engineer the following sentence so it's in the passive voice.
+
+She wrote about her experience<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Select one sentence describing the new iPhone 6s,"The new iPhone 6s is a revolutionary smartphone that comes with an entirely new iOS system, an improved camera and an extremely durable frame.","The new iPhone 6s comes with an entirely new iOS system, an improved camera and an extremely durable frame.","Select one sentence describing the new iPhone 6s
+
+The new iPhone 6s is a revolutionary smartphone that comes with an entirely new iOS system, an improved camera and an extremely durable frame.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Select one sentence describing the new iPhone 6s
+
+The new iPhone 6s is a revolutionary smartphone that comes with an entirely new iOS system, an improved camera and an extremely durable frame.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+How much is 4x3+3x2?,,4x3+3x2 is equal to 21.,How much is 4x3+3x2?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+How much is 4x3+3x2?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a sentence that is grammatical and meaningful using the following 8 words,"Healthy, Animals, Use, Outdoor, Areas, Year, Carefully, Monitor",Carefully monitoring outdoor areas throughout the year can help ensure the health of animals.,"Generate a sentence that is grammatical and meaningful using the following 8 words
+
+Healthy, Animals, Use, Outdoor, Areas, Year, Carefully, Monitor","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a sentence that is grammatical and meaningful using the following 8 words
+
+Healthy, Animals, Use, Outdoor, Areas, Year, Carefully, Monitor<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write an equation for the following word problem:,"The cost of a car is $25,000.","The equation for the cost of the car is C = 25,000. Where C is the cost of the car.","Write an equation for the following word problem:
+
+The cost of a car is $25,000.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write an equation for the following word problem:
+
+The cost of a car is $25,000.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the effects of sound on humans.,,"Sound has a profound effect on humans, from influencing our emotions to helping regulate our biological processes. Sound affects us both physically and mentally, with higher frequencies often causing us to feel alert and energized, while lower frequencies can act as a sedative and reduce anxiety. In addition, sound travels in waves which, when heard by humans, cause the auditory system to vibrate, leading to sounds being interpreted as speech or music.",Describe the effects of sound on humans.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the effects of sound on humans.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Find the text that describes the word ""whimsy"".",,"The word whimsical can be used to describe a personality trait, a way of thinking, or behavior that is characterized by unpredictable, lighthearted and amusing comments and actions that are often seen as silly and non-serious. Whimsical people often enjoy surprising others with their spontaneous behavior, which usually has no purpose other than to inject some fun into an otherwise mundane moment or situation.","Find the text that describes the word ""whimsy"".","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the text that describes the word ""whimsy"".<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Do a wordplay on the word ""unite""",,"Two's a team, ""unite"" makes it three! #Wordplay","Do a wordplay on the word ""unite""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Do a wordplay on the word ""unite""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Compare and contrast two types of mobile operating systems, such as Android and iOS.",,"Android and iOS are two of the most popular mobile operating systems in the world. Android is an open-source platform created by Google, released in 2008. It is customizable, and is available on a wide range of devices. iOS is a closed-source platform created by Apple, released in 2007. It is more secure, but only available on Apple products. Both operating systems provide users with access to app stores, where they can download apps and games.","Compare and contrast two types of mobile operating systems, such as Android and iOS.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compare and contrast two types of mobile operating systems, such as Android and iOS.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give two good examples of customer service.,,"Good examples of customer service include offering personalized, timely, and efficient service. Customer service representatives should be knowledgeable, friendly, and patient with customers. Other examples include offering customer-specific discounts or loyalty programs, providing support for a customer even after their purchase, and answering customer inquiries and complaints quickly and effectively.",Give two good examples of customer service.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give two good examples of customer service.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Point out the literary device used in the following sentence,It was a dark and stormy night,The sentence makes use of hyperbole.,"Point out the literary device used in the following sentence
+
+It was a dark and stormy night","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Point out the literary device used in the following sentence
+
+It was a dark and stormy night<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Make a list of the three longest rivers in Africa,,"1. The Nile River, Egypt – 6,650 km
+2. The Congo River, Democratic Republic of the Congo – 4,700 km
+3. The Niger River, Nigeria – 4,180 km",Make a list of the three longest rivers in Africa,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Make a list of the three longest rivers in Africa<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Compare the benefits of rain and sun.,,"Both rain and sun are important for life as we know it. Rain provides water for all living things and helps plants to grow. Sun provides light, warmth and energy for some organisms, and acts as a key source of Vitamin D for humans. Rain helps to cool down the temperatures on hot days and is a source of natural beauty, while the sun has the power to lift people’s moods and allows for activities like swimming and sunbathing. All in all, both rain and sun are powerful elements of nature with their own unique benefits.",Compare the benefits of rain and sun.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Compare the benefits of rain and sun.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a statement of purpose focused on computer engineering.,,I am passionate about pushing the boundaries of technology and exploring the potential of data-driven computing. I am driven to learn more and develop innovative solutions to the challenges of computer engineering.,Generate a statement of purpose focused on computer engineering.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a statement of purpose focused on computer engineering.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Translate this sentence into French: ""I ate breakfast at nine o'clock this morning.""",,J'ai pris mon petit déjeuner à neuf heures ce matin.,"Translate this sentence into French: ""I ate breakfast at nine o'clock this morning.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Translate this sentence into French: ""I ate breakfast at nine o'clock this morning.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a list of cities, construct a sentence which includes one of the cities but does not mention the list explicitly.","Pittsburgh, Houston, Atlanta","I had a wonderful time in Pittsburgh last week, but I'm looking forward to visiting other cities such as Houston and Atlanta soon.","Given a list of cities, construct a sentence which includes one of the cities but does not mention the list explicitly.
+
+Pittsburgh, Houston, Atlanta","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a list of cities, construct a sentence which includes one of the cities but does not mention the list explicitly.
+
+Pittsburgh, Houston, Atlanta<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
