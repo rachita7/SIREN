@@ -33,6 +33,10 @@ _STANDARD_DIR = os.environ.get(
 # template (with literal special tokens) -> must be tokenized with
 # add_special_tokens=False. "prompt" is the raw prompt (add_special_tokens=True).
 _STANDARD_TEXT_COLUMN = os.environ.get("SIREN_TEXT_COLUMN", "formatted_input")
+# Basename (no .csv) of the safe TRAIN file; lets a cleaned variant, e.g.
+# SIREN_ALPACA_TRAIN=alpaca_train-clean, replace alpaca_train without renaming
+# files. Val/test files are never affected.
+_ALPACA_TRAIN = os.environ.get("SIREN_ALPACA_TRAIN", "alpaca_train")
 
 
 def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
@@ -464,7 +468,7 @@ def _preprocess_standard_trainsplit(split_idx: int) -> DatasetDict:
         return thirds[split_idx - 1]
 
     return DatasetDict({
-        "train": to_ds(third(load("harmbench_train")), third(load("alpaca_train"))),
+        "train": to_ds(third(load("harmbench_train")), third(load(_ALPACA_TRAIN))),
         "validation": to_ds(load("harmbench_val"), load("alpaca_val")),
         "test": to_ds(load("harmbench_test"), load("alpaca_test")),
     })
@@ -527,8 +531,9 @@ def _preprocess_standard(val_ratio: float = 0.2) -> DatasetDict:
     file_tag = {"train": "train", "validation": "val", "test": "test"}
     out = {}
     for split_name, tag in file_tag.items():
+        safe_name = _ALPACA_TRAIN if tag == "train" else f"alpaca_{tag}"
         harm = pd.read_csv(os.path.join(_STANDARD_DIR, f"harmbench_{tag}.csv"))
-        safe = pd.read_csv(os.path.join(_STANDARD_DIR, f"alpaca_{tag}.csv"))
+        safe = pd.read_csv(os.path.join(_STANDARD_DIR, f"{safe_name}.csv"))
         for name, frame in (("harmbench", harm), ("alpaca", safe)):
             if col not in frame.columns:
                 raise ValueError(
