@@ -247,15 +247,23 @@ def rsa_spearman(X, Y, max_pairs=400_000, seed=0):
 
 # ------------------------------------------------------------------ summary
 
-def normalized_score(observed, null_mean, ceiling_mean):
+def normalized_score(observed, null_mean, ceiling_mean, span_tol=1e-3):
     """Where the observed similarity sits between chance and the ceiling.
 
     0 = indistinguishable from layer-matched random neurons.
     1 = as similar as two disjoint halves of the SAME method's own selection.
     Values are not clipped; >1 or <0 are informative and should be reported.
+
+    Returns NaN unless the ceiling sits at least `span_tol` ABOVE the null.
+    When the two references nearly coincide the ratio is meaningless, and when
+    the ceiling falls below the null the denominator goes negative and silently
+    flips the sign -- which turns a strongly-below-chance result into a large
+    positive score. Guarding here rather than clipping keeps the failure
+    visible: a NaN says "this dataset cannot resolve a scale", which is a real
+    finding about the data, not a number to paper over.
     """
     span = ceiling_mean - null_mean
-    if not np.isfinite(span) or abs(span) < 1e-12:
+    if not np.isfinite(span) or span < span_tol:
         return float("nan")
     return float((observed - null_mean) / span)
 

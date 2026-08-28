@@ -222,20 +222,37 @@ def main():
                   + (f"  ({dropped} near-constant neurons dropped)" if dropped else ""))
 
         # ------------------------------------------------ ceiling per method
-        print("\n  Ceiling: CKA between disjoint halves of the same method")
+        # Halving the neuron set makes each side a noisier estimate, so the
+        # ceiling is biased DOWN relative to a full-size cross-method
+        # comparison. To keep the normalization scale like-for-like, the same
+        # split is applied to a layer-matched random set, giving a half-size
+        # null. Each excess is then measured against its own size-matched
+        # baseline.
+        print("\n  Ceiling: CKA between disjoint halves of the same method"
+              "\n  (with a half-size random baseline, since halving lowers CKA "
+              "by itself)")
         ceiling = {}
         for m in methods:
-            values = []
+            values, null_half = [], []
             for s in range(args.ceiling_seeds):
                 rng = np.random.default_rng(rng_master.integers(1 << 62))
                 h1, h2 = ns.split_halves(selections[m], rng)
-                A = make_rep(acts, h1, zscore, Z)
-                B = make_rep(acts, h2, zscore, Z)
-                values.append(A.cka(B))
-            ceiling[m] = {"mean": float(np.mean(values)),
-                          "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0}
+                values.append(make_rep(acts, h1, zscore, Z)
+                              .cka(make_rep(acts, h2, zscore, Z)))
+                rand = ns.random_layer_matched(selections[m], rng, width)
+                r1, r2 = ns.split_halves(rand, rng)
+                null_half.append(make_rep(acts, r1, zscore, Z)
+                                 .cka(make_rep(acts, r2, zscore, Z)))
+            ceiling[m] = {
+                "mean": float(np.mean(values)),
+                "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0,
+                "null_half_mean": float(np.mean(null_half)),
+                "excess": float(np.mean(values) - np.mean(null_half)),
+            }
             print(f"    {ns.display_name(m):16s} {ceiling[m]['mean']:.4f} "
-                  f"+/- {ceiling[m]['std']:.4f}")
+                  f"+/- {ceiling[m]['std']:.4f}   "
+                  f"half-size null {ceiling[m]['null_half_mean']:.4f}   "
+                  f"excess {ceiling[m]['excess']:+.4f}")
 
         # ------------------------------------------------------------ nulls
         # One seed at a time: holding every null draw's prepared matrices would
@@ -281,6 +298,12 @@ def main():
             lm_rsa = null_vals[(a, b)]["rsa"]
 
             ceil_mean = float(np.mean([ceiling[a]["mean"], ceiling[b]["mean"]]))
+            # Scale = how far a method's own selection rises above a random set
+            # of the same (half) size. Comparing each excess to its size-matched
+            # baseline removes the halving penalty from the denominator.
+            ceil_excess = float(np.mean([ceiling[a]["excess"],
+                                         ceiling[b]["excess"]]))
+            null_mean_lm = float(np.mean(lm_vals))
             same_family = (ns.METHOD_SPECS[a]["family"]
                            == ns.METHOD_SPECS[b]["family"])
             row = {
@@ -301,17 +324,25 @@ def main():
                 "null_global_mean": float(np.mean(gl_vals)),
                 "null_global_std": float(np.std(gl_vals, ddof=1)) if len(gl_vals) > 1 else 0.0,
                 "ceiling_mean": ceil_mean,
+                "ceiling_excess": ceil_excess,
                 "z_vs_null": core.null_zscore(obs, lm_vals),
-                "normalized": core.normalized_score(obs, float(np.mean(lm_vals)),
-                                                    ceil_mean),
+                # Ratio of two excesses, each over its own size-matched null.
+                "normalized": core.normalized_score(
+                    obs, null_mean_lm, null_mean_lm + ceil_excess),
+                # The uncorrected version, kept for comparison; it inherits the
+                # downward bias of the half-size ceiling.
+                "normalized_raw_ceiling": core.normalized_score(
+                    obs, null_mean_lm, ceil_mean),
                 "rsa_null_mean": float(np.mean(lm_rsa)) if lm_rsa else float("nan"),
             }
             rows.append(row)
+            norm = row["normalized"]
             print(f"  [{row['family_pair']:6s}] {row['pair']:34s} CKA={obs:.4f}  "
                   f"null={row['null_layer_matched_mean']:.4f}"
                   f"+/-{row['null_layer_matched_std']:.4f}  "
                   f"ceil={ceil_mean:.4f}  z={row['z_vs_null']:+.1f}  "
-                  f"norm={row['normalized']:+.3f}")
+                  + (f"norm={norm:+.3f}" if np.isfinite(norm)
+                     else "norm=n/a (ceiling not above null)"))
 
         all_rows.extend(rows)
         summary["variants"][variant] = {
@@ -319,8 +350,20 @@ def main():
             "pairs": rows,
         }
 
-        within = [r["normalized"] for r in rows if r["family_pair"] == "within"]
-        cross = [r["normalized"] for r in rows if r["family_pair"] == "cross"]
+        n_below = sum(1 for r in rows if r["z_vs_null"] < -3)
+        n_above = sum(1 for r in rows if r["z_vs_null"] > 3)
+        print(f"\n  of {len(rows)} pairs: {n_above} significantly ABOVE the "
+              f"layer-matched null, {n_below} significantly BELOW it")
+        if n_below:
+            print("  Below-null means the selected neurons are LESS mutually "
+                  "aligned than\n  random neurons from the same layers -- the "
+                  "methods are not merely\n  different, they are divergent. See "
+                  "cka/README.md 'Reading the results'.")
+
+        within = [r["normalized"] for r in rows
+                  if r["family_pair"] == "within" and np.isfinite(r["normalized"])]
+        cross = [r["normalized"] for r in rows
+                 if r["family_pair"] == "cross" and np.isfinite(r["normalized"])]
         if within and cross:
             print(f"\n  mean normalized score: within-method variants "
                   f"{np.mean(within):+.3f}  vs  across methods "
