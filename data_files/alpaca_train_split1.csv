@@ -1,0 +1,679 @@
+instruction,input,output,prompt,formatted_input
+Name a type of art endemic to a particular culture.,Culture: Mayan,A type of art endemic to the Mayan culture is stucco relief sculpture.,"Name a type of art endemic to a particular culture.
+
+Culture: Mayan","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name a type of art endemic to a particular culture.
+
+Culture: Mayan<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a story about an unusual friendship,,"Once upon a time, there was a wise and ancient tree in the middle of a forest who was friends with a small, mischievous rabbit. Even though they were unlikely friends, they shared all sorts of adventures together, and the tree taught the rabbit life lessons every day. From daring escapes and inside jokes to sharing secrets and getting into all sorts of trouble, their friendship flourished and their bond grew stronger and stronger until one day, when the tree suddenly disappeared, leaving behind only the memories of their special friendship.",Create a story about an unusual friendship,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a story about an unusual friendship<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Determine the area of a regular pentagon with a side length of 10 cm.,10 cm,The area of a regular pentagon with a side length of 10 cm is 247.26 square centimeters.,"Determine the area of a regular pentagon with a side length of 10 cm.
+
+10 cm","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Determine the area of a regular pentagon with a side length of 10 cm.
+
+10 cm<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give an example of a situation in which you had to negotiate.,,I had to negotiate with my landlord to get a better price for my apartment.,Give an example of a situation in which you had to negotiate.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give an example of a situation in which you had to negotiate.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given an input of $300, calculate 10% tax",300,30.00,"Given an input of $300, calculate 10% tax
+
+300","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given an input of $300, calculate 10% tax
+
+300<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What is the capital of France?,,The capital of France is Paris.,What is the capital of France?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What is the capital of France?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Search the internet and find an example of a memo.,,"This is an example of a memo from the American Bar Association: 
+
+To: All ABA Employees
+From: Ann E. Becker, Chair
+Re: Working From Home
+
+Date: April 5, 20XX 
+ 
+As we continue to monitor the coronavirus pandemic and take steps to protect the health and safety of our employees, the ABA is allowing employees to work from home. Those who are able to work from home should do so. For questions or other guidance related to COVID-19, please consult the ABA’s HR website or call our HR hotline. 
+
+Thank you and be safe.",Search the internet and find an example of a memo.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Search the internet and find an example of a memo.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Design a logo for a company that produces automotive parts.,,"The logo should feature a black silhouette of a car with a gear in its center. The words ""Automotive Parts"" should be highlighted in the center in a bold, modern font. The background should be white or a light grey.",Design a logo for a company that produces automotive parts.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Design a logo for a company that produces automotive parts.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Guess a three-letter English word,,Cat.,Guess a three-letter English word,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Guess a three-letter English word<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Evaluate the following statement: ""We need to take more action when it comes to climate change.""",,"The statement is absolutely correct – we need to take action now to mitigate the effects of climate change before it is too late. Over the past few decades, climate change has become more and more evident, leading to rising sea levels, extreme weather events, and droughts. We must make collective efforts to reduce our carbon emissions and switch to renewable energy sources in order to make an impact.","Evaluate the following statement: ""We need to take more action when it comes to climate change.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Evaluate the following statement: ""We need to take more action when it comes to climate change.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Calculate the median of the following set of numbers:
+
+4, 15, 22, 32, 43, 54",,32,"Calculate the median of the following set of numbers:
+
+4, 15, 22, 32, 43, 54","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Calculate the median of the following set of numbers:
+
+4, 15, 22, 32, 43, 54<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a review for a recent movie,Movie name: The Martian,"The Martian is an exciting, thrilling and inspiring movie that is sure to stimulate the senses. The story follows Mark Watney, a NASA Astronaut who is stranded on Mars after being presumed dead. He must use his skills in science and engineering to survive on the harsh planet and find a way back home. The Martian is a gripping movie that depicts the struggle of survival in an extreme environment, along with the hope of being rescued. The actors and special effects give a realistic feel to the story, making it even more captivating. The movie is certainly a must-watch and a great representation of human ingenuity and resilience.","Generate a review for a recent movie
+
+Movie name: The Martian","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a review for a recent movie
+
+Movie name: The Martian<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a summary of the product features in a single sentence.,This product is a facial recognition software that uses camera and deep learning technology to accurately detect and recognize objects in photos.,This product is a facial recognition software that utilizes sophisticated camera and machine learning technology to quickly and accurately identify objects in images.,"Write a summary of the product features in a single sentence.
+
+This product is a facial recognition software that uses camera and deep learning technology to accurately detect and recognize objects in photos.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a summary of the product features in a single sentence.
+
+This product is a facial recognition software that uses camera and deep learning technology to accurately detect and recognize objects in photos.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Sort these cities by their population.,"Rome, Paris, London.","London, Rome, Paris.","Sort these cities by their population.
+
+Rome, Paris, London.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Sort these cities by their population.
+
+Rome, Paris, London.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Come up with a new game that can be played by people of all ages.,,"A new game that can be played by people of all ages is called ""Mosaic Maker"". Players are given a set of mosaic tiles of different shapes and colors and have to arrange them on a board. Each round has a given time limit, and each player has to create the most intricate mosaic possible before time runs out. The player with the most points at the end of the game wins.",Come up with a new game that can be played by people of all ages.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Come up with a new game that can be played by people of all ages.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Transform these sentences into a passive voice,They are singing a song.,A song is being sung by them.,"Transform these sentences into a passive voice
+
+They are singing a song.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Transform these sentences into a passive voice
+
+They are singing a song.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the median of the given numbers and explain the meaning of median.,"10, 65, 8, 22, 15","The median of the given numbers is 15. The median is the middle point of a dataset where the values are sorted in ascending or descending order. It is the number at the halfway point, where half the numbers are above it and half the numbers are below it. It is an ideal measure of central tendency as it is not affected by extreme values. The median gives us an idea of the typical value in the dataset.","Find the median of the given numbers and explain the meaning of median.
+
+10, 65, 8, 22, 15","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the median of the given numbers and explain the meaning of median.
+
+10, 65, 8, 22, 15<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Rewrite the following sentence with an alternate verb,The sun glared brightly,The sun beamed brightly.,"Rewrite the following sentence with an alternate verb
+
+The sun glared brightly","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite the following sentence with an alternate verb
+
+The sun glared brightly<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Edit the following sentence so that it is in the simple past tense: ""Today, I goes to the store to buy eggs.""",,"Yesterday, I went to the store to buy eggs.","Edit the following sentence so that it is in the simple past tense: ""Today, I goes to the store to buy eggs.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Edit the following sentence so that it is in the simple past tense: ""Today, I goes to the store to buy eggs.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Construct a search query to find a wooden chair with a reclining backrest.,,"Search query: ""wooden chair reclining backrest"".",Construct a search query to find a wooden chair with a reclining backrest.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Construct a search query to find a wooden chair with a reclining backrest.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a program that prints out the Fibonacci sequence up to the number 100.,,"1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 100",Create a program that prints out the Fibonacci sequence up to the number 100.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a program that prints out the Fibonacci sequence up to the number 100.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a view of the city you are living in.,,"I'm looking upon the city skyline from the top of a tall building. The streets below are filled with cars and people walking by. The sun is setting, painting the sky with a rainbow of colors and casting long shadows on the buildings. The city sparkles and glimmers with the twinkling of the street lights. In the distance, I can see the river running by and the outline of the mountains beyond.",Generate a view of the city you are living in.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a view of the city you are living in.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the Past-perfect tense verb.,She had given the money to her teacher.,Had given,"Find the Past-perfect tense verb.
+
+She had given the money to her teacher.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the Past-perfect tense verb.
+
+She had given the money to her teacher.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe a plant cell to me.,,"A plant cell is a type of eukaryotic cell that has a rigid cell wall, a nucleus, a vacuole, a cytoplasm, and other organelles that are embedded in the cytoplasm. Plant cells also contain chloroplasts, which are used for photosynthesis.",Describe a plant cell to me.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe a plant cell to me.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide an example of a use case for Machine Learning,,An example of a use case for Machine Learning is a spam filtering system. It uses ML algorithms to detect spam emails and filter them out of a user's inbox.,Provide an example of a use case for Machine Learning,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide an example of a use case for Machine Learning<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Tell me three reasons why it is important to exercise.,,"Exercising is important for many reasons, including:
+
+1. Improving physical health: physical exercise helps to keep the body fit, reduce risk of disease, and provides many health benefits.
+
+2. Improving mental health: exercise helps to improve mood and reduce stress, which can lead to improved mental wellbeing.
+
+3. Developing social bonds: exercise can be a social activity, which helps to build friendships and connections with others.",Tell me three reasons why it is important to exercise.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Tell me three reasons why it is important to exercise.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide a set of steps to complete the given task.,Make French Toast,"Instructions for Making French Toast
+
+1. Gather the ingredients – butter, eggs, cinnamon, sugar, bread slices, and a dash of vanilla extract. 
+2. Melt the butter in a shallow bowl and set aside.
+3. In a separate bowl, whisk together the eggs, cinnamon, sugar, and vanilla extract.
+4. Dip each slice of bread into the egg mixture, ensuring it is evenly and completely coated.
+5. Heat a skillet on medium heat and lightly grease with some of the melted butter. 
+6. Place the soaked bread slices onto the heated skillet and cook for 2-3 minutes until lightly browned. 
+7. Flip the slices over and cook for an additional 1-2 minutes on the other side.
+8. Serve the French toast warm with maple syrup, fresh fruit, or a sprinkle of confectioners sugar. Enjoy!","Provide a set of steps to complete the given task.
+
+Make French Toast","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide a set of steps to complete the given task.
+
+Make French Toast<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Identify the subject in the sentence: ""She played the guitar on the porch.""",,"The subject in the sentence is ""She"".","Identify the subject in the sentence: ""She played the guitar on the porch.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Identify the subject in the sentence: ""She played the guitar on the porch.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Design a simple hello world program.,,"A simple hello world program can be written in any programming language. Here's a sample program written in Python:
+
+print(""Hello, World!"")",Design a simple hello world program.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Design a simple hello world program.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Form an adverb out of the word 'privacy'.,,Privately.,Form an adverb out of the word 'privacy'.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Form an adverb out of the word 'privacy'.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give a description of a day living on Mars.,,"Living on Mars is a unique experience. Every day, you get to witness stunningly beautiful views of the red and orange terrains that stretch before you. You rise to the light of two suns, and you can see the stars twinkle in the night sky with every setting. In the warmth of the sun, you walk around and explore the planet, discovering its peculiarities and marveling at its wonders. You can even feel the gentle gravitational pull of the planet, which is quite different from Earth’s. On those days where you feel like at home, you can even take a nap in your sleeping quarters and dream of the possibilities in this strange land.",Give a description of a day living on Mars.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give a description of a day living on Mars.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Create a password combining a random word, a special character and a number.",,asterisk%9.,"Create a password combining a random word, a special character and a number.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a password combining a random word, a special character and a number.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name three other planets in the Solar System.,,"Mars, Jupiter, and Saturn.",Name three other planets in the Solar System.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name three other planets in the Solar System.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given the following product description, create a product tagline.","This outdoor camping tent is lightweight, waterproof, and features advanced ventilation technology.","The ultimate outdoor camping experience: Lightweight, waterproof, and advanced ventilation technology.","Given the following product description, create a product tagline.
+
+This outdoor camping tent is lightweight, waterproof, and features advanced ventilation technology.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given the following product description, create a product tagline.
+
+This outdoor camping tent is lightweight, waterproof, and features advanced ventilation technology.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give me two examples of a type of bird.,,Pigeon and Seagull.,Give me two examples of a type of bird.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give me two examples of a type of bird.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a question and answer pair on the economy of the United States.,,"Question: What is the most important aspect of the economy of the United States?
+Answer: The most important aspect of the economy of the United States is consumer spending, which accounts for around 68% of the country's GDP.",Generate a question and answer pair on the economy of the United States.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a question and answer pair on the economy of the United States.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Identify the verb in the sentence: ""The baby laughed at the funny clown.""",The baby laughed at the funny clown.,Verb: laughed,"Identify the verb in the sentence: ""The baby laughed at the funny clown.""
+
+The baby laughed at the funny clown.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Identify the verb in the sentence: ""The baby laughed at the funny clown.""
+
+The baby laughed at the funny clown.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a unique title for a movie that conveys a hidden message.,"Hidden Message: ""Anything is possible""","""The Unimaginable Journey: Proving That Anything is Possible""","Generate a unique title for a movie that conveys a hidden message.
+
+Hidden Message: ""Anything is possible""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a unique title for a movie that conveys a hidden message.
+
+Hidden Message: ""Anything is possible""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain why the given year is important in history.,1959,"1959 is an important year in history because it marked the beginning of the Cuban Revolution, which ended with Fidel Castro becoming the leader of Cuba in 1961.","Explain why the given year is important in history.
+
+1959","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain why the given year is important in history.
+
+1959<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Rewrite this paragraph so that it has the same meaning, is grammatically correct, and uses different vocabulary.",The man was extraordinarily ill. He had been stricken with a virus for weeks.,The man was in a critical condition. He had been struggling with a contagious disease for weeks.,"Rewrite this paragraph so that it has the same meaning, is grammatically correct, and uses different vocabulary.
+
+The man was extraordinarily ill. He had been stricken with a virus for weeks.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite this paragraph so that it has the same meaning, is grammatically correct, and uses different vocabulary.
+
+The man was extraordinarily ill. He had been stricken with a virus for weeks.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a fun fact about the cuisines of Thailand.,,"Thai cuisine often incorporates the five fundamental taste senses: spicy, sour, sweet, salty, and bitter. Many Thai dishes also contain herbs and spices such as coriander, lime and lemongrass.",Generate a fun fact about the cuisines of Thailand.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a fun fact about the cuisines of Thailand.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write an algorithm to find the intersection of two arrays.,,"// Algorithm to find the intersection of two arrays
+
+function intersection(arr1, arr2) {
+    // Create empty array to store intersection elements
+    let result = [];
+
+    // Loop through all elements of arr1
+    for (let i = 0; i < arr1.length; i++) {
+        // Loop through all elements of arr2
+        for (let j = 0; j < arr2; j++){
+            // Check if elements from arr1 and arr2 match
+            if (arr1[i] === arr2[j]) {
+                // If match, push element to result array
+                result.push(arr1[i]);
+            }
+        }
+    }
+
+    // Return the result array 
+    return result;
+}",Write an algorithm to find the intersection of two arrays.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write an algorithm to find the intersection of two arrays.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name three adjectives that describe the character of Sherlock Holmes.,,"Three adjectives that describe the character of Sherlock Holmes are intelligent, astute, and analytical.",Name three adjectives that describe the character of Sherlock Holmes.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name three adjectives that describe the character of Sherlock Holmes.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Transform the text into a well-structured JSON.,"The site ""website.com"" with tagline ""A Comprehensive Information Source""","{
+  ""Site"": ""website.com"",
+  ""Tagline"": ""A Comprehensive Information Source""
+}","Transform the text into a well-structured JSON.
+
+The site ""website.com"" with tagline ""A Comprehensive Information Source""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Transform the text into a well-structured JSON.
+
+The site ""website.com"" with tagline ""A Comprehensive Information Source""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find a source where a topic from a given field is discusseds,Mechatronics,"Wikipedia is a good source to get an overview of the topic of mechatronics. Additionally, the International Journal of Mechatronics and Automation provides a peer-reviewed source of knowledge and research in the field of mechatronics.","Find a source where a topic from a given field is discusseds
+
+Mechatronics","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find a source where a topic from a given field is discusseds
+
+Mechatronics<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Read the given article and summarize it in 100 words.,"Climate change has caused extreme weather events to become more common and more intense. Rising temperatures are melting the polar ice caps, causing sea levels to rise and flooding coastal areas. Heat waves are becoming more common and last longer, while intense droughts can cause crop failures. Weather events, such as hurricanes and tornadoes, also become more powerful.","Climate change has brought about a range of drastic changes to our weather patterns. Global temperatures have been steadily rising, leading to the melting of polar icecaps and a subsequent rise in sea levels. Further, heat waves are increasing in intensity and have become more long-lasting, resulting in droughts that have caused severe crop damage. Also, weather events such as hurricanes and tornadoes have become more powerful and frequent. Clearly, climate change has had a profound effect on the Earth’s weather.","Read the given article and summarize it in 100 words.
+
+Climate change has caused extreme weather events to become more common and more intense. Rising temperatures are melting the polar ice caps, causing sea levels to rise and flooding coastal areas. Heat waves are becoming more common and last longer, while intense droughts can cause crop failures. Weather events, such as hurricanes and tornadoes, also become more powerful.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Read the given article and summarize it in 100 words.
+
+Climate change has caused extreme weather events to become more common and more intense. Rising temperatures are melting the polar ice caps, causing sea levels to rise and flooding coastal areas. Heat waves are becoming more common and last longer, while intense droughts can cause crop failures. Weather events, such as hurricanes and tornadoes, also become more powerful.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create an example of a complex art photo.,,"An example of a complex art photo may be an image of a deserted city street during a thunderstorm. The street could be lined with dilapidated buildings and old cars, with rain pouring down the sides of the buildings and puddles forming on the streets. Lightning could be streaking across the sky, illuminating the scene in an eerie but beautiful light. This image could symbolize many different things, such as the fragility of life, or the importance of perspective in our lives.",Create an example of a complex art photo.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create an example of a complex art photo.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Output the scientific name of the common ostrich.,,Struthio camelus,Output the scientific name of the common ostrich.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Output the scientific name of the common ostrich.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a paragraph to explain the objective of online streaming platforms.,,"Online streaming platforms provide an easy and convenient way to watch movies, TV shows, and other types of content. Their goal is to provide users with the highest quality content and the largest selection at a reasonable price. Additionally, these platforms enable people to customize their viewing experience via a variety of features, such as individualized profiles, customized recommendations, and the ability to watch their favorite shows or movies anytime and from any device. They also provide users with the option to download favorite shows or movies to watch offline. By providing users with a wide range of options, these platforms strive to give viewers the ultimate viewing experience.",Write a paragraph to explain the objective of online streaming platforms.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a paragraph to explain the objective of online streaming platforms.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Show how to create a simple catapult.,,"Instructions:
+1. Gather materials like a popsicle stick, a rubber band, bottle caps, and large paperclips 
+2. Bend the large paperclips in the shape of a t
+3. Push the t-shaped paperclips in the slots on the popsicle stick
+4. Loop the rubber band in the grooves around the popsicle stick
+5. Attach the bottle caps to the ends of the rubber band
+6. Place an object in between the bottle caps and pull the rubber band back to launch.",Show how to create a simple catapult.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Show how to create a simple catapult.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Does the word ""malfunctioning"" have any synonyms?",,"Yes, the word ""malfunctioning"" has synonyms such as failing, faltering, defective, impaired, and deficient.","Does the word ""malfunctioning"" have any synonyms?","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Does the word ""malfunctioning"" have any synonyms?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide a simple explanation of the following term,Artificial Intelligence,"Artificial Intelligence (AI) is the ability of computer programs or machines to think and learn, often mimicking the way people think. AI can be used to create solutions to difficult problems and automate tasks.","Provide a simple explanation of the following term
+
+Artificial Intelligence","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide a simple explanation of the following term
+
+Artificial Intelligence<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Construct a question for the following sentence: ""He had a red car"".",,What type of car did he have?,"Construct a question for the following sentence: ""He had a red car"".","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Construct a question for the following sentence: ""He had a red car"".<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give three examples of using technology for efficiency.,,"1. Automating processes such as email marketing and customer service tasks.
+2. Using data analytics to make informed decisions about the business and its operations.
+3. Utilizing cloud-based technologies for remote work, collaboration, and communication.",Give three examples of using technology for efficiency.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give three examples of using technology for efficiency.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a conversation between two chatbots about summer vacations.,,"Chatbot 1: Hi there! What are your plans for this summer?
+Chatbot 2: I'm planning to do some exploring and visiting some new places. How about you?
+Chatbot 1: Sounds fun! I'm planning on taking a long road trip with some friends. What is the best place that you've visited?
+Chatbot 2: The beach! My favorite place to visit is the beach. I love to relax by the shore and enjoy the sun and sand. What about you?",Generate a conversation between two chatbots about summer vacations.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a conversation between two chatbots about summer vacations.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a new recipe for an easy and healthy breakfast.,,"This recipe for a healthy and easy breakfast takes only minutes to prepare. You'll need the following: one ripe banana, half a cup of rolled oats, one tablespoon of honey, one teaspoon of cinnamon, one cup of almond milk, and one cup of fresh berries. 
+
+Start by mashing the banana in a bowl. Once done, add the oats, honey, cinnamon and almond milk and stir until combined. 
+
+Fill a small skillet with a teaspoon of oil and heat to medium. Depending on the desired texture, leave the mixture to cook for 3-5 minutes. Add the desired amount of berries and stir in the mixture. 
+
+Remove skillet from heat and serve in a bowl. Enjoy your delicious, healthy breakfast!",Create a new recipe for an easy and healthy breakfast.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a new recipe for an easy and healthy breakfast.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+List 3 benefits for eating a balanced diet.,,"1. Improved overall health: Eating a balanced diet can help reduce your risk of chronic diseases such as heart disease, stroke, and type 2 diabetes. 
+2. Increased energy levels: Eating a variety of nutrient-dense foods can help increase energy levels, and boost mood and brain functioning.
+3. Weight control: A balanced diet promotes healthy weight management by providing the body with the right amount of nutrients, vitamins, and minerals.",List 3 benefits for eating a balanced diet.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+List 3 benefits for eating a balanced diet.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a list of landscape gardening projects for a garden that is 30m by 20m.,Garden size: 30m by 20m,"1. Install a pergola for shade and comfort.
+2. Set up garden lighting for nighttime blooms and show. 
+3. Set up raised flower gardens with different varieties of plants.
+4. Install a water feature such as a fountain or pond.
+5. Plant trees to provide shade and natural beauty.
+6. Plant climbing vines on fences and walls.
+7. Set up a vegetable garden.
+8. Construct a path of stones and gravel.
+9. Add a seating area with outdoor furniture.
+10. Utilize vertical lattices or garden arches to create a layered look and texture.","Generate a list of landscape gardening projects for a garden that is 30m by 20m.
+
+Garden size: 30m by 20m","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a list of landscape gardening projects for a garden that is 30m by 20m.
+
+Garden size: 30m by 20m<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Identify the parts of speech in the following sentence and provide the dictionary definition of each.,The baron bludgeoned the beast with his blunderbuss.,"- The: article
+Definition: Used to refer to a specific person or thing that has already been mentioned or is easily identified 
+
+- Baron: noun
+Definition: A nobleman or landed proprietor with the rank of baron, above a knight but below a viscount or count
+
+- Bludgeoned: verb
+Definition: Beat (someone or something) with a club or other heavy object
+
+- Beast: noun
+Definition: A powerful and often frightening animal
+
+- His: possessive pronoun
+Definition: Belonging to or associated with a male person or animal previously mentioned or easily identified 
+
+- Blunderbuss: noun
+Definition: A short, wide-mouthed firearm, formerly used by cavalry and smugglers and being loaded with shot or slugs.","Identify the parts of speech in the following sentence and provide the dictionary definition of each.
+
+The baron bludgeoned the beast with his blunderbuss.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Identify the parts of speech in the following sentence and provide the dictionary definition of each.
+
+The baron bludgeoned the beast with his blunderbuss.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name one endangered species.,,African elephant.,Name one endangered species.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name one endangered species.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Make a dinner menu for two people that has some nutritional balance.,,"Menu for two people:
+- Starter: Spinach salad with cranberries and walnuts.
+- Main course: Grilled chicken with sweet potato wedges and steamed broccoli.
+- Dessert: Baked apples with cinnamon sugar.",Make a dinner menu for two people that has some nutritional balance.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Make a dinner menu for two people that has some nutritional balance.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a description of a specific creature from your imagination.,,"The Ixiphene was a mythical creature with a sleekly furred body, four muscular legs, and a long tail that ended in fiery twirls and red sparks. Its eyes were large, its claws sharp and retractable, and its mouth full of sharp teeth. It had a magical aura around it and could often be found watching from the shadows, waiting to be summoned.",Write a description of a specific creature from your imagination.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a description of a specific creature from your imagination.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Create a 6-word poem using the following words: joy, hope, strength, courage, love.",,"Love brings joy and hope. Strength, courage.","Create a 6-word poem using the following words: joy, hope, strength, courage, love.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a 6-word poem using the following words: joy, hope, strength, courage, love.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Design an algorithm to sort a given list.,"[4, 1, 6, 5, 2]","A sorting algorithm for the given list can use the following steps:
+1. Compare the first two elements and swap them if the first element is greater than the second element.
+2. Continue doing the same with the next two elements until the end of the list is reached.
+3. Repeat steps 1 and 2 until the list is in sorted order.
+The sorted list would be: [1, 2, 4, 5, 6].","Design an algorithm to sort a given list.
+
+[4, 1, 6, 5, 2]","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Design an algorithm to sort a given list.
+
+[4, 1, 6, 5, 2]<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What is the chemical formula for water?,,The chemical formula for water is H₂O.,What is the chemical formula for water?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What is the chemical formula for water?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a short story about a person exploring the jungle.,,"John was an adventurous spirit - so when he heard of a new richly biodiverse jungle on a distant island, he knew he simply had to explore it. He booked his ticket and set off on a breathtaking journey. He adventured through the deep green tangle of trees, discovering more exotic wildlife than he had ever seen before. Finally, as his journey was coming to an end, he had one more surprise: a majestic waterfall, cascading over a high cliff, providing a stunning view to admire before his return.",Create a short story about a person exploring the jungle.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a short story about a person exploring the jungle.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Input the name of two people. Output a sentence introducing them to each other.,"John, Emma","John, meet Emma. Emma, this is John.","Input the name of two people. Output a sentence introducing them to each other.
+
+John, Emma","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Input the name of two people. Output a sentence introducing them to each other.
+
+John, Emma<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find a specific example of the given keyword.,Keyword: Humanitarian efforts,"The World Food Programme is an example of a humanitarian effort, as it provides food aid to individuals in conflict-affected and hunger-stricken areas.","Find a specific example of the given keyword.
+
+Keyword: Humanitarian efforts","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find a specific example of the given keyword.
+
+Keyword: Humanitarian efforts<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name 3 musical instruments.,,"Piano, guitar, and drums.",Name 3 musical instruments.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name 3 musical instruments.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a pizza topping combination.,,"A delicious pizza topping combination could include mushrooms, bell peppers, onions, and sausage.",Create a pizza topping combination.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a pizza topping combination.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the connection between environmental degradation and public health.,none,"Environmental degradation can have a profound impact on public health. Contaminated air, water, and soil can increase exposure to pollutants, pesticides, and other toxic substances, resulting in a wide range of health outcomes including respiratory and cardiovascular diseases, cancer, and other chronic and infectious diseases. In addition, degrading ecosystems lead to a loss of biodiversity that can disrupt food production and nutrition, leading to malnutrition and other health problems.","Describe the connection between environmental degradation and public health.
+
+none","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the connection between environmental degradation and public health.
+
+none<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe a database table for customer membership.,,"A database table for customer membership would typically include fields for customer name, contact information, membership level, membership expiration date, membership renewal date, and account balance. Additional fields such as reward points or customer preferences could also be included.",Describe a database table for customer membership.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe a database table for customer membership.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name 3 types of transportation in India.,,"The three types of transportation in India are rail, road, and air.",Name 3 types of transportation in India.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name 3 types of transportation in India.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+List three different ways to prevent the spread of coronavirus.,,"Three ways to prevent the spread of coronavirus are to practice social distancing, wear a face mask, and routinely wash your hands with soap and water.",List three different ways to prevent the spread of coronavirus.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+List three different ways to prevent the spread of coronavirus.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Which company owns the website Hulu?,,"Hulu is owned by Disney, WarnerMedia, Comcast, and AT&T.",Which company owns the website Hulu?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Which company owns the website Hulu?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the impact of ocean pollution.,,"Ocean pollution has devastating impacts on marine life, the economy, and humans. Marine life can be harmed through ingestion of plastic debris or by being tangled in lost nets and other discarded materials. This can occur at all levels of the marine food chain, drastically reducing the numbers of some species or in extreme cases, leading to their extinction. Pollution can also damage coral reefs, which provide homes for a wide variety of marine species and have significant economic benefits. Pollution can also adversely affect humans by spreading toxins into the air and water on which we depend for our health and livelihood.",Describe the impact of ocean pollution.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the impact of ocean pollution.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find 3 acronyms related to artificial intelligence,,"AI, ML, NLP",Find 3 acronyms related to artificial intelligence,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find 3 acronyms related to artificial intelligence<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find an example of a metaphor in this sentence: My life is like a river flowing inexorably.,,"The phrase ""my life is like a river flowing inexorably"" is an example of a metaphor. It is comparing life to a river, implying continuous forward movement towards an unknown destination.",Find an example of a metaphor in this sentence: My life is like a river flowing inexorably.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find an example of a metaphor in this sentence: My life is like a river flowing inexorably.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find all of the adjectives in the following sentence and replace them with synonyms.,The large bird flew swiftly in the sky.,The immense bird glided quickly in the sky.,"Find all of the adjectives in the following sentence and replace them with synonyms.
+
+The large bird flew swiftly in the sky.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find all of the adjectives in the following sentence and replace them with synonyms.
+
+The large bird flew swiftly in the sky.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a story about someone uncovering their family's secret,,"Hadrian had never given much thought to his family’s past and their mysterious silence about it. But when his parents unexpectedly pass away, he begins to unearth the secrets that have been kept hidden for years. He discovers old documents and photographs that hint at a traumatic and dark history, one that his family had desperately tried to keep hidden. As he investigates further and connects the pieces of his family’s past, he comes to realize the true horror of a legacy that had been kept buried for so long.",Write a story about someone uncovering their family's secret,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a story about someone uncovering their family's secret<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give me a proverb that expresses the idea of being cautious.,,A stitch in time saves nine.,Give me a proverb that expresses the idea of being cautious.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give me a proverb that expresses the idea of being cautious.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a description of a scene, create a poem from it.","The soft morning breeze stirs the lush foliage of the forest, the sky is stained a deep red from the rising sun.","O'er the top of the trees
+The sun starts to greet,
+Painting the sky a deep ruby hue
+A calming breeze that stirs up leaves
+A clear sight, one could not lose. 
+
+The shadows cast, dark and still
+As the beasts below await a thrill
+The new beginnings of the day
+Lays hope in an endless fray.","Given a description of a scene, create a poem from it.
+
+The soft morning breeze stirs the lush foliage of the forest, the sky is stained a deep red from the rising sun.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a description of a scene, create a poem from it.
+
+The soft morning breeze stirs the lush foliage of the forest, the sky is stained a deep red from the rising sun.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a movie title, generate a movie synopsis of 50 words.",The Color Purple,"The Color Purple is the story of Celie, an African-American woman living in the early 20th century, struggling to find her own identity amid oppression and abuse. Celie endures treatment by her family and her community, yet she perseveres and eventually discovers her own voice and courage. Through the friendship of two other women, she also learns to recognize and appreciate herself as an individual and as a valuable member of her community. The story follows Celie on her journey towards love, empowerment, and self-discovery. In the end, she proves her strength and courage by overcoming hardships, embracing her identity, and overcoming obstacles to secure her own happy ending.","Given a movie title, generate a movie synopsis of 50 words.
+
+The Color Purple","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a movie title, generate a movie synopsis of 50 words.
+
+The Color Purple<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a letter to your boss asking for a raise,,"Dear [Name],
+
+I am writing to express my deep appreciation for the opportunity to work for your company for the past [time]. As you know, I have always been dedicated and hardworking, consistently contributing to the smooth operation of the organization. 
+
+My work has been consistently in alignment with the organizational goals, and I am proud to say that my effort and dedication has earned me several accolades and recognition over the past [time]. I strongly believe that I have played an integral role in the rise of the business.
+
+Given the above, I would like to humbly request a raise in my current salary. A larger salary will act as an incentive for me to continue to strive for excellence and deliver the best results. I hope you will kindly consider my request and grant me the opportunity to continue to contribute to the success of the organization.
+
+Thank you for your time and kind attention.
+
+Sincerely,
+[Your Name]",Write a letter to your boss asking for a raise,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a letter to your boss asking for a raise<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given an angle in radians, convert it to degrees.",1.05 radians,60 degrees,"Given an angle in radians, convert it to degrees.
+
+1.05 radians","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given an angle in radians, convert it to degrees.
+
+1.05 radians<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the opposite meaning of “arbitrary”,,Non-arbitrary.,Find the opposite meaning of “arbitrary”,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the opposite meaning of “arbitrary”<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"

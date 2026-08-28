@@ -1,0 +1,4 @@
+# Extracted activation tensors are ~2 GB each -- regenerate them instead of
+# committing them. The prompt CSVs and the analysis outputs are small and are
+# worth keeping.
+activations/

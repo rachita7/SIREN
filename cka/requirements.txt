@@ -1,0 +1,14 @@
+# Dependencies for the cka/ analysis. All of these are already in the repo's
+# `siren` conda environment (environment.yaml), so if you activate that you do
+# not need to install anything.
+#
+# CPU-only steps (run_cka.py, run_cross_layer.py, smoke_test.py):
+numpy>=1.26
+pandas>=2.0
+scipy>=1.11
+matplotlib>=3.8
+
+# GPU steps (extract_activations.py) and prompt building (build_prompts.py):
+torch>=2.3
+transformers>=4.43
+datasets>=2.20

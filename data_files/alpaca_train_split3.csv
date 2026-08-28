@@ -1,0 +1,676 @@
+instruction,input,output,prompt,formatted_input
+Tell me about a modern scientific breakthrough,,"A recent scientific breakthrough is CRISPR-Cas technology, which is a powerful tool for editing genomes. It is a rapid, inexpensive and extremely accurate method of gene-editing and modification which has been used by a variety of industries, including pharmaceutical and agricultural businesses, to improve existing species. As a result, scientists have made progress in addressing certain diseases, increasing crop yields, and even creating pest-resistant crops.",Tell me about a modern scientific breakthrough,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Tell me about a modern scientific breakthrough<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide a short summary of the following book review.,"Book: The Hunger Games
+Book Review:
+The Hunger Games follows sixteen-year-old Katniss Everdeen, as she struggles to survive the annual Hunger Games, a fight to the death amongst twenty-four teenagers. Not only must she battle the other players, but she must also fight against the oppressive Capitol that controls her fate.","The Hunger Games is a novel about sixteen-year-old Katniss Everdeen who participates in the annual Hunger Games, a fight to the death amongst twenty-four teenagers. Katniss not only must battle the other players, but also the oppressive Capitol that controls her fate.","Provide a short summary of the following book review.
+
+Book: The Hunger Games
+Book Review:
+The Hunger Games follows sixteen-year-old Katniss Everdeen, as she struggles to survive the annual Hunger Games, a fight to the death amongst twenty-four teenagers. Not only must she battle the other players, but she must also fight against the oppressive Capitol that controls her fate.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide a short summary of the following book review.
+
+Book: The Hunger Games
+Book Review:
+The Hunger Games follows sixteen-year-old Katniss Everdeen, as she struggles to survive the annual Hunger Games, a fight to the death amongst twenty-four teenagers. Not only must she battle the other players, but she must also fight against the oppressive Capitol that controls her fate.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"In the following excerpt, change the adjectives to more exciting synonyms","She walked around the dull, grey park","She wandered through the drab, dismal park.","In the following excerpt, change the adjectives to more exciting synonyms
+
+She walked around the dull, grey park","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+In the following excerpt, change the adjectives to more exciting synonyms
+
+She walked around the dull, grey park<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Please generate a title for a paper about plastic pollution.,,A League of Our Own: The Emerging Crisis of Plastic Pollution.,Please generate a title for a paper about plastic pollution.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Please generate a title for a paper about plastic pollution.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What does callisthenics refer to?,,"Callisthenics is a form of physical exercise that involves body-weight exercises, often without the use of equipment. It is designed to improve physical strength, flexibility and coordination.",What does callisthenics refer to?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What does callisthenics refer to?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What medical problems can potentially be caused by long-term use of technology?,,"Long-term use of technology can cause a range of health problems including physical aches and pains, such as muscle and joint pain and headaches, as well as mental health problems, such as depression, anxiety, and difficulty concentrating. It can also lead to eyestrain, sleep disturbances, and an increase in risk for certain medical conditions, such as obesity, diabetes, and cardiovascular disease. Technology overuse can also lead to decreased social connections and isolation.",What medical problems can potentially be caused by long-term use of technology?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What medical problems can potentially be caused by long-term use of technology?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest a transition word to add to the following sentence.,She usually ate sandwiches,"She usually ate sandwiches, but today she opted for something different.","Suggest a transition word to add to the following sentence.
+
+She usually ate sandwiches","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest a transition word to add to the following sentence.
+
+She usually ate sandwiches<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name one of the most common terminologies used in cricket.,,Runs.,Name one of the most common terminologies used in cricket.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name one of the most common terminologies used in cricket.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a news article summarizing the given input information.,"A video of a woman climbing the flagpole of the US Capitol building, while wearing only a t-shirt and leggings, went viral on social media on December 1st. Several social media users criticized the police for not reacting more quickly to the incident.","On December 1st, a video of a woman climbing a flagpole at the US Capitol building while wearing only a t-shirt and leggings went viral on social media. The incident caused uproar and criticism of the Capitol Police, who failed to respond quickly to the event. The woman was Eventually apprehended and the flagpole was taken down shortly after the incident.","Write a news article summarizing the given input information.
+
+A video of a woman climbing the flagpole of the US Capitol building, while wearing only a t-shirt and leggings, went viral on social media on December 1st. Several social media users criticized the police for not reacting more quickly to the incident.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a news article summarizing the given input information.
+
+A video of a woman climbing the flagpole of the US Capitol building, while wearing only a t-shirt and leggings, went viral on social media on December 1st. Several social media users criticized the police for not reacting more quickly to the incident.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+List three of the most common problems faced by small businesses.,,"Three of the most common problems faced by small businesses are lack of sufficient capital, managing cash flow, and dealing with regulations and legal requirements.",List three of the most common problems faced by small businesses.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+List three of the most common problems faced by small businesses.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a list of nouns, generate a new sentence with one of the nouns as the subject and one of the nouns as the object.","List: [Chef, Kangaroo, Fridge, Table]",The Chef put food in the Fridge.,"Given a list of nouns, generate a new sentence with one of the nouns as the subject and one of the nouns as the object.
+
+List: [Chef, Kangaroo, Fridge, Table]","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a list of nouns, generate a new sentence with one of the nouns as the subject and one of the nouns as the object.
+
+List: [Chef, Kangaroo, Fridge, Table]<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Construct a sentence to describe the first time you saw the ocean.,,"The first time I saw the vast expanse of ocean, the vastness of it took my breath away.",Construct a sentence to describe the first time you saw the ocean.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Construct a sentence to describe the first time you saw the ocean.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate an algorithm for counting the number of different languages spoken within a country.,,"1. Create a list of the countries with their spoken languages.
+2. Initialize a counter to 0.
+3. For each country, count the number of spoken languages and added to the initialized counter. 
+4. Continue for every country in the list. 
+5. When all countries have been processed, print out the final counter.",Generate an algorithm for counting the number of different languages spoken within a country.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate an algorithm for counting the number of different languages spoken within a country.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain why using a computer for university assignments is beneficial.,,"Using a computer for university assignments is beneficial for many reasons. Computers enable students to find information quickly and accurately from a wide variety of reliable sources. There are online databases and research tools available on computers to help students find the information they need for their assignments. Using a computer can also help with time management and organization of course work. One can easily create a plan of action, set up deadlines, and maintain a good level of efficiency working on their assignments. Additionally, computers allow students to stay in touch with classmates and professors, allowing a student to collaborate to produce better quality assignments.  Computers also enable students to access lectures and course materials anytime, anywhere. Database management and presentation software can be used to easily create professional-looking documents, images, presentations, and websites. Last but not least, computers help save time and energy by removing the burden of lengthy tasks such as taking notes or calculations.",Explain why using a computer for university assignments is beneficial.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain why using a computer for university assignments is beneficial.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe how could Tom feel after learning the news.,Tom just heard that his best friend had died.,"Tom could feel shock, grief, and disbelief after learning the news that his best friend had died.","Describe how could Tom feel after learning the news.
+
+Tom just heard that his best friend had died.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe how could Tom feel after learning the news.
+
+Tom just heard that his best friend had died.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+List some of the common symptoms of a given illness.,Influenza,"Common symptoms of influenza include fever, sore throat, muscle aches and fatigue, cough, congestion, and headache. Other symptoms may include runny or stuffy nose, chills, and body aches. In severe cases, there may also be vomiting, diarrhea, and seizures.","List some of the common symptoms of a given illness.
+
+Influenza","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+List some of the common symptoms of a given illness.
+
+Influenza<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain the importance of the given fundamental theorem.,Fundamental Theorem of Calculus,"The Fundamental Theorem of Calculus states that integration and differentiation of a function are inverse processes. This theorem is important because it relates the two most common operations in calculus and provides a powerful tool to find the values of indefinite integrals that may be difficult to compute otherwise. Moreover, the theorem enables the calculation of area below a curve which is a crucial concept in mathematics, physics, and economics.","Explain the importance of the given fundamental theorem.
+
+Fundamental Theorem of Calculus","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain the importance of the given fundamental theorem.
+
+Fundamental Theorem of Calculus<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Analyze the following statement for its rhetorical structure.,"""We must take a stand against poverty and take action to improve the lives of those in need.""","The speaker is taking a stance against poverty, which involves an appeal to ethos as they display their commitment and willingness to take action. They are also using pathos by speaking to the audience's emotional side, appealing to the collective conscience of the community to take a stand and do something to help. Finally, they are utilizing a call to action, encouraging the audience to take action to make a difference in the lives of those living in poverty.","Analyze the following statement for its rhetorical structure.
+
+""We must take a stand against poverty and take action to improve the lives of those in need.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Analyze the following statement for its rhetorical structure.
+
+""We must take a stand against poverty and take action to improve the lives of those in need.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given two people, generate a few sentences of dialogue that convey how they feel.",John and Sue,"John: ""Hey Sue, how are you doing today?"" 
+Sue: ""I'm doing alright. How about you?""
+John: ""Yeah, I'm doing great. I feel pretty good!""
+Sue: ""That's great to hear. I'm glad you're doing well.""","Given two people, generate a few sentences of dialogue that convey how they feel.
+
+John and Sue","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given two people, generate a few sentences of dialogue that convey how they feel.
+
+John and Sue<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name a related tool for the given task.,Designing a website,"A related tool for designing a website is a website builder, such as WordPress, Wix, or Squarespace. These tools enable users to easily create beautiful websites with no coding knowledge. This makes it easy to create a professional-looking website without the hassle of coding.","Name a related tool for the given task.
+
+Designing a website","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name a related tool for the given task.
+
+Designing a website<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Take the provided statement and rewrite it using the third person point of view.,I felt sad and disappointed.,She felt sad and disappointed.,"Take the provided statement and rewrite it using the third person point of view.
+
+I felt sad and disappointed.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Take the provided statement and rewrite it using the third person point of view.
+
+I felt sad and disappointed.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Classify this book as either fiction or nonfiction.,The Cat in the Hat by Dr. Seuss,This book is classified as fiction.,"Classify this book as either fiction or nonfiction.
+
+The Cat in the Hat by Dr. Seuss","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify this book as either fiction or nonfiction.
+
+The Cat in the Hat by Dr. Seuss<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Notice and correct the spelling mistake in the following sentence.,The gallery contaianed hundreds of art peices.,The gallery contained hundreds of art pieces.,"Notice and correct the spelling mistake in the following sentence.
+
+The gallery contaianed hundreds of art peices.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Notice and correct the spelling mistake in the following sentence.
+
+The gallery contaianed hundreds of art peices.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+List 5 popular dishes in US.,,"-Hamburgers 
+-Pizza 
+-Hot Dogs 
+-Chili 
+-Tacos",List 5 popular dishes in US.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+List 5 popular dishes in US.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Generate a sentence using the following words: crocodile, angry, moonlight.",,The angry crocodile glistened in the moonlight.,"Generate a sentence using the following words: crocodile, angry, moonlight.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a sentence using the following words: crocodile, angry, moonlight.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Summarize the importance of the US Constitution.,,"The United States Constitution is an important part of American life and history because it is the foundation of the nation’s laws and the framework on which all other laws are built. It provides individuals with rights and protections, underscores the importance of checks and balances between all branches of government, and connects citizens to the values shared by all Americans.",Summarize the importance of the US Constitution.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Summarize the importance of the US Constitution.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Classify the following text as either scientific or not scientific.,"Cats love to climb and scratch things, it is in their nature.",Not scientific.,"Classify the following text as either scientific or not scientific.
+
+Cats love to climb and scratch things, it is in their nature.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify the following text as either scientific or not scientific.
+
+Cats love to climb and scratch things, it is in their nature.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What type of clothing is required for cold weather?,,"When the weather is cold, it is important to layer clothing to keep warm. A good base layer should be made from a natural fabric such as cotton or wool, which will help to wick away moisture. Over that, a middle layer of fleece or wool can be added for insulation, and a waterproof and windproof outer layer for protection from the elements. Additional clothing items to consider include hats, gloves, boots, and scarves.",What type of clothing is required for cold weather?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What type of clothing is required for cold weather?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Translate a piece of text from English to German.,"""The sky is above.""",Der Himmel ist oben.,"Translate a piece of text from English to German.
+
+""The sky is above.""","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Translate a piece of text from English to German.
+
+""The sky is above.""<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Classify the following flower as an annual or a perennial.,Marigold,The marigold is an annual flower.,"Classify the following flower as an annual or a perennial.
+
+Marigold","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Classify the following flower as an annual or a perennial.
+
+Marigold<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain why rainbows are curved.,,"Rainbows are curved because of the way light refracts in water droplets. When the light coming from the Sun passes through a raindrop, it is bent and separated into its component colors, forming a circular arc.",Explain why rainbows are curved.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain why rainbows are curved.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given the given description, classify it as either a historical figure, a myth, or a literary character.",Sherlock Holmes,Literary Character.,"Given the given description, classify it as either a historical figure, a myth, or a literary character.
+
+Sherlock Holmes","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given the given description, classify it as either a historical figure, a myth, or a literary character.
+
+Sherlock Holmes<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Detect if there is any profanity in the sentence.,"Oh golly shucks, that's awful",No profanity detected.,"Detect if there is any profanity in the sentence.
+
+Oh golly shucks, that's awful","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Detect if there is any profanity in the sentence.
+
+Oh golly shucks, that's awful<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the perfect summer.,,"The perfect summer is filled with adventure and relaxation. The sun is shining and there is a gentle breeze in the air. The days are long and filled with fun activities such as swimming, hiking, picnicking, and camping. The warm evenings are perfect for gathering with friends and family around a fire and enjoying each other's company. There is plenty of time for lazy days spent reading a good book and soaking up the sun. No matter what you do, the beauty and serenity of nature make it the perfect summer.",Describe the perfect summer.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the perfect summer.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Rewrite this sentence using a different part of speech for the underlined word,The government provided financial assistance.,The government rendered financial aid.,"Rewrite this sentence using a different part of speech for the underlined word
+
+The government provided financial assistance.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite this sentence using a different part of speech for the underlined word
+
+The government provided financial assistance.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain the difference between a pre-emptive and non-preemptive scheduling algorithm.,,"Preemptive scheduling algorithms are those that take priority into account when determining which process to choose next. These algorithms can take into account the priority of each process when they decide which process to assign to the CPU. Non-preemptive scheduling algorithms do not take priority into consideration. Instead, they assign the processes in the order in which they arrive.",Explain the difference between a pre-emptive and non-preemptive scheduling algorithm.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain the difference between a pre-emptive and non-preemptive scheduling algorithm.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Find the primary theme of the following excerpt.,"Life is a gift, a chance to make a difference, a miracle as precious and unique as a snowflake.",The primary theme of this excerpt is the appreciation of life.,"Find the primary theme of the following excerpt.
+
+Life is a gift, a chance to make a difference, a miracle as precious and unique as a snowflake.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Find the primary theme of the following excerpt.
+
+Life is a gift, a chance to make a difference, a miracle as precious and unique as a snowflake.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest 3 ways to reduce water usage in the home.,,"1. Install low-flow showerheads, toilets, and faucets. 
+2. Collect rainwater in a barrel or storage tank and use it for watering plants or other outdoor needs. 
+3. Use graywater (water from baths and laundry) for plants and other uses that don't require clean water.",Suggest 3 ways to reduce water usage in the home.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest 3 ways to reduce water usage in the home.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Research a famous poet and summarise their famous work in 2-3 sentences.,William Wordsworth,"William Wordsworth was a famous English poet known for his Romantic style of poetry. His most famous work is his collection of poems published in 1807 entitled Lyrical Ballads. Wordsworth sought to connect language to everyday life, as well as to a sense of the mystical in everyday life. He also used the natural world in many of his poems as a symbol for his spiritual thoughts.","Research a famous poet and summarise their famous work in 2-3 sentences.
+
+William Wordsworth","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Research a famous poet and summarise their famous work in 2-3 sentences.
+
+William Wordsworth<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create the heading for a news article about the impact of climate change.,,Climate Change: Uncovering the Alarming Effects,Create the heading for a news article about the impact of climate change.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create the heading for a news article about the impact of climate change.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give an example of a real-world application for Machine Learning.,,"Real-world applications of Machine Learning include facial recognition, credit card fraud detection, speech recognition, virtual personal assistants, self-driving cars, robotics, and natural language processing (NLP).",Give an example of a real-world application for Machine Learning.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give an example of a real-world application for Machine Learning.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a sentence expressing surprise.,,I didn't expect that to happen!,Write a sentence expressing surprise.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a sentence expressing surprise.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Rewrite the sentence to use the comparative form of the adjective, output the sentence.",The garden is beautiful,The garden is more beautiful than ever.,"Rewrite the sentence to use the comparative form of the adjective, output the sentence.
+
+The garden is beautiful","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite the sentence to use the comparative form of the adjective, output the sentence.
+
+The garden is beautiful<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given a product, categorize four ways it can improve the user's life",Product: Alarm Clock,"An alarm clock can improve the user's life in four ways:
+1. An alarm clock can help people stick to a regular sleep schedule, improving their overall well-being.
+2. An alarm clock can act as a reminder for important tasks and events, helping people stay organized and on task.
+3. An alarm clock can aid in increasing productivity, helping people make the most of their available time.
+4. An alarm clock can provide a sense of security, offering peace of mind that the user won't oversleep or miss important appointments.","Given a product, categorize four ways it can improve the user's life
+
+Product: Alarm Clock","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given a product, categorize four ways it can improve the user's life
+
+Product: Alarm Clock<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe the use of a crane,,"A crane is a heavy-lifting machine used for moving heavy materials, such as beams and construction equipment, from one point to another. Cranes can also be used to lift and attach massive objects or assemblies, such as trusses or bridges, as part of a construction or engineering project. Cranes are often used in industrial and construction settings to move large items, such as containers, over long distances.",Describe the use of a crane,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe the use of a crane<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Help me write a web banner advertisement for our product.,,"Come experience the future of gaming with [Product Name]. Get innovative design and revolutionary technology that will give you an unbeatable gaming experience. With [Product Name], you can take your gaming to the next level!",Help me write a web banner advertisement for our product.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Help me write a web banner advertisement for our product.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given the coordinates (12.76, 95.80), name the country where these coordinates belong to.",,"The country which the coordinates (12.76, 95.80) belong to is Myanmar.","Given the coordinates (12.76, 95.80), name the country where these coordinates belong to.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given the coordinates (12.76, 95.80), name the country where these coordinates belong to.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Make recommendations for a new topic given the following text.,"Text:
+This article examines some of the key aspects of structuring and managing data in the healthcare industry.","Recommendations: 
+- Analyzing the Use of Machine Learning in Healthcare
+- Maximizing Quality Assurance With Data Management in Healthcare
+- Methods of Utilizing Data Analytics in Healthcare
+- Exploring the Potential of AI in Healthcare","Make recommendations for a new topic given the following text.
+
+Text:
+This article examines some of the key aspects of structuring and managing data in the healthcare industry.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Make recommendations for a new topic given the following text.
+
+Text:
+This article examines some of the key aspects of structuring and managing data in the healthcare industry.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest 5 healthy snacks.,,"1. Trail mix: a mix of nuts, dried fruit, and healthy cereals 
+2. Air-popped popcorn 
+3. Hard-boiled eggs 
+4. Greek yogurt with fresh fruit 
+5. Berries and dark chocolate pieces",Suggest 5 healthy snacks.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest 5 healthy snacks.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a product description for a new mobile.,iPhone 11 Pro,"Introducing the new iPhone 11 Pro, the ultimate all-in-one device with a stunning OLED display, powerful triple camera system, and long-lasting battery life. Experience advanced technology and mesmerizing performance when you choose the iPhone 11 Pro. Whether you’re looking to capture breathtaking photos and videos, or experience amazing gaming and apps, the iPhone 11 Pro brings power and portability right to your fingertips.","Write a product description for a new mobile.
+
+iPhone 11 Pro","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a product description for a new mobile.
+
+iPhone 11 Pro<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What is the word for “a large group of people gathered together in one place”?,,"The word for “a large group of people gathered together in one place” is a ""crowd.""",What is the word for “a large group of people gathered together in one place”?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What is the word for “a large group of people gathered together in one place”?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+How long did World War I last?,,"World War I lasted from 28 July 1914 to 11 November 1918, a total of 1,566 days.",How long did World War I last?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+How long did World War I last?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given the following code snippet, describe how sorting works in Python.","unsorted_list = [2,1,4,3]
+unsorted_list.sort()","Sorting in Python works by rearranging the elements of a list according to a certain criteria. In the code snippet given, the list is sorted in ascending order. This is done by comparing each element in the list to its neighbor and when the order is incorrect, the elements are swapped. This process continues until all elements in the list are in the correct order, i.e. the list is sorted.","Given the following code snippet, describe how sorting works in Python.
+
+unsorted_list = [2,1,4,3]
+unsorted_list.sort()","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given the following code snippet, describe how sorting works in Python.
+
+unsorted_list = [2,1,4,3]
+unsorted_list.sort()<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Summarize the poem 'The Lady of Shallot?,,"In Alfred Lord Tennyson’s poem, 'The Lady of Shallot', a character curses her fate when she must remain hidden away in her tower, weaving a tapestry depicting the world outside which she can only witness through a mirror. Despite her enchantments, she begins to see the world directly and falls for the knight Sir Lancelot, whom she follows until she sees their reflection in the river, leading to her death. The poem is an exploration of the consequences of breaking the limitations of the physical world, ultimately reminding us of the importance of being mindful of the boundaries that enable us to live in harmony.",Summarize the poem 'The Lady of Shallot?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Summarize the poem 'The Lady of Shallot?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Rewrite the following sentence to change it from an affirmative sentence to a question.,This feature provides the user with more options.,Does this feature provide the user with more options?,"Rewrite the following sentence to change it from an affirmative sentence to a question.
+
+This feature provides the user with more options.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Rewrite the following sentence to change it from an affirmative sentence to a question.
+
+This feature provides the user with more options.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a list from the given sentence.,"He went to the store to buy fruits, vegetables and eggs.","- Fruits
+- Vegetables
+- Eggs","Create a list from the given sentence.
+
+He went to the store to buy fruits, vegetables and eggs.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a list from the given sentence.
+
+He went to the store to buy fruits, vegetables and eggs.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Suggest one craft activity that can be done indoors.,,"Paper Mache is an easy and fun craft activity that can be done indoors. You will need newspaper, adhesive such as glue, flour and water and some food coloring for effect. You can use a balloon as a base, rip the newspaper and lay it in the adhesive to create colorful papier-mâché shapes.",Suggest one craft activity that can be done indoors.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Suggest one craft activity that can be done indoors.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Figure out the greatest common divisor for 10 and 25,,5,Figure out the greatest common divisor for 10 and 25,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Figure out the greatest common divisor for 10 and 25<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Explain the usage of the indexing operator in Python.,,"The indexing operator in Python, denoted by [], is used to access the elements of a sequence data type. This operator works on strings, lists, and tuples. For example, for a sequence data type such as a list, you can use the indexing operator to access the elements of the list and to modify the content of individual elements of the list. In addition, you can use the indexing operator to assign values to individual elements within an index range in a list.",Explain the usage of the indexing operator in Python.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain the usage of the indexing operator in Python.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a function to convert a year from Gregorian calendar to Mayan calendar,,"def mayan_calendar(year):
+    base_date = 1518 #representation of Dec 21, 2012 in Gregorian calendar
+    days_in_year = 365 #days in a year
+    cycles_in_year = 5 #Mayan calendar has 5 cycles of 260 days per year
+    diff = year - base_date 
+    mayan_year = diff*cycles_in_year
+    return mayan_year",Write a function to convert a year from Gregorian calendar to Mayan calendar,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a function to convert a year from Gregorian calendar to Mayan calendar<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a research question related to the following topic: How technology is revolutionizing the shopping experience,,What are the most effective ways in which technology can be leveraged to improve customer satisfaction and loyalty when shopping online?,Generate a research question related to the following topic: How technology is revolutionizing the shopping experience,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a research question related to the following topic: How technology is revolutionizing the shopping experience<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give five examples of irregular verbs.,,"Five examples of irregular verbs are be, have, do, go, and take.",Give five examples of irregular verbs.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give five examples of irregular verbs.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a 5-sentence bio for someone,"Name: Blake Turner
+Age: 35
+Hometown: Austin, Texas","Blake Turner is a thirty-five year old living in Austin, Texas. Born and raised in the area, Blake is an experienced entrepreneur and active community member. With a knack for connecting with people, Blake is a natural leader and often lends his talents and ideas to making his hometown a better place to live. He is a dedicated creator, always seeking to find new ways to connect and improve the lives of those around him. Blake is an avid music fan and enjoys spending his spare time discovering new bands and creating his own music.","Create a 5-sentence bio for someone
+
+Name: Blake Turner
+Age: 35
+Hometown: Austin, Texas","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a 5-sentence bio for someone
+
+Name: Blake Turner
+Age: 35
+Hometown: Austin, Texas<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a scientific explanation for why the sky is blue.,,"The sky appears blue due to the scattering of light from molecules in the Earth's atmosphere. Sunlight enters the atmosphere and interacts with the molecules and particles, causing light particles to scatter in all directions. The blue light has the greatest ability to penetrate the atmosphere, so it reaches our eyes more often than other colors, making the sky appear blue.",Write a scientific explanation for why the sky is blue.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a scientific explanation for why the sky is blue.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"In this task, you need to provide an example of a situation where creativity is required.",,"An example of a situation where creativity is required would be coming up with a new product design. For example, when creating a new type of shoe, the designer must use their creativity to come up with a design that is innovative and appealing to the target market.","In this task, you need to provide an example of a situation where creativity is required.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+In this task, you need to provide an example of a situation where creativity is required.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a conversation between two people who have just met.,People: John and Kate,"John: Hey, I'm John. It's really nice to meet you.
+
+Kate: Hi John, I'm Kate. Nice to meet you too.
+
+John: Are you from around here?
+
+Kate: Yeah, I was born and raised here. What about you? 
+
+John: I'm from the other side of town. I just moved here.
+
+Kate: That's cool. Do you like it so far?
+
+John: Yeah, I'm enjoying it so far.","Generate a conversation between two people who have just met.
+
+People: John and Kate","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a conversation between two people who have just met.
+
+People: John and Kate<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Provide an example of a 5-year career plan,,"In five years, my career plan is to gain experience in my field by continuing to work with higher level projects and take on more responsibility, in order to gain a better understanding of my industry. I also plan on taking advantage of any available learning opportunities, such as seminars and workshops, to further strengthen my skills. Additionally, I will work on developing a strong professional network, to find potential job opportunities in the future.",Provide an example of a 5-year career plan,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Provide an example of a 5-year career plan<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Read the following text and classify it into one of the three genres: Fantasy, Science Fiction, or Horror.",The woman turned to look at the dark figure that had stepped out of the shadows. She stared in horror as she realised the figure was not human.,Horror,"Read the following text and classify it into one of the three genres: Fantasy, Science Fiction, or Horror.
+
+The woman turned to look at the dark figure that had stepped out of the shadows. She stared in horror as she realised the figure was not human.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Read the following text and classify it into one of the three genres: Fantasy, Science Fiction, or Horror.
+
+The woman turned to look at the dark figure that had stepped out of the shadows. She stared in horror as she realised the figure was not human.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Generate a 5-word phrase that suggests success.,,Smooth sailing to success.,Generate a 5-word phrase that suggests success.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Generate a 5-word phrase that suggests success.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Explain the concept of a ""heartbeat"" in terms of database management.",,"In database management, a heartbeat is a background task that is performed regularly to ensure the database is up and running. The heartbeat helps detect any errors or problems with the database, and will alert system administrators so that they can be quickly remedied. The heartbeat also serves additional functions such as detecting connection drops, creating database backups, and determining whether database nodes are up or down.","Explain the concept of a ""heartbeat"" in terms of database management.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Explain the concept of a ""heartbeat"" in terms of database management.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name two anti-virus software.,,Two popular anti-virus software are McAfee and Norton.,Name two anti-virus software.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name two anti-virus software.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Describe a small business that someone is thinking of starting.,,"A small business is being imagined that would bring fresh, homemade baked goods to the local community. The small business would offer a variety of cakes, cookies, pies, donuts, muffins, and other treats, all prepared daily in a small kitchen and delivered to local shops and homes. Future plans to expand the business include creating an online storefront and eventually hosting baking classes and workshops.",Describe a small business that someone is thinking of starting.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Describe a small business that someone is thinking of starting.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Given an input of celebrity names, suggest a pair of celebrities who have worked together in any form.","Angelina Jolie, Matt Damon","Angelina Jolie and Matt Damon have both starred in the movie ‘The Good Shepherd’, directed by Robert De Niro in 2006.","Given an input of celebrity names, suggest a pair of celebrities who have worked together in any form.
+
+Angelina Jolie, Matt Damon","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Given an input of celebrity names, suggest a pair of celebrities who have worked together in any form.
+
+Angelina Jolie, Matt Damon<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a timeline of the events that led to the given result.,The rise of eCommerce,"- 1993: First eCommerce transaction took place 
+- 1995: Amazon and eBay founded 
+- 2003: PayPal formed to facilitate online payments 
+- 2008: Mobile shopping and technology advancements increase the ease of eCommerce 
+- 2011: 5% of global retail sales occur online 
+- 2016: Global eCommerce sales surpass $1 trillion","Create a timeline of the events that led to the given result.
+
+The rise of eCommerce","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a timeline of the events that led to the given result.
+
+The rise of eCommerce<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a description of a person's first job.,,"John's first job was working at a local cafe. He enjoyed the fast-paced environment and the friendly customers. He quickly learned how to use the coffee machine and make different types of coffee drinks. He even learned how to bake pastries from scratch. On the weekends, he often stayed late to help the restaurant with its busy rushes. From this job, John learned about customer service and how to enjoy the work he does.",Write a description of a person's first job.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a description of a person's first job.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+What is the sum of the first 10 prime numbers?,,127,What is the sum of the first 10 prime numbers?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+What is the sum of the first 10 prime numbers?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create an algorithm for finding out the largest number in an array of integers.,,"def find_maximum_number(numbers):
+""""""
+Given an array of integers, find and return the largest number
+
+Args:
+    numbers: a list of integers
+
+Returns:
+    maximum: the largest number in the given array
+
+""""""
+    maximum = numbers[0]
+    for number in numbers:
+        if number > maximum:
+            maximum = number
+        
+    return maximum",Create an algorithm for finding out the largest number in an array of integers.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create an algorithm for finding out the largest number in an array of integers.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Name the languages which uses the Latin alphabets,,"Many languages ​​use the Latin alphabet, including English, French, Spanish, German, Italian, Portuguese, Dutch, Danish, Swedish, Norwegian, Romanian, Catalan, Finnish, Polish, Czech, Slovak, Croatian, Hungarian, and Latin itself. Additionally, some African languages, such as Swahili, Zulu, and Xhosa, used variants of the Latin alphabet. Other languages that use a variation of the Latin alphabet include Tagalog, Hawaiian, and Esperanto.",Name the languages which uses the Latin alphabets,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Name the languages which uses the Latin alphabets<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a list of the top 5 attractions in San Francisco.,,"- Golden Gate Bridge
+- Alcatraz Island
+- Cable Cars
+- Golden Gate Park
+- Fisherman's Wharf",Create a list of the top 5 attractions in San Francisco.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a list of the top 5 attractions in San Francisco.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Design a logo for a mobile application.,,"The logo design should be simple, modern, and unique. It should capture the essence of the application and communicate its functions. The logo should feature bold colors that are eye-catching, and the design should be adaptable to various sizes and platforms, such as websites and mobile devices.",Design a logo for a mobile application.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Design a logo for a mobile application.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+How many sides does an octagon have?,,An octagon has eight sides.,How many sides does an octagon have?,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+How many sides does an octagon have?<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Create a fictitious character based off of the following three qualities.,"talented, ambitious, and secretive","I created a fictitious character named Jenna who is talented, ambitious, and secretive. She is a college student who is striving to make it big in the business world. To achieve her ambitions, she is willing to do whatever it takes and stays tight-lipped about her plans at all times.","Create a fictitious character based off of the following three qualities.
+
+talented, ambitious, and secretive","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Create a fictitious character based off of the following three qualities.
+
+talented, ambitious, and secretive<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Write a few sentences describing how to make a cup of tea.,,"First, boil a pot of water. Once it's boiling, grab a tea bag of your desired flavor and let it steep for 3-4 minutes. Remove the tea bag, sweeten as desired, and pour the tea into a cup.",Write a few sentences describing how to make a cup of tea.,"<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Write a few sentences describing how to make a cup of tea.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+"Summarize the book ""Pride and Prejudice"" in one sentence.",,"""Pride and Prejudice"" is a story about the journey of two people, Elizabeth Bennet and Mr. Darcy, as they overcome obstacles of pride and prejudice to find true love and lasting happiness.","Summarize the book ""Pride and Prejudice"" in one sentence.","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Summarize the book ""Pride and Prejudice"" in one sentence.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Construct an excel formula to calculate the total cost for the following list of items.,"Item	    Quantity	Price
+Apple	    3	        2.6
+Banana	    5	        1.8
+Pears	    2	        3.9","=SUM (2.6*3, 1.8*5, 3.9*2)","Construct an excel formula to calculate the total cost for the following list of items.
+
+Item	    Quantity	Price
+Apple	    3	        2.6
+Banana	    5	        1.8
+Pears	    2	        3.9","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Construct an excel formula to calculate the total cost for the following list of items.
+
+Item	    Quantity	Price
+Apple	    3	        2.6
+Banana	    5	        1.8
+Pears	    2	        3.9<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
+Give me the common name for this substance.,muscovite,Muscovite is the common name for the mineral mica.,"Give me the common name for this substance.
+
+muscovite","<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Give me the common name for this substance.
+
+muscovite<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+"
