@@ -180,12 +180,33 @@ def load_texts(dataset):
         raise
 
 
+def deduplicate(frame):
+    """Drop repeated prompts.
+
+    Duplicates are actively harmful for CKA, not merely wasteful: two identical
+    prompts produce two identical rows, hence a block of maximal similarity in
+    every method's prompt-similarity matrix. That block is shared by all methods
+    regardless of which neurons they selected, so it inflates every CKA. Matters
+    most when pooling datasets, which overlap in sources.
+    """
+    before = len(frame)
+    frame = frame.drop_duplicates(subset="text").reset_index(drop=True)
+    if len(frame) < before:
+        print(f"  dropped {before - len(frame)} duplicate prompts")
+    return frame
+
+
 def balance(frame, max_prompts, seed):
     """Equal numbers of harmful and benign prompts, capped at max_prompts.
 
     Balancing matters here beyond the usual reasons: the class-residualized
     CKA subtracts per-class means, and an unbalanced set would make one class's
     mean far noisier than the other's.
+
+    The binding constraint is usually the smaller class, not max_prompts.
+    WildGuard's test split, for instance, is 1,725 prompts but only 754 are
+    harmful, so a balanced set is 1,508 however high max_prompts is. Pool
+    several datasets to get past that.
     """
     rng = np.random.default_rng(seed)
     groups = {int(v): sub for v, sub in frame.groupby("label")}
@@ -194,7 +215,13 @@ def balance(frame, max_prompts, seed):
               f"class-residualized CKA variant will be uninformative here.")
         per_class = max_prompts
     else:
-        per_class = min(min(len(g) for g in groups.values()), max_prompts // 2)
+        smallest = min(len(g) for g in groups.values())
+        per_class = min(smallest, max_prompts // 2)
+        if smallest < max_prompts // 2:
+            print(f"  NOTE: the smaller class has {smallest} prompts, so the "
+                  f"balanced set is {2 * smallest}, below the requested "
+                  f"{max_prompts}. Pass several datasets to --dataset to pool "
+                  f"them and reach the target.")
     picked = []
     for label in sorted(groups):
         sub = groups[label]
@@ -219,7 +246,13 @@ def apply_template(texts, model_path):
 def main():
     parser = argparse.ArgumentParser(
         description="Build a held-out, class-balanced, chat-templated prompt set.")
-    parser.add_argument("--dataset", required=True, choices=sorted(SUPPORTED))
+    parser.add_argument("--dataset", required=True, nargs="+",
+                        choices=sorted(SUPPORTED),
+                        help="One or more datasets. Several are POOLED into a "
+                             "single balanced prompt set, which is how you get "
+                             "past a small dataset's minority-class limit. The "
+                             "`dataset` column is preserved so run_cka.py can "
+                             "project out dataset identity.")
     parser.add_argument("--max_prompts", type=int, default=2000,
                         help="Total prompts (half per class). >=2000 is "
                              "advisable: with a 2500-neuron budget, fewer "
@@ -234,23 +267,34 @@ def main():
     parser.add_argument("--output_dir", default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
 
-    tag = args.tag or args.dataset
+    tag = args.tag or "+".join(args.dataset)
     os.makedirs(args.output_dir, exist_ok=True)
 
-    print(f"Loading {args.dataset}"
-          + ("  (gated on HuggingFace)" if args.dataset in GATED else "") + " ...")
-    frame = load_texts(args.dataset)
-    print(f"  {len(frame)} usable prompts, "
-          f"class balance {frame['label'].value_counts().to_dict()}")
+    frames = []
+    for name in args.dataset:
+        print(f"Loading {name}"
+              + ("  (gated on HuggingFace)" if name in GATED else "") + " ...")
+        sub = load_texts(name)
+        sub["dataset"] = name
+        print(f"  {len(sub)} usable prompts, "
+              f"class balance {sub['label'].value_counts().to_dict()}")
+        frames.append(sub)
+
+    frame = pd.concat(frames, ignore_index=True)
+    frame = deduplicate(frame)
+    if len(args.dataset) > 1:
+        print(f"  pooled: {len(frame)} prompts, "
+              f"class balance {frame['label'].value_counts().to_dict()}")
 
     frame = balance(frame, args.max_prompts, args.seed)
     print(f"  kept {len(frame)}, balanced to "
           f"{frame['label'].value_counts().to_dict()}")
+    if len(args.dataset) > 1:
+        print(f"  per dataset: {frame['dataset'].value_counts().to_dict()}")
 
     print(f"Applying the {args.model_path} chat template ...")
     frame["formatted_input"] = apply_template(frame["text"].tolist(),
                                               args.model_path)
-    frame["dataset"] = args.dataset
 
     path = os.path.join(args.output_dir, f"{tag}.csv")
     frame[["text", "formatted_input", "label", "dataset"]].to_csv(path, index=False)

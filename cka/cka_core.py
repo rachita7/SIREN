@@ -137,6 +137,45 @@ def linear_cka(X, Y):
     return float(num / den) if den > 0 else float("nan")
 
 
+class Representation:
+    """A prepared matrix plus its cached prompt-by-prompt Gram matrix.
+
+    Comparing M methods means M(M-1)/2 pairs -- 28 of them for all eight
+    selections. Calling linear_cka() directly recomputes both self-norms every
+    time, so the dominant O(N^2 k) work is repeated ~M times per matrix. Caching
+    the Gram matrix K = X X^T once reduces every pairwise comparison to
+    sum(K * L), which is O(N^2) and effectively free.
+
+    Memory is N^2 floats per representation: 16 MB at N=2000, so all eight
+    observed representations cost ~128 MB. That is the right trade whenever
+    several pairs are needed; the cross-layer sweep does NOT use this, because
+    there it would mean 32 layers x 8 methods x 16 MB = 4 GB.
+    """
+
+    __slots__ = ("X", "gram", "norm")
+
+    def __init__(self, X):
+        self.X = X
+        self.gram = X @ X.T
+        self.norm = float(np.sqrt(np.sum(self.gram.astype(np.float64) ** 2)))
+
+    def cka(self, other):
+        den = self.norm * other.norm
+        if den <= 0:
+            return float("nan")
+        num = float(np.sum(self.gram.astype(np.float64)
+                           * other.gram.astype(np.float64)))
+        return num / den
+
+    def cka_unbiased(self, other):
+        if self.gram.shape[0] < 4:
+            return float("nan")
+        num = _hsic_unbiased(self.gram, other.gram)
+        den = np.sqrt(max(_hsic_unbiased(self.gram, self.gram), 0.0)
+                      * max(_hsic_unbiased(other.gram, other.gram), 0.0))
+        return float(num / den) if den > 0 else float("nan")
+
+
 def _hsic_unbiased(K, L):
     """Song et al. (2012) unbiased HSIC estimator from uncentered Gram matrices."""
     n = K.shape[0]

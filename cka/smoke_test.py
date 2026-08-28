@@ -98,6 +98,26 @@ def test_measures():
     check("dead neurons dropped", dropped == 3 and kept.shape[1] == 10,
           f"dropped={dropped} shape={kept.shape}")
 
+    # The Gram-caching fast path is what makes 28 method pairs affordable, so
+    # it must return exactly what the direct implementations return.
+    max_biased = max_unbiased = 0.0
+    for n_p, k in ((300, 100), (400, 2500)):
+        mats = [core.prepare(rng.normal(size=(n_p, k)).astype(np.float32),
+                             zscore=False) for _ in range(3)]
+        reps = [core.Representation(M) for M in mats]
+        for i, j in ((0, 1), (0, 2), (1, 2)):
+            max_biased = max(max_biased, abs(reps[i].cka(reps[j])
+                                             - core.linear_cka(mats[i], mats[j])))
+            max_unbiased = max(max_unbiased,
+                               abs(reps[i].cka_unbiased(reps[j])
+                                   - core.linear_cka_unbiased(mats[i], mats[j])))
+    check("cached Representation matches direct linear_cka",
+          max_biased < 1e-6, f"max |diff| = {max_biased:.2e}")
+    check("cached Representation matches direct unbiased CKA",
+          max_unbiased < 1e-6, f"max |diff| = {max_unbiased:.2e}")
+    check("cached self-CKA == 1",
+          abs(reps[0].cka(reps[0]) - 1.0) < 1e-6)
+
     # The two implementations of ||X^T Y||_F^2 must agree, since the code picks
     # between them based on matrix sizes.
     big = core.prepare(rng.normal(size=(60, 200)))

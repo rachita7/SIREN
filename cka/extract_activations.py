@@ -192,17 +192,26 @@ def main():
     if n_overflow:
         print(f"  WARNING: {n_overflow} values overflowed float16 storage.")
 
-    acts_path = os.path.join(args.output_dir, f"{tag}_{args.pooling}.npy")
-    np.save(acts_path, acts)
-
     meta = pd.DataFrame({
         "label": frame["label"].astype(int) if "label" in frame else 0,
         "n_tokens": token_counts,
         "dataset": frame["dataset"] if "dataset" in frame else tag,
         "text": frame["text"] if "text" in frame else texts,
     })
+
+    # Write to per-process temporaries and rename into place, with the .npy
+    # last. Two concurrent jobs sharing an activation path would otherwise be
+    # able to read a half-written array, and a crashed run would leave a file
+    # that looks complete. After this, the .npy existing implies both files are
+    # complete, which is what run_all.sh's skip check relies on.
+    acts_path = os.path.join(args.output_dir, f"{tag}_{args.pooling}.npy")
     meta_path = os.path.join(args.output_dir, f"{tag}_{args.pooling}.meta.csv")
-    meta.to_csv(meta_path, index=False)
+    tmp_acts = f"{acts_path}.{os.getpid()}.tmp.npy"
+    tmp_meta = f"{meta_path}.{os.getpid()}.tmp"
+    np.save(tmp_acts, acts)
+    meta.to_csv(tmp_meta, index=False)
+    os.replace(tmp_meta, meta_path)
+    os.replace(tmp_acts, acts_path)
 
     print(f"\nSaved {acts_path}  ({acts.nbytes / 1e9:.2f} GB)")
     print(f"Saved {meta_path}")

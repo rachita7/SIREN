@@ -59,9 +59,9 @@ often a leading principal component of the pooled representation. HarmBench and
 Alpaca prompts differ systematically in length, and so do the harmful and
 benign halves of essentially every safety benchmark. Removing class means does
 not remove this. So the strictest variant here, `class+length`, projects out
-class dummies *and* a polynomial in the token count. `extract_activations.py`
-prints the per-class token-count gap so you can see how big the problem is on
-your data.
+class dummies *and* a polynomial in the token count (and dataset identity, when
+sources are pooled). `extract_activations.py` prints the per-class token-count
+gap so you can see how big the problem is on your data.
 
 **3. There is no ceiling reference in the plan, so "high" is undefined.** CKA
 between two representations of the same 2000 prompts is never going to be 1.0
@@ -132,15 +132,32 @@ recommendation to use different data is right. The defaults:
   surface form is decoupled from the label, a high CKA here cannot be explained
   away as "all four methods encode harmful-sounding wording".
 
-| dataset | rows | classes | HF access |
+| dataset | rows | balanced size | HF access |
 |---|---|---|---|
-| `wildguard` | 1,725 | both | **gated** — accept terms + token |
-| `xstest` | 450 | both | ungated |
-| `aegis2` | 1,964 | both | **gated** |
-| `toxic_chat` | 5,082 | both | **gated** |
-| `openai_moderation` | 1,680 | both | ungated |
+| `wildguard` | 1,725 | 1,508 (754 harmful) | **gated** — accept terms + token |
+| `xstest` | 450 | 400 (200 unsafe) | ungated |
+| `aegis2` | 1,964 | both classes | **gated** |
+| `toxic_chat` | 5,082 | small (heavily benign-skewed) | **gated** |
+| `openai_moderation` | 1,680 | both classes | ungated |
 | `beavertails` | 3,021 | both (response-level labels) | ungated |
 | `advbench` | 520 | harmful only | ungated |
+
+**The minority class, not `--max_prompts`, is what usually binds.** WildGuard's
+test split has 1,725 prompts but only 754 harmful ones, so a class-balanced set
+is 1,508 no matter what you ask for. To get past that, pool corpora — pass
+several to `--dataset`, or join them with `+` in `DATASETS`:
+
+```bash
+python cka/build_prompts.py --dataset wildguard openai_moderation --max_prompts 2000
+DATASETS="wildguard+openai_moderation xstest" bash cka/run_all.sh
+```
+
+Pooling deduplicates prompts first (identical rows would create a block of
+maximal similarity shared by every method, inflating all CKAs) and records the
+source in a `dataset` column. `run_cka.py` then projects dataset identity out
+alongside class and length in the residualized variants, because sources differ
+in style and formatting and "which corpus is this from" would otherwise be a
+strong axis every method shares regardless of neuron choice.
 
 `build_prompts.py` loads these directly rather than through
 `train/preprocess.py`, for two reasons. `preprocess.py` splits every corpus
@@ -210,25 +227,72 @@ python cka/neuron_sets.py --budget 2500
 This prints each method's size and layer profile and the pairwise index-level
 Jaccard — the near-zero overlap that motivates the whole analysis.
 
+## Scope: how many methods, which budgets
+
+`results/` holds **8 selections**, not 4: SIREN, Wang ×2 (`wang`,
+`wang_robust`), Zhao ×2 (`zhao_topk`, `zhao_eps`), Yang ×3 (`yang_rms`,
+`yang_refusal`, `yang_harmfulness`), at each of N = 2500 / 5000 / 10000.
+
+**The default is 4 canonical methods at N=2500 — one per paper.** That is the
+right place to start: it is the comparison your question is actually about, it
+produces a readable 4×4, and 6 pairs instead of 28 keeps the output small
+enough to reason about. Get those numbers first.
+
+Then widen, because the two extra axes each answer a distinct question:
+
+- **All 8 selections** (`METHODS=all`) adds the *within-method* pairs, and
+  those are the single most useful extra reference in the whole analysis.
+  Wang vs. Wang-robust are two genuine implementations of the *same* method, so
+  their CKA is what "same method, different procedural choices" scores. If
+  Wang vs. Wang-robust only reaches 0.6, then a cross-method 0.6 is not a weak
+  result — it is at parity with a method's agreement with itself. Every row is
+  tagged `family_pair` = `within` / `cross`, and the mean of each is printed.
+- **The budget sweep** (`BUDGETS="2500 5000 10000"`) tests whether the
+  conclusion is an artifact of how aggressively each method was truncated. All
+  methods are always compared at the *same* budget, so set size can never
+  drive a single number — but the trend across budgets matters. If similarity
+  rises sharply with N, the methods are converging simply because larger
+  subsets of a shared population must overlap in what they encode.
+
+Recommended progression:
+
+```bash
+bash cka/run_all.sh                                          # 1. start here
+METHODS=all bash cka/run_all.sh                              # 2. add within-method refs
+METHODS=all BUDGETS="2500 5000 10000" bash cka/run_all.sh     # 3. full sweep
+```
+
+Steps 1–2 of the pipeline (prompts, GPU extraction) run **once per dataset**
+regardless of how many methods or budgets you sweep, so widening the scope
+costs only CPU time.
+
 ## Runtime
 
-Wall-clock for the default configuration (2 datasets, 2000 prompts each,
-N=2500, 4 methods, 20 null seeds), on one 24 GB GPU:
+Per dataset, 2000 prompts, on one 24 GB GPU + 4 CPU cores:
 
-| step | time | hardware |
-|---|---|---|
-| 1. build prompts | 1–5 min per dataset (mostly download) | CPU, needs network |
-| 2. extract activations | 5–10 min per dataset (incl. ~2 min model load) | GPU |
-| 3. cross-method CKA | 5–10 min per dataset | CPU |
-| 4. cross-layer CKA | 10–20 min per dataset | CPU |
-| **total** | **≈ 45–75 min for both datasets** | |
+| step | 4 methods, N=2500 | all 8, all 3 budgets | hardware |
+|---|---|---|---|
+| 1. build prompts | 1–5 min (mostly download) | same | CPU + network |
+| 2. extract activations | 5–10 min (incl. ~2 min model load) | same | GPU |
+| 3. cross-method CKA | 5–10 min | 30–60 min | CPU |
+| 4. cross-layer CKA | 10–20 min | 30–60 min | CPU |
 
-The 6 h wall time in `cka.sbatch` is deliberate headroom. Things that change
-this materially: `--budget 10000` roughly triples steps 3–4; `--methods all`
-takes 28 pairs instead of 6, so ~4× on steps 3–4 (and cross-layer becomes ~1 h+);
-`--null_seeds 100` for publication figures roughly quintuples step 3. Steps 3
-and 4 reread the saved activations, so you can iterate on them freely without
-re-running the GPU step.
+So the default two-dataset run is **≈45–75 min total**, and the full 8-method,
+3-budget sweep over both datasets is **≈3–4 h** — within the 6 h wall time in
+`cka.sbatch`, but check it before adding more.
+
+Pairwise comparison itself is cheap: each prepared representation caches its
+prompt-by-prompt Gram matrix, so a pair costs one `sum(K * L)` rather than
+recomputing both self-norms. That is what keeps 28 pairs affordable; without it
+the N=10000 sweep would repeat the dominant O(N²k) work ~8× per matrix. Cost is
+128 MB of Gram cache at N=2000 with 8 methods.
+
+Levers if it is too slow: `--skip_rsa` removes the slowest measure (RSA is
+~40% of step 3); `RUN_CROSS_LAYER=0` skips step 4; `CROSS_LAYER_METHODS` lets
+you sweep all 8 in step 3 while keeping step 4 on the canonical 4. Going the
+other way, `--null_seeds 100` for publication figures roughly quintuples
+step 3. Steps 3–4 reread the saved activations, so iterate freely without
+re-running the GPU.
 
 ## Running it
 
@@ -252,11 +316,13 @@ If your compute nodes are offline, build the prompt sets on a login node first
 **1. Build a held-out prompt set** (CPU, needs HF access):
 
 ```bash
-python cka/build_prompts.py --dataset wildguard --max_prompts 2000
-python cka/build_prompts.py --dataset xstest   --max_prompts 2000
+python cka/build_prompts.py --dataset wildguard openai_moderation --max_prompts 2000
+python cka/build_prompts.py --dataset xstest
 ```
 
-Writes `cka/prompts/{dataset}.csv`, class-balanced and chat-templated.
+Writes `cka/prompts/{tag}.csv`, deduplicated, class-balanced and
+chat-templated. Passing several datasets pools them into one set tagged
+`a+b`; see the table above for why you usually want to.
 
 **2. Extract activations** (GPU, ~5–10 min for 2000 prompts on a 24 GB card):
 
@@ -286,11 +352,42 @@ python cka/run_cross_layer.py \
     --variant class+length
 ```
 
+### Running two configurations at once
+
+Analysis outputs are named after the dataset and pooling, so a second run on the
+same dataset would overwrite the first. Set `RUN_TAG` to keep them apart, and
+`SKIP_EXTRACT=1` to reuse the activations the first job already wrote instead of
+racing to rebuild them:
+
+```bash
+RUN_TAG=all8 SKIP_EXTRACT=1 DATASETS=wildguard METHODS=all \
+    BUDGETS="2500 5000 10000" bash cka/run_all.sh
+```
+
+Outputs become `cka_wildguard_mean_all8_N2500.csv` and so on, alongside the
+untagged originals. Because steps 3–4 are CPU-only, **this second job needs no
+GPU** — submit it with the CPU-only script, which queues much faster:
+
+```bash
+RUN_TAG=all8 DATASETS=wildguard METHODS=all BUDGETS="2500 5000 10000" \
+    sbatch --export=ALL,RUN_TAG,DATASETS,METHODS,BUDGETS cka/cka_analysis.sbatch
+```
+
+`SKIP_EXTRACT=1` fails immediately if the activations are absent rather than
+starting a duplicate extraction, so it is safe to submit while the GPU job is
+still running — you just have to resubmit once extraction finishes. Activation
+files are written to a temporary name and renamed into place, so a `.npy` that
+exists is always complete and never half-written.
+
 ### Useful variations
 
 ```bash
 # All 8 selections, so within-method variants give an extra reference point
 python cka/run_cka.py --activations ... --methods all
+
+# One specific method family against SIREN
+python cka/run_cka.py --activations ... \
+    --methods siren yang_rms yang_refusal yang_harmfulness
 
 # Does the conclusion depend on the neuron budget?
 for N in 2500 5000 10000; do python cka/run_cka.py --activations ... --budget $N; done
@@ -312,7 +409,7 @@ Everything lands in `cka/results/`:
 
 | file | contents |
 |---|---|
-| `cka_{tag}_N{budget}.csv` | one row per (variant, method pair): `cka`, `cka_unbiased`, `rsa_spearman`, both nulls with std, ceiling, `z_vs_null`, `normalized`, `jaccard` |
+| `cka_{tag}_N{budget}.csv` | one row per (variant, method pair): `cka`, `cka_unbiased`, `rsa_spearman`, both nulls with std, ceiling, `z_vs_null`, `normalized`, `jaccard`, `family_pair` |
 | `cka_{tag}_N{budget}.json` | the same plus per-method ceilings and run configuration |
 | `cka_matrix_{tag}_N{budget}_{variant}.png` | observed / null / normalized matrices side by side |
 | `cka_pairs_{tag}_N{budget}_{variant}.png` | observed vs. null bars with the ceiling marked |
@@ -346,6 +443,12 @@ Then read across the three variants:
 Two consistency checks before you believe any of it: `cka` and `cka_unbiased`
 should agree (if not, add prompts), and `rsa_spearman` should move with `cka`
 (if not, a few outlier neurons are driving the CKA).
+
+If you ran `--methods all`, compare the `within` and `cross` rows of
+`family_pair` — the mean of each is printed per variant. Cross-method scores at
+or above the within-method level is the strongest form of the result: the four
+papers agree with each other as much as each paper's own variants agree with
+themselves.
 
 For the cross-layer maps, read the **z panel, not the raw panel**. The raw
 panel will show a diagonal band regardless. Off-diagonal z peaks are the
@@ -394,7 +497,8 @@ is ~3.7 GB lower than the extractor in `utils/model_hooks.py`, but batch 8 at
 | `run_cross_layer.py` | 32 × 32 cross-layer analysis with per-layer-pair nulls |
 | `plots.py` | figures |
 | `smoke_test.py` | correctness checks and an end-to-end synthetic run |
-| `run_all.sh`, `cka.sbatch` | drivers |
+| `run_all.sh` | driver; `cka.sbatch` (GPU, full pipeline) and `cka_analysis.sbatch` (CPU-only rerun) wrap it |
+| `METHODS.md` | report-ready write-up of the methodology, data and interpretation |
 
 ## References
 

@@ -81,22 +81,48 @@ def load_activations(path, in_memory=True):
     return acts, meta
 
 
+def dataset_dummies(meta):
+    """One-hot columns for dataset identity, or None for a single source.
+
+    Pooling several corpora into one prompt set introduces a confound of the
+    same kind as prompt length: sources differ in style, formatting and topic
+    mix, so "which dataset is this prompt from" becomes a strong axis of the
+    representation that every method shares regardless of neuron choice.
+    Projecting it out keeps the residualized variants honest.
+    """
+    if "dataset" not in meta.columns:
+        return None
+    names = sorted(meta["dataset"].astype(str).unique())
+    if len(names) < 2:
+        return None
+    values = meta["dataset"].astype(str).to_numpy()
+    # Drop one level; the design matrix already carries an intercept.
+    return np.column_stack([(values == n).astype(np.float64) for n in names[1:]])
+
+
 def build_design(variant, meta):
     if variant == "raw":
         return None
     labels = meta["label"].to_numpy()
+    extra = dataset_dummies(meta)
     if variant == "class":
-        return core.design_matrix(labels=labels)
+        return core.design_matrix(labels=labels, extra=extra)
     if variant == "class+length":
         return core.design_matrix(labels=labels,
-                                  token_counts=meta["n_tokens"].to_numpy())
+                                  token_counts=meta["n_tokens"].to_numpy(),
+                                  extra=extra)
     raise ValueError(variant)
 
 
 def prepared(acts, sel, zscore, Z):
     X, dropped = core.prepare(ns.build_matrix(acts, sel), zscore=zscore, Z=Z,
                               return_dropped=True)
-    return X, dropped
+    return core.Representation(X), dropped
+
+
+def make_rep(acts, sel, zscore, Z):
+    return core.Representation(
+        core.prepare(ns.build_matrix(acts, sel), zscore=zscore, Z=Z))
 
 
 def main():
@@ -147,6 +173,10 @@ def main():
     print(f"  classes: {meta['label'].value_counts().to_dict()}")
     print(f"  token counts by class: "
           f"{meta.groupby('label')['n_tokens'].mean().round(1).to_dict()}")
+    if "dataset" in meta.columns and meta["dataset"].nunique() > 1:
+        print(f"  pooled sources: {meta['dataset'].value_counts().to_dict()}")
+        print(f"  -> dataset identity is projected out in the residualized "
+              f"variants alongside class and length")
     if n_prompts < args.budget:
         print(f"  NOTE: {n_prompts} prompts < {args.budget} neurons, so each "
               f"representation is rank-limited by the prompt count. The "
@@ -188,7 +218,7 @@ def main():
         X = {}
         for m in methods:
             X[m], dropped = prepared(acts, selections[m], zscore, Z)
-            print(f"  {ns.display_name(m):16s} X shape {X[m].shape}"
+            print(f"  {ns.display_name(m):16s} X shape {X[m].X.shape}"
                   + (f"  ({dropped} near-constant neurons dropped)" if dropped else ""))
 
         # ------------------------------------------------ ceiling per method
@@ -199,9 +229,9 @@ def main():
             for s in range(args.ceiling_seeds):
                 rng = np.random.default_rng(rng_master.integers(1 << 62))
                 h1, h2 = ns.split_halves(selections[m], rng)
-                A = core.prepare(ns.build_matrix(acts, h1), zscore=zscore, Z=Z)
-                B = core.prepare(ns.build_matrix(acts, h2), zscore=zscore, Z=Z)
-                values.append(core.linear_cka(A, B))
+                A = make_rep(acts, h1, zscore, Z)
+                B = make_rep(acts, h2, zscore, Z)
+                values.append(A.cka(B))
             ceiling[m] = {"mean": float(np.mean(values)),
                           "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0}
             print(f"    {ns.display_name(m):16s} {ceiling[m]['mean']:.4f} "
@@ -221,19 +251,19 @@ def main():
             rng = np.random.default_rng(rng_master.integers(1 << 62))
             lm, gl = {}, {}
             for m in methods:
-                lm[m] = core.prepare(
-                    ns.build_matrix(acts, ns.random_layer_matched(selections[m], rng, width)),
-                    zscore=zscore, Z=Z)
-                gl[m] = core.prepare(
-                    ns.build_matrix(acts, ns.random_global(selections[m], rng, n_layers, width)),
-                    zscore=zscore, Z=Z)
+                lm[m] = make_rep(
+                    acts, ns.random_layer_matched(selections[m], rng, width),
+                    zscore, Z)
+                gl[m] = make_rep(
+                    acts, ns.random_global(selections[m], rng, n_layers, width),
+                    zscore, Z)
             for p in pairs:
                 a, b = p
-                null_vals[p]["layer_matched"].append(core.linear_cka(lm[a], lm[b]))
-                null_vals[p]["global"].append(core.linear_cka(gl[a], gl[b]))
+                null_vals[p]["layer_matched"].append(lm[a].cka(lm[b]))
+                null_vals[p]["global"].append(gl[a].cka(gl[b]))
                 if not args.skip_rsa and s < args.rsa_null_seeds:
                     null_vals[p]["rsa"].append(
-                        core.rsa_spearman(lm[a], lm[b], seed=args.seed))
+                        core.rsa_spearman(lm[a].X, lm[b].X, seed=args.seed))
             del lm, gl
             print(f"    draw {s + 1}/{args.null_seeds}", end="\r", flush=True)
         print(" " * 40, end="\r")
@@ -241,20 +271,27 @@ def main():
         # --------------------------------------------------- pairwise values
         rows = []
         for a, b in pairs:
-            obs = core.linear_cka(X[a], X[b])
-            obs_unb = core.linear_cka_unbiased(X[a], X[b])
+            obs = X[a].cka(X[b])
+            obs_unb = X[a].cka_unbiased(X[b])
             obs_rsa = (float("nan") if args.skip_rsa
-                       else core.rsa_spearman(X[a], X[b], seed=args.seed))
+                       else core.rsa_spearman(X[a].X, X[b].X, seed=args.seed))
 
             lm_vals = null_vals[(a, b)]["layer_matched"]
             gl_vals = null_vals[(a, b)]["global"]
             lm_rsa = null_vals[(a, b)]["rsa"]
 
             ceil_mean = float(np.mean([ceiling[a]["mean"], ceiling[b]["mean"]]))
+            same_family = (ns.METHOD_SPECS[a]["family"]
+                           == ns.METHOD_SPECS[b]["family"])
             row = {
                 "variant": variant,
                 "method_a": a, "method_b": b,
                 "pair": f"{ns.display_name(a)} / {ns.display_name(b)}",
+                # Two variants of the same method (e.g. Wang vs Wang-robust)
+                # give a second, stricter ceiling than disjoint halves: real
+                # procedural differences, same underlying method. A cross-family
+                # score at or above the within-family level is a strong result.
+                "family_pair": "within" if same_family else "cross",
                 "jaccard": ns.jaccard(selections[a], selections[b]),
                 "cka": obs,
                 "cka_unbiased": obs_unb,
@@ -270,7 +307,7 @@ def main():
                 "rsa_null_mean": float(np.mean(lm_rsa)) if lm_rsa else float("nan"),
             }
             rows.append(row)
-            print(f"  {row['pair']:34s} CKA={obs:.4f}  "
+            print(f"  [{row['family_pair']:6s}] {row['pair']:34s} CKA={obs:.4f}  "
                   f"null={row['null_layer_matched_mean']:.4f}"
                   f"+/-{row['null_layer_matched_std']:.4f}  "
                   f"ceil={ceil_mean:.4f}  z={row['z_vs_null']:+.1f}  "
@@ -281,6 +318,17 @@ def main():
             "ceiling": ceiling,
             "pairs": rows,
         }
+
+        within = [r["normalized"] for r in rows if r["family_pair"] == "within"]
+        cross = [r["normalized"] for r in rows if r["family_pair"] == "cross"]
+        if within and cross:
+            print(f"\n  mean normalized score: within-method variants "
+                  f"{np.mean(within):+.3f}  vs  across methods "
+                  f"{np.mean(cross):+.3f}")
+            summary["variants"][variant]["mean_normalized"] = {
+                "within_family": float(np.mean(within)),
+                "cross_family": float(np.mean(cross)),
+            }
 
         # ------------------------------------------------------------- plots
         m_idx = {m: i for i, m in enumerate(methods)}
