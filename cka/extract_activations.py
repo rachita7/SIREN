@@ -65,12 +65,29 @@ class MlpNeuronExtractor:
         self.layers = self.model.model.layers
         self.num_layers = len(self.layers)
         self.intermediate_size = self.layers[0].mlp.down_proj.in_features
-        self._captured = [None] * self.num_layers
+        self._pooled = [None] * self.num_layers
         self._hooks = []
+        self._mask = None
+        self._lengths = None
+        self._pooling = "mean"
 
     def _hook(self, layer_idx):
+        """Pool immediately inside the hook and discard the token-level tensor.
+
+        Keeping all 32 layers' full [B, T, 14336] activations alive until the
+        forward pass ends costs ~3.7 GB at batch 8 / 512 tokens, which is the
+        difference between fitting and not fitting on a 24 GB card next to the
+        16 GB bf16 model. Pooling here keeps only [B, 14336] per layer.
+        """
         def fn(module, inputs):
-            self._captured[layer_idx] = inputs[0].detach()
+            acts = inputs[0].detach().float()
+            if self._pooling == "mean":
+                m = self._mask.unsqueeze(-1).to(acts.dtype)
+                pooled = (acts * m).sum(dim=1) / self._lengths.unsqueeze(-1)
+            else:
+                pooled = acts[torch.arange(acts.shape[0], device=acts.device),
+                              self._lengths.long() - 1]
+            self._pooled[layer_idx] = pooled
         return fn
 
     def __enter__(self):
@@ -87,29 +104,28 @@ class MlpNeuronExtractor:
     @torch.no_grad()
     def pooled(self, texts, pooling, add_special_tokens):
         """([B, num_layers, intermediate_size] float32, [B] token counts)."""
+        if pooling not in ("mean", "last"):
+            raise ValueError(f"unknown pooling '{pooling}'")
         texts = [t if (isinstance(t, str) and t.strip()) else " " for t in texts]
         batch = self.tokenizer(texts, return_tensors="pt", truncation=True,
                               max_length=self.max_length, padding=True,
                               add_special_tokens=add_special_tokens)
         batch = {k: v.to(self.device) for k, v in batch.items()}
-        self._captured = [None] * self.num_layers
-        self.model(**batch)
 
         mask = batch["attention_mask"]
-        lengths = mask.sum(dim=1)
-        out = torch.empty(mask.shape[0], self.num_layers, self.intermediate_size,
-                          dtype=torch.float32, device=self.device)
-        for layer_idx, acts in enumerate(self._captured):
-            acts = acts.float()
-            if pooling == "mean":
-                m = mask.unsqueeze(-1).to(acts.dtype)
-                out[:, layer_idx] = (acts * m).sum(dim=1) / lengths.unsqueeze(-1)
-            elif pooling == "last":
-                out[:, layer_idx] = acts[torch.arange(acts.shape[0]),
-                                         lengths - 1]
-            else:
-                raise ValueError(f"unknown pooling '{pooling}'")
-        return out.cpu().numpy(), lengths.cpu().numpy()
+        # The hooks need the mask, so it is published before the forward pass.
+        self._mask = mask
+        self._lengths = mask.sum(dim=1).float()
+        self._pooling = pooling
+        self._pooled = [None] * self.num_layers
+
+        self.model(**batch)
+
+        if any(p is None for p in self._pooled):
+            raise RuntimeError("some layers produced no activation; the "
+                               "down_proj hooks did not all fire")
+        out = torch.stack(self._pooled, dim=1)
+        return out.cpu().numpy(), mask.sum(dim=1).cpu().numpy()
 
 
 def main():

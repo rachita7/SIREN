@@ -123,7 +123,12 @@ def test_selections():
             check(f"{method} @ N={budget}", ok, f"total={total}")
 
     rng = np.random.default_rng(0)
-    sel = ns.load_selection("siren", 2500)
+    reference = next((m for m in ns.ALL_METHODS
+                      if os.path.exists(ns.selection_path(m, 2500))), None)
+    if reference is None:
+        check("a selection file exists to test the controls with", False)
+        return None
+    sel = ns.load_selection(reference, 2500)
     rnd = ns.random_layer_matched(sel, rng)
     check("layer-matched null preserves per-layer counts",
           ns.layer_counts(sel) == ns.layer_counts(rnd))
@@ -136,6 +141,8 @@ def test_selections():
     check("halves are roughly half the size",
           abs(ns.size(h1) - ns.size(sel) / 2) < 40,
           f"{ns.size(h1)} vs {ns.size(sel) / 2:.0f}")
+    return [m for m in ns.DEFAULT_METHODS
+            if os.path.exists(ns.selection_path(m, 2500))]
 
 
 def make_synthetic(out_dir, n_prompts=260, seed=0):
@@ -170,8 +177,14 @@ def make_synthetic(out_dir, n_prompts=260, seed=0):
     return acts_path
 
 
-def test_scripts():
+def test_scripts(methods):
     print("\nEnd-to-end run on synthetic activations")
+    if not methods or len(methods) < 2:
+        check("at least two selections available for the end-to-end run",
+              False, f"found {methods}")
+        return
+    pair = methods[:2]
+    n_pairs = len(methods) * (len(methods) - 1) // 2
     tmp = tempfile.mkdtemp(prefix="cka_smoke_")
     try:
         acts_path = make_synthetic(os.path.join(tmp, "activations"))
@@ -180,6 +193,7 @@ def test_scripts():
 
         cmd = [sys.executable, os.path.join(HERE, "run_cka.py"),
                "--activations", acts_path, "--budget", "2500",
+               "--methods", *methods,
                "--null_seeds", "3", "--ceiling_seeds", "2",
                "--variants", "raw", "class+length",
                "--skip_rsa", "--output_dir", results]
@@ -196,7 +210,7 @@ def test_scripts():
         if os.path.exists(csv):
             frame = pd.read_csv(csv)
             check("all method pairs present, both variants",
-                  len(frame) == 12, f"rows={len(frame)}")
+                  len(frame) == 2 * n_pairs, f"rows={len(frame)}")
             check("CKA values in [0, 1]",
                   bool(frame["cka"].between(-0.01, 1.01).all()))
             check("nulls are non-trivial on shared-factor data (this is why "
@@ -212,7 +226,7 @@ def test_scripts():
 
         cmd = [sys.executable, os.path.join(HERE, "run_cross_layer.py"),
                "--activations", acts_path, "--budget", "2500",
-               "--methods", "siren", "wang", "--variant", "class+length",
+               "--methods", *pair, "--variant", "class+length",
                "--null_seeds", "2", "--output_dir", results]
         proc = subprocess.run(cmd, capture_output=True, text=True, env=env)
         check("run_cross_layer.py exits cleanly", proc.returncode == 0,
@@ -221,7 +235,8 @@ def test_scripts():
             print(proc.stdout[-3000:])
             print(proc.stderr[-3000:])
             return
-        stem = "crosslayer_synthetic_mean_N2500_class-length_siren_vs_wang"
+        stem = (f"crosslayer_synthetic_mean_N2500_class-length_"
+                f"{pair[0]}_vs_{pair[1]}")
         check("cross-layer CKA CSV written",
               os.path.exists(os.path.join(results, stem + "_cka.csv")))
         check("cross-layer plot written",
@@ -236,7 +251,7 @@ def test_scripts():
 if __name__ == "__main__":
     print("CKA pipeline smoke test")
     test_measures()
-    test_selections()
-    test_scripts()
+    available = test_selections()
+    test_scripts(available)
     print(f"\n{'FAILURES: %d' % check.failures if check.failures else 'All checks passed.'}")
     sys.exit(1 if check.failures else 0)

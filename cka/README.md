@@ -132,8 +132,24 @@ recommendation to use different data is right. The defaults:
   surface form is decoupled from the label, a high CKA here cannot be explained
   away as "all four methods encode harmful-sounding wording".
 
-Both are gated on HuggingFace. Ungated fallbacks, all supported:
-`openai_moderation`, `beavertails`, `aegis2`, `toxic_chat`, `safe_rlhf`.
+| dataset | rows | classes | HF access |
+|---|---|---|---|
+| `wildguard` | 1,725 | both | **gated** — accept terms + token |
+| `xstest` | 450 | both | ungated |
+| `aegis2` | 1,964 | both | **gated** |
+| `toxic_chat` | 5,082 | both | **gated** |
+| `openai_moderation` | 1,680 | both | ungated |
+| `beavertails` | 3,021 | both (response-level labels) | ungated |
+| `advbench` | 520 | harmful only | ungated |
+
+`build_prompts.py` loads these directly rather than through
+`train/preprocess.py`, for two reasons. `preprocess.py` splits every corpus
+into train/val/test for probe training, but none of these corpora were used to
+select any method's neurons, so the whole dataset is held out and splitting it
+just discards prompts — for XSTest that would have left 90 prompts, far too few.
+And `preprocess.py`'s wildguard path also loads `wildguardtrain` (~87k rows),
+a large download of a gated config with no use here.
+
 Prompts are wrapped in the Llama-3 chat template with the backbone's own
 tokenizer, reproducing the `formatted_input` column of `data_files/*.csv`, so
 the activations sit in the same regime the neurons were selected under.
@@ -147,6 +163,34 @@ Everything needed is already in the repo's conda environment:
 ```bash
 conda activate siren
 ```
+
+### HuggingFace access
+
+The backbone (`meta-llama/Meta-Llama-3-8B-Instruct`) is gated, and so are the
+two recommended prompt sets. One-time setup:
+
+1. While logged in to HuggingFace, click *Agree and access* on each page you
+   need: [Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct),
+   [allenai/wildguardmix](https://huggingface.co/datasets/allenai/wildguardmix).
+   XSTest needs nothing.
+2. Authenticate on the cluster:
+
+```bash
+huggingface-cli login          # or: export HF_TOKEN=hf_...
+```
+
+3. Confirm access before queueing a GPU job:
+
+```bash
+python -c "from datasets import load_dataset; \
+d=load_dataset('allenai/wildguardmix','wildguardtest')['test']; \
+print(len(d), d.column_names)"
+```
+
+If that fails, `build_prompts.py` prints the fix and lists the ungated
+alternatives; nothing else in the pipeline cares which held-out set you use.
+On ETH Euler, run `build_prompts.py` on a **login node** — compute nodes may not
+reach the Hub, and the resulting CSV is all the GPU step needs.
 
 Verify the pipeline without a GPU or any downloads (~25 s). This checks the CKA
 implementation against cases with known answers, the neuron loaders against all
@@ -165,6 +209,26 @@ python cka/neuron_sets.py --budget 2500
 
 This prints each method's size and layer profile and the pairwise index-level
 Jaccard — the near-zero overlap that motivates the whole analysis.
+
+## Runtime
+
+Wall-clock for the default configuration (2 datasets, 2000 prompts each,
+N=2500, 4 methods, 20 null seeds), on one 24 GB GPU:
+
+| step | time | hardware |
+|---|---|---|
+| 1. build prompts | 1–5 min per dataset (mostly download) | CPU, needs network |
+| 2. extract activations | 5–10 min per dataset (incl. ~2 min model load) | GPU |
+| 3. cross-method CKA | 5–10 min per dataset | CPU |
+| 4. cross-layer CKA | 10–20 min per dataset | CPU |
+| **total** | **≈ 45–75 min for both datasets** | |
+
+The 6 h wall time in `cka.sbatch` is deliberate headroom. Things that change
+this materially: `--budget 10000` roughly triples steps 3–4; `--methods all`
+takes 28 pairs instead of 6, so ~4× on steps 3–4 (and cross-layer becomes ~1 h+);
+`--null_seeds 100` for publication figures roughly quintuples step 3. Steps 3
+and 4 reread the saved activations, so you can iterate on them freely without
+re-running the GPU step.
 
 ## Running it
 
@@ -194,7 +258,7 @@ python cka/build_prompts.py --dataset xstest   --max_prompts 2000
 
 Writes `cka/prompts/{dataset}.csv`, class-balanced and chat-templated.
 
-**2. Extract activations** (GPU, ~15 min for 2000 prompts on a 24 GB card):
+**2. Extract activations** (GPU, ~5–10 min for 2000 prompts on a 24 GB card):
 
 ```bash
 python cka/extract_activations.py \
@@ -302,10 +366,21 @@ under 1 GB, but `--methods all --budget 10000` needs ~10 GB. Reduce the budget,
 the method count, or pass `--skip_rsa` (RSA is the one step that materializes
 an N × N matrix).
 
-**Gated HuggingFace datasets.** `wildguard`, `xstest`, `aegis2` and
-`toxic_chat` require accepting terms on the Hub. Use `openai_moderation` or
-`beavertails` instead — the analysis does not care which held-out set you use,
-only that the four methods did not select on it.
+**Gated HuggingFace datasets.** `wildguard`, `aegis2` and `toxic_chat` require
+accepting terms on the Hub plus a token (see *HuggingFace access* above). Use
+`xstest`, `openai_moderation` or `beavertails` instead — the analysis does not
+care which held-out set you use, only that the four methods did not select on it.
+
+**`FileNotFoundError: siren @ N=2500: missing results/rachita_neurons/...`**
+The repo's `.gitignore` has a blanket `*.json` rule, which silently excluded
+SIREN's exported neuron JSONs while the other methods' CSVs were committed. Now
+fixed with a `!results/**/*.json` negation. If you hit it on an older checkout,
+`git pull` and confirm with `python cka/neuron_sets.py`.
+
+**CUDA out of memory during extraction.** Drop to `--batch_size 4`. Activations
+are pooled inside the hook rather than after the forward pass, so peak memory
+is ~3.7 GB lower than the extractor in `utils/model_hooks.py`, but batch 8 at
+512 tokens next to the 16 GB bf16 model is still a snug fit on a 24 GB card.
 
 ## Files
 

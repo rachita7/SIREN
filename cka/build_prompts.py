@@ -41,35 +41,143 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_OUTPUT_DIR = os.path.join(HERE, "prompts")
 
-# Datasets already implemented by train/preprocess.py, all returning
-# DatasetDict entries with `text` and binary `label` (1 = harmful).
-SUPPORTED = {
-    "wildguard": "test",
-    "xstest": "test",
-    "aegis2": "test",
-    "openai_moderation": "test",
-    "toxic_chat": "test",
-    "beavertails": "test",
-    "safe_rlhf": "test",
-    "advbench": "test",
-}
+# Direct loaders rather than train/preprocess.py, for two reasons that matter
+# here:
+#   1. preprocess.py splits every corpus into train/val/test for probe
+#      training. None of these corpora were used to select any method's
+#      neurons, so the WHOLE dataset is held out and splitting it just throws
+#      prompts away -- for XSTest (450 rows) the test split is 90 prompts,
+#      far too few for CKA.
+#   2. preprocess.py's wildguard path loads `wildguardtrain` (~87k rows) as
+#      well as `wildguardtest`, which is a large download of a gated config we
+#      have no use for.
+# `HF gated?` marks datasets that need terms accepted on the Hub plus a token.
 
 
-def load_texts(dataset, split):
-    from train.preprocess import preprocess_dataset
-
-    ds = preprocess_dataset(dataset)
-    if split not in ds:
-        raise KeyError(f"{dataset} has splits {list(ds)}, not '{split}'")
-    frame = ds[split].to_pandas()
-    if "text" not in frame or "label" not in frame:
-        raise ValueError(f"{dataset}/{split} lacks text/label columns: "
-                         f"{list(frame.columns)}")
+def _clean(frame):
     frame = frame[["text", "label"]].dropna()
+    frame = frame.copy()
     frame["text"] = frame["text"].astype(str).str.strip()
     frame = frame[frame["text"].str.len() > 0]
     frame["label"] = frame["label"].astype(int)
     return frame.reset_index(drop=True)
+
+
+def _wildguard():
+    """WildGuard test split: prompt-level harm labels, adversarial + vanilla.
+
+    HF gated: accept the terms at
+    https://huggingface.co/datasets/allenai/wildguardmix
+    """
+    from datasets import load_dataset
+
+    frame = load_dataset("allenai/wildguardmix", "wildguardtest")["test"].to_pandas()
+    frame = frame[frame["prompt_harm_label"].isin(["harmful", "unharmful"])]
+    frame["text"] = frame["prompt"]
+    frame["label"] = (frame["prompt_harm_label"] == "harmful").astype(int)
+    return _clean(frame)
+
+
+def _xstest():
+    """All 450 XSTest prompts: 250 safe-but-harmful-looking + 200 unsafe.
+
+    The whole corpus is used deliberately -- this set's value is that surface
+    form is decoupled from the label, and it is small enough that discarding
+    any of it would leave too few prompts.
+    """
+    from datasets import load_dataset
+
+    frame = load_dataset("Paul/XSTest")["train"].to_pandas()
+    frame["text"] = frame["prompt"]
+    frame["label"] = (frame["label"].astype(str) == "unsafe").astype(int)
+    return _clean(frame)
+
+
+def _aegis2():
+    """Aegis 2.0 test split (1,964 rows). HF gated."""
+    from datasets import load_dataset
+
+    frame = load_dataset(
+        "nvidia/Aegis-AI-Content-Safety-Dataset-2.0")["test"].to_pandas()
+    frame = frame[frame["prompt_label"].isin(["safe", "unsafe"])]
+    frame["text"] = frame["prompt"]
+    frame["label"] = (frame["prompt_label"] == "unsafe").astype(int)
+    return _clean(frame)
+
+
+def _openai_moderation():
+    """OpenAI moderation set (1,680 rows), ungated. Harmful = any category flagged."""
+    from datasets import load_dataset
+
+    frame = load_dataset("walledai/openai-moderation-dataset")["train"].to_pandas()
+    cols = [c for c in ("S", "H", "V", "HR", "SH", "S3", "H2", "V2")
+            if c in frame.columns]
+    frame["text"] = frame["prompt"]
+    frame["label"] = (frame[cols].astype(int).sum(axis=1) > 0).astype(int)
+    return _clean(frame)
+
+
+def _toxic_chat():
+    """ToxicChat test split. HF gated."""
+    from datasets import load_dataset
+
+    frame = load_dataset("lmsys/toxic-chat", "toxicchat0124")["test"].to_pandas()
+    frame["text"] = frame["user_input"]
+    frame["label"] = frame["toxicity"].astype(int)
+    return _clean(frame)
+
+
+def _beavertails():
+    """BeaverTails 30k test split, ungated.
+
+    Its labels describe the RESPONSE, so text is prompt + response (matching
+    train/preprocess.py). Use it as an ungated fallback, keeping in mind it
+    measures response-level rather than prompt-level harm.
+    """
+    from datasets import load_dataset
+
+    frame = load_dataset("PKU-Alignment/BeaverTails")["30k_test"].to_pandas()
+    frame["text"] = frame["prompt"].astype(str) + "\n" + frame["response"].astype(str)
+    frame["label"] = (~frame["is_safe"].astype(bool)).astype(int)
+    return _clean(frame)
+
+
+def _advbench():
+    """AdvBench, ungated. HARMFUL ONLY -- no class-residualized variant."""
+    from datasets import load_dataset
+
+    frame = load_dataset("walledai/AdvBench")["train"].to_pandas()
+    frame["text"] = frame["prompt"]
+    frame["label"] = 1
+    return _clean(frame)
+
+
+LOADERS = {
+    "wildguard": _wildguard,
+    "xstest": _xstest,
+    "aegis2": _aegis2,
+    "openai_moderation": _openai_moderation,
+    "toxic_chat": _toxic_chat,
+    "beavertails": _beavertails,
+    "advbench": _advbench,
+}
+GATED = {"wildguard", "aegis2", "toxic_chat"}
+SUPPORTED = LOADERS
+
+
+def load_texts(dataset):
+    try:
+        return LOADERS[dataset]()
+    except Exception as exc:
+        if dataset in GATED:
+            raise SystemExit(
+                f"Failed to load '{dataset}': {exc}\n\n"
+                f"'{dataset}' is gated on HuggingFace. To use it:\n"
+                f"  1. Accept the terms on the dataset's Hub page while logged in.\n"
+                f"  2. Authenticate:  huggingface-cli login   (or export HF_TOKEN=hf_...)\n"
+                f"Ungated alternatives that need no access request: "
+                f"{', '.join(sorted(set(LOADERS) - GATED))}")
+        raise
 
 
 def balance(frame, max_prompts, seed):
@@ -112,8 +220,6 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build a held-out, class-balanced, chat-templated prompt set.")
     parser.add_argument("--dataset", required=True, choices=sorted(SUPPORTED))
-    parser.add_argument("--split", default=None,
-                        help="Default: the dataset's test split.")
     parser.add_argument("--max_prompts", type=int, default=2000,
                         help="Total prompts (half per class). >=2000 is "
                              "advisable: with a 2500-neuron budget, fewer "
@@ -128,12 +234,12 @@ def main():
     parser.add_argument("--output_dir", default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
 
-    split = args.split or SUPPORTED[args.dataset]
     tag = args.tag or args.dataset
     os.makedirs(args.output_dir, exist_ok=True)
 
-    print(f"Loading {args.dataset}/{split} ...")
-    frame = load_texts(args.dataset, split)
+    print(f"Loading {args.dataset}"
+          + ("  (gated on HuggingFace)" if args.dataset in GATED else "") + " ...")
+    frame = load_texts(args.dataset)
     print(f"  {len(frame)} usable prompts, "
           f"class balance {frame['label'].value_counts().to_dict()}")
 

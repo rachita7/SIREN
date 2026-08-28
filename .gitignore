@@ -212,6 +212,9 @@ EXPERIMENT_LOG.md
 .venv-*/
 
 *.json
+# Selected-neuron exports are small and are inputs to analysis/ and cka/,
+# so they must be tracked despite the blanket *.json rule above.
+!results/**/*.json
 # *.sh
 *.html
 *.pdf
