@@ -34,6 +34,9 @@ import csv
 import json
 
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 from plot_siren_neurons import CPUUnpickler
 from export_topn_neurons import entry_thresholds
@@ -123,6 +126,7 @@ def main():
         key=lambda x: (x[0], x[1], x[2]))
 
     summary_rows = []
+    counts_by_n = {}  # {target_n: {layer: count}} for the plots
     for n in sorted(args.targets):
         if n > len(scored):
             print(f"top{n}: only {len(scored)} pairs exist, skipping")
@@ -134,6 +138,7 @@ def main():
         per_layer = {}
         for _, _, (layer, idx) in chosen:
             per_layer.setdefault(layer, []).append(idx)
+        counts_by_n[n] = {l: len(per_layer.get(l, [])) for l in layers}
         out = {f"layer{l}": per_layer[l] for l in sorted(per_layer)}
         path = os.path.join(args.output_dir,
                             f"{tag}_intersection_top{n}.json")
@@ -156,6 +161,55 @@ def main():
                          "intersection_size_at_m", "layers_used"])
         writer.writerows(summary_rows)
     print(f"Saved {summary_csv}")
+
+    # ------------------------------------------------------------------ plots
+    # (1) probe F1 of the 3 split models (left) + per-layer intersection neuron
+    #     counts, one curve per budget (right)
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    for r in range(3):
+        axes[0].plot(layers, [runs[r][l]["val_f1"] for l in layers], marker="o",
+                     markersize=3, label=f"split {r+1} (val)")
+        axes[0].plot(layers, [runs[r][l]["test_f1"] for l in layers], marker="s",
+                     markersize=3, linestyle="--", alpha=0.6,
+                     label=f"split {r+1} (test)")
+    axes[0].set_xlabel("Layer")
+    axes[0].set_ylabel("Probe macro-F1")
+    axes[0].set_title(f"Layer-wise probe performance, 3 clean train splits\n"
+                      f"{args.model} ({args.pooling_type})")
+    axes[0].legend(fontsize=7)
+    axes[0].grid(alpha=0.3)
+
+    for n, cnts in counts_by_n.items():
+        axes[1].plot(layers, [cnts[l] for l in layers], marker="o",
+                     markersize=3, label=f"top {n}")
+    axes[1].set_xlabel("Layer")
+    axes[1].set_ylabel("# intersection safety neurons")
+    axes[1].set_title("Intersection of the 3 runs' selections, per layer")
+    axes[1].legend(fontsize=8)
+    axes[1].grid(alpha=0.3)
+
+    plt.tight_layout()
+    probe_plot = os.path.join(args.output_dir, f"{tag}_layer_probes.png")
+    plt.savefig(probe_plot, dpi=200)
+    plt.close(fig)
+    print(f"Saved {probe_plot}")
+
+    # (2) standalone version of the intersection-counts panel
+    fig, ax = plt.subplots(figsize=(9, 5))
+    for n, cnts in counts_by_n.items():
+        ax.plot(layers, [cnts[l] for l in layers], marker="o", markersize=3,
+                label=f"top {n}")
+    ax.set_xlabel("Layer")
+    ax.set_ylabel("# intersection safety neurons")
+    ax.set_title(f"SIREN clean-stability intersection neurons per layer\n"
+                 f"{args.model} ({args.pooling_type})")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+    plt.tight_layout()
+    counts_plot = os.path.join(args.output_dir, f"{tag}_intersection_counts.png")
+    plt.savefig(counts_plot, dpi=200)
+    plt.close(fig)
+    print(f"Saved {counts_plot}")
 
 
 if __name__ == "__main__":
