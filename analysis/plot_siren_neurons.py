@@ -108,7 +108,8 @@ def main():
                         help="Threshold used for the layer x layer Jaccard heatmap.")
     parser.add_argument("--suffix", type=str, default="",
                         help="Training-run suffix in the pkl filename, e.g. "
-                             "'-mlpneuron_mean' (see run_hh_siren.sh OUTPUT_SUFFIX).")
+                             "'-std-mlpneuron_mean-clean' (see run_standard_siren.sh "
+                             "OUTPUT_SUFFIX).")
     parser.add_argument("--probes_dir", type=str,
                         default=os.path.join(os.path.dirname(__file__), "..", "train", "probes"))
     parser.add_argument("--output_dir", type=str,

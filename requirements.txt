@@ -1,5 +1,5 @@
-# Minimal deps for the analysis/ scripts (plot_method_overlap.py,
-# plot_layer_probes.py, neuron_importance_eval.py).
+# Minimal deps for the analysis/ scripts (plot_layer_probes.py,
+# plot_siren_neurons.py, export_topn_neurons.py, clean_stability_intersection.py).
 # Versions match environment.yaml.
 numpy==2.2.6
 pandas==2.3.1

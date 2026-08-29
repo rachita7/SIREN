@@ -10,7 +10,7 @@ For each trained backbone this script plots, per layer:
 Overlaying llama3-8b-sft and llama3-8b-instruct shows how alignment shifts the
 layer distribution of safety-relevant neurons (mid vs. late layers).
 
-Run after train/run_hh_siren.sh has finished (CUDA tensors in the pickles are
+Run after train/run_standard_siren.sh has finished (CUDA tensors in the pickles are
 mapped to CPU automatically, so no GPU is needed):
 
     python analysis/plot_layer_probes.py --models llama3-8b-sft llama3-8b-instruct --threshold 0.9
@@ -92,7 +92,8 @@ def main():
     parser.add_argument("--threshold", type=float, default=0.9)
     parser.add_argument("--suffix", type=str, default="",
                         help="Training-run suffix in the pkl filename, e.g. "
-                             "'-mlpneuron_mean' (see run_hh_siren.sh OUTPUT_SUFFIX).")
+                             "'-std-mlpneuron_mean-clean' (see run_standard_siren.sh "
+                             "OUTPUT_SUFFIX).")
     parser.add_argument("--probes_dir", type=str,
                         default=os.path.join(os.path.dirname(__file__), "..", "train", "probes"))
     parser.add_argument("--output_dir", type=str,
