@@ -99,6 +99,11 @@ def main():
     parser.add_argument("--model", type=str, default="llama3-8b-instruct")
     parser.add_argument("--pooling_type", type=str, default="residual_mean")
     parser.add_argument("--thresholds", type=float, nargs="+", default=[0.6, 0.8, 0.9])
+    parser.add_argument("--top_n", type=int, nargs="+", default=None,
+                        help="Instead of cumulative-importance thresholds, plot "
+                             "per-layer counts under EXACT global neuron budgets "
+                             "(e.g. --top_n 459 2294 4588 9175): the N globally "
+                             "top-ranked (layer, neuron) pairs, one curve per N.")
     parser.add_argument("--heatmap_threshold", type=float, default=0.9,
                         help="Threshold used for the layer x layer Jaccard heatmap.")
     parser.add_argument("--suffix", type=str, default="",
@@ -114,6 +119,56 @@ def main():
 
     os.makedirs(args.output_dir, exist_ok=True)
     layers, probes = load_probes(args.model, args.probes_dir, args.pooling_type, args.suffix)
+
+    if args.top_n:
+        # Exact-budget mode: rank ALL (layer, neuron) pairs globally by their
+        # cumulative-importance entry threshold and, for each budget N, count
+        # how many of the first N pairs fall in each layer.
+        from export_topn_neurons import entry_thresholds  # lazy: avoids import cycle
+        pairs = []
+        for layer_idx in layers:
+            order, prefix = entry_thresholds(probes[layer_idx])
+            pairs.extend((float(prefix[r]), r, layer_idx) for r in range(len(order)))
+        pairs.sort(key=lambda p: (p[0], p[1]))
+
+        budgets = sorted(args.top_n)
+        counts = {n: {l: 0 for l in layers} for n in budgets}
+        for rank, (_, _, layer_idx) in enumerate(pairs[:max(budgets)]):
+            for n in budgets:
+                if rank < n:
+                    counts[n][layer_idx] += 1
+
+        fig, ax = plt.subplots(figsize=(9, 5))
+        for n in budgets:
+            ax.plot(layers, [counts[n][l] for l in layers], marker="o",
+                    markersize=3, label=f"top {n}")
+        ax.set_xlabel("Layer")
+        ax.set_ylabel("# selected safety neurons")
+        ax.set_title(f"SIREN safety neurons per layer at fixed global budgets\n"
+                     f"{args.model} ({args.pooling_type})")
+        if args.log_y:
+            ax.set_yscale("log")
+        ax.legend(fontsize=8)
+        ax.grid(alpha=0.3)
+        plt.tight_layout()
+
+        n_tag = "-".join(str(n) for n in budgets)
+        plot_path = os.path.join(
+            args.output_dir,
+            f"{args.model}_siren_neurons_{args.pooling_type}{args.suffix}_top{n_tag}.png")
+        plt.savefig(plot_path, dpi=200)
+        print(f"Saved {plot_path}")
+
+        csv_path = os.path.join(
+            args.output_dir,
+            f"{args.model}_{args.pooling_type}{args.suffix}_neuron_counts_top{n_tag}.csv")
+        with open(csv_path, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["layer"] + [f"num_selected_top{n}" for n in budgets])
+            for l in layers:
+                writer.writerow([l] + [counts[n][l] for n in budgets])
+        print(f"Saved {csv_path}")
+        return
 
     # counts[threshold] = list of #selected per layer; selected_at_heatmap keeps
     # the actual index sets for the overlap heatmap.

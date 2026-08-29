@@ -66,6 +66,8 @@ def preprocess_dataset(dataset: str, val_ratio: float = 0.2) -> DatasetDict:
         return _preprocess_standard(val_ratio)
     elif dataset.startswith("standard_trainsplit"):
         return _preprocess_standard_trainsplit(int(dataset[len("standard_trainsplit"):]))
+    elif dataset.startswith("standard_cleansplit"):
+        return _preprocess_standard_cleansplit(int(dataset[len("standard_cleansplit"):]))
     elif dataset.startswith("standard_split"):
         return _preprocess_standard_split(int(dataset[len("standard_split"):]))
     else:
@@ -471,6 +473,41 @@ def _preprocess_standard_trainsplit(split_idx: int) -> DatasetDict:
         "train": to_ds(third(load("harmbench_train")), third(load(_ALPACA_TRAIN))),
         "validation": to_ds(load("harmbench_val"), load("alpaca_val")),
         "test": to_ds(load("harmbench_test"), load("alpaca_test")),
+    })
+
+
+def _preprocess_standard_cleansplit(split_idx: int) -> DatasetDict:
+    """Clean-stability protocol: pre-made thirds of the CLEANED train set,
+    shipped as explicit CSVs (split_idx in {1,2,3}).
+
+    - train:      harmbench_train_split{i} + alpaca_train_split{i} (~173 texts;
+                  the alpaca splits are thirds of alpaca_train-clean)
+    - validation: the standard val files (C selection / early stopping)
+    - test:       the standard test files (reporting only)
+
+    Selections from the three runs are intersected afterwards by
+    analysis/clean_stability_intersection.py.
+    """
+    import pandas as pd
+
+    col = _STANDARD_TEXT_COLUMN
+
+    def load_pair(harm_name, safe_name):
+        harm = pd.read_csv(os.path.join(_STANDARD_DIR, f"{harm_name}.csv"))
+        safe = pd.read_csv(os.path.join(_STANDARD_DIR, f"{safe_name}.csv"))
+        for name, frame in ((harm_name, harm), (safe_name, safe)):
+            if col not in frame.columns:
+                raise ValueError(f"column '{col}' not in {name}.csv "
+                                 f"(have {list(frame.columns)}); set SIREN_TEXT_COLUMN")
+        texts = harm[col].astype(str).tolist() + safe[col].astype(str).tolist()
+        labels = [1] * len(harm) + [0] * len(safe)
+        return Dataset.from_dict({"text": texts, "label": labels})
+
+    return DatasetDict({
+        "train": load_pair(f"harmbench_train_split{split_idx}",
+                           f"alpaca_train_split{split_idx}"),
+        "validation": load_pair("harmbench_val", "alpaca_val"),
+        "test": load_pair("harmbench_test", "alpaca_test"),
     })
 
 

@@ -116,7 +116,7 @@ def main():
         axes[0].plot(df["layer"], df["val_f1"], marker="o", markersize=3, label=f"{model_name} (val)")
         axes[0].plot(df["layer"], df["test_f1"], marker="s", markersize=3, linestyle="--", alpha=0.6,
                      label=f"{model_name} (test)")
-        axes[1].plot(df["layer"], df["selected_share"], marker="o", markersize=3, label=model_name)
+        axes[1].plot(df["layer"], df["num_selected"], marker="o", markersize=3, label=model_name)
 
     axes[0].set_xlabel("Layer")
     axes[0].set_ylabel("Probe macro-F1")
@@ -125,8 +125,8 @@ def main():
     axes[0].grid(alpha=0.3)
 
     axes[1].set_xlabel("Layer")
-    axes[1].set_ylabel("Share of selected safety neurons")
-    axes[1].set_title(f"Safety-neuron distribution (threshold={args.threshold})")
+    axes[1].set_ylabel("# selected safety neurons")
+    axes[1].set_title(f"Safety-neuron count per layer (threshold={args.threshold})")
     axes[1].legend(fontsize=8)
     axes[1].grid(alpha=0.3)
 
@@ -134,20 +134,6 @@ def main():
     plot_path = os.path.join(args.output_dir, f"layer_probes_{args.pooling_type}{args.suffix}_t{args.threshold}.png")
     plt.savefig(plot_path, dpi=200)
     print(f"Saved {plot_path}")
-
-    if len(all_stats) == 2:
-        a, b = all_stats
-        merged = a.merge(b, on="layer", suffixes=("_a", "_b"))
-        jaccards = []
-        for _, row in merged.iterrows():
-            sa, sb = set(row["selected_neurons_a"]), set(row["selected_neurons_b"])
-            union = sa | sb
-            jaccards.append(len(sa & sb) / len(union) if union else 0.0)
-        merged["jaccard"] = jaccards
-        jac_path = os.path.join(args.output_dir, f"neuron_overlap_{args.pooling_type}_t{args.threshold}.csv")
-        merged[["layer", "num_selected_a", "num_selected_b", "jaccard"]].to_csv(jac_path, index=False)
-        print(f"Saved per-layer neuron overlap (Jaccard) between "
-              f"{a['model'].iloc[0]} and {b['model'].iloc[0]}: {jac_path}")
 
 
 if __name__ == "__main__":
