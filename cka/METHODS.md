@@ -177,9 +177,10 @@ because null and ceiling are computed on the same prompts.
 | `siren` | SIREN | Jiao et al., *LLM Safety From Within: Detecting Harmful Content with Internal Representations* |
 | `wang`, `wang_robust` | Wang | *Neuron-Level Safety Alignment for LLMs* |
 | `zhao_topk`, `zhao_eps` | Zhao | *Understanding and Enhancing Safety Mechanisms* |
-| `yang_rms`, `yang_refusal`, `yang_harmfulness` | Yang | Yang, Sondej, Mayne, Lee & Mahdi (EMNLP 2025), *How Does DPO Reduce Toxicity? A Mechanistic Neuron-Level Analysis* |
+| `yang_refusal`, `yang_harmfulness` | Yang | Yang, Sondej, Mayne, Lee & Mahdi (EMNLP 2025), *How Does DPO Reduce Toxicity? A Mechanistic Neuron-Level Analysis* |
 
-Budgets: N = 2,500 / 5,000 / 10,000 selected neurons.
+Budgets: N = 459 / 2,294 / 4,588 / 9,175 selected neurons
+(0.1% / 0.5% / 1% / 2% of the 458,752 MLP neurons).
 
 ## 10. Interpreting the results
 

@@ -16,13 +16,13 @@ drawn from the same 458,752-dimensional population.
 
 File formats handled
 --------------------
-results/rachita_neurons/siren_top{N}.json
+results/rachita_neurons/llama3-8b-instruct_..._selected_neurons_top{N}.json
     {"layer0": [idx, ...], "layer1": [...], ...}
-results/svea_neurons/intersection_neurons_{variant}_N{N}_intersectiontuned.csv
+results/svea_neurons/fulltest_neurons_{variant}_N{N}.csv
+results/tengerleg_neurons/neurons_{variant}_N{N}.csv
     columns: variant, layer, neuron_index
-results/tengerleg_neurons/{ranking}_ranking_top{N}.csv
-    columns: rank, neuron_id, layer, neuron_idx, score, importance
-    (neuron_id == layer * 14336 + neuron_idx)
+
+Budgets are 0.1% / 0.5% / 1% / 2% of the 458,752 MLP neurons.
 
 A "selection" is represented throughout as
 
@@ -42,7 +42,9 @@ RESULTS_DIR = os.path.join(REPO_ROOT, "results")
 NUM_LAYERS = 32
 INTERMEDIATE_SIZE = 14336
 
-BUDGETS = (2500, 5000, 10000)
+# 0.1% / 0.5% / 1% / 2% of NUM_LAYERS * INTERMEDIATE_SIZE = 458,752 neurons.
+BUDGETS = (459, 2294, 4588, 9175)
+DEFAULT_BUDGET = 2294
 
 
 METHOD_SPECS = {
@@ -51,61 +53,57 @@ METHOD_SPECS = {
         "paper": "Jiao et al. — LLM Safety From Within (SIREN)",
         "family": "siren",
         "kind": "siren_json",
-        "path": "rachita_neurons/siren_top{n}.json",
+        "path": ("rachita_neurons/llama3-8b-instruct_mlpneuron_mean-std-"
+                 "mlpneuron_mean-clean_selected_neurons_top{n}.json"),
     },
     "wang": {
         "display": "Wang",
         "paper": "Wang — Neuron-Level Safety Alignment for LLMs",
         "family": "wang",
-        "kind": "svea_csv",
-        "path": "svea_neurons/intersection_neurons_wang_N{n}_intersectiontuned.csv",
+        "kind": "csv",
+        "path": "svea_neurons/fulltest_neurons_wang_N{n}.csv",
     },
     "wang_robust": {
         "display": "Wang (robust)",
         "paper": "Wang — Neuron-Level Safety Alignment for LLMs (robust variant)",
         "family": "wang",
-        "kind": "svea_csv",
-        "path": "svea_neurons/intersection_neurons_wang_robust_N{n}_intersectiontuned.csv",
+        "kind": "csv",
+        "path": "svea_neurons/fulltest_neurons_wang_robust_N{n}.csv",
     },
     "zhao_topk": {
         "display": "Zhao",
         "paper": "Zhao — Understanding and Enhancing Safety Mechanisms (top-k)",
         "family": "zhao",
-        "kind": "svea_csv",
-        "path": "svea_neurons/intersection_neurons_zhao_topk_N{n}_intersectiontuned.csv",
+        "kind": "csv",
+        "path": "svea_neurons/fulltest_neurons_zhao_topk_N{n}.csv",
     },
     "zhao_eps": {
         "display": "Zhao (rel-eps)",
         "paper": "Zhao — Understanding and Enhancing Safety Mechanisms (relative epsilon)",
         "family": "zhao",
-        "kind": "svea_csv",
-        "path": "svea_neurons/intersection_neurons_zhao_relative_epsilon_N{n}_intersectiontuned.csv",
-    },
-    "yang_rms": {
-        "display": "Yang (RMS)",
-        "paper": "Yang, Sondej, Mayne, Lee & Mahdi — How Does DPO Reduce Toxicity? (RMS change)",
-        "family": "yang",
-        "kind": "teng_csv",
-        "path": "tengerleg_neurons/rms_ranking_top{n}.csv",
+        "kind": "csv",
+        "path": "svea_neurons/fulltest_neurons_zhao_relative_epsilon_N{n}.csv",
     },
     "yang_refusal": {
         "display": "Yang (refusal)",
         "paper": "Yang et al. — DPO neuron analysis (delta refusal projection)",
         "family": "yang",
-        "kind": "teng_csv",
-        "path": "tengerleg_neurons/delta_refusal_ranking_top{n}.csv",
+        "kind": "csv",
+        "path": "tengerleg_neurons/neurons_delta_refusal_N{n}.csv",
     },
     "yang_harmfulness": {
         "display": "Yang (harmfulness)",
         "paper": "Yang et al. — DPO neuron analysis (delta harmfulness projection)",
         "family": "yang",
-        "kind": "teng_csv",
-        "path": "tengerleg_neurons/delta_harmfulness_ranking_top{n}.csv",
+        "kind": "csv",
+        "path": "tengerleg_neurons/neurons_delta_harmfulness_N{n}.csv",
     },
 }
 
-# One canonical variant per method: the 4x4 headline comparison.
-DEFAULT_METHODS = ("siren", "wang", "zhao_topk", "yang_rms")
+# One canonical variant per method: the 4x4 headline comparison. Yang's RMS
+# ranking no longer exists in the updated exports; refusal is the stand-in
+# (swap for yang_harmfulness via --methods if preferred).
+DEFAULT_METHODS = ("siren", "wang", "zhao_topk", "yang_refusal")
 ALL_METHODS = tuple(METHOD_SPECS)
 
 
@@ -118,7 +116,7 @@ def selection_path(method, budget):
     return os.path.join(RESULTS_DIR, spec["path"].format(n=budget))
 
 
-def load_selection(method, budget=2500, results_dir=None):
+def load_selection(method, budget=DEFAULT_BUDGET, results_dir=None):
     """dict[layer] -> np.ndarray of neuron indices, for one method/budget."""
     if method not in METHOD_SPECS:
         raise KeyError(f"unknown method '{method}'; known: {sorted(METHOD_SPECS)}")
@@ -134,9 +132,8 @@ def load_selection(method, budget=2500, results_dir=None):
         sel = {int(k[len("layer"):]): np.asarray(v, dtype=np.int64)
                for k, v in raw.items() if v}
     else:
-        col = "neuron_index" if spec["kind"] == "svea_csv" else "neuron_idx"
         df = pd.read_csv(path)
-        sel = {int(layer): sub[col].to_numpy(dtype=np.int64)
+        sel = {int(layer): sub["neuron_index"].to_numpy(dtype=np.int64)
                for layer, sub in df.groupby("layer")}
 
     out = {}
@@ -251,7 +248,7 @@ def build_layer_matrix(acts, sel, layer, dtype=np.float32):
     return np.asarray(acts[:, layer, sel[layer]], dtype=dtype)
 
 
-def describe(method, budget=2500):
+def describe(method, budget=DEFAULT_BUDGET):
     sel = load_selection(method, budget)
     counts = layer_counts(sel)
     top = sorted(counts.items(), key=lambda kv: -kv[1])[:5]
@@ -263,7 +260,8 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Inspect the neuron selections.")
-    parser.add_argument("--budget", type=int, default=2500, choices=BUDGETS)
+    parser.add_argument("--budget", type=int, default=DEFAULT_BUDGET,
+                        choices=BUDGETS)
     args = parser.parse_args()
 
     print(f"Neuron selections at budget N={args.budget}\n")

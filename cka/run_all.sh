@@ -4,8 +4,8 @@
 #
 # Run from the repo root:
 #   bash cka/run_all.sh                                    # the default start
-#   BUDGETS="2500 5000 10000" bash cka/run_all.sh          # budget sweep
-#   METHODS=all BUDGETS="2500 5000 10000" bash cka/run_all.sh   # everything
+#   BUDGETS="459 2294 4588 9175" bash cka/run_all.sh       # budget sweep
+#   METHODS=all BUDGETS="459 2294 4588 9175" bash cka/run_all.sh  # everything
 #   POOLINGS="mean last" bash cka/run_all.sh               # + robustness pooling
 #
 # Defaults are deliberately the smallest run that answers the question: four
@@ -28,18 +28,18 @@ MODEL_PATH="${MODEL_PATH:-meta-llama/Meta-Llama-3-8B-Instruct}"
 # Swap in "openai_moderation beavertails" if your HF account lacks access.
 DATASETS="${DATASETS:-wildguard xstest}"
 POOLINGS="${POOLINGS:-mean}"
-# Accepts several: "2500 5000 10000". BUDGET (singular) still works.
-BUDGETS="${BUDGETS:-${BUDGET:-2500}}"
+# Accepts several: "459 2294 4588 9175". BUDGET (singular) still works.
+BUDGETS="${BUDGETS:-${BUDGET:-2294}}"
 MAX_PROMPTS="${MAX_PROMPTS:-2000}"
 BATCH_SIZE="${BATCH_SIZE:-8}"
-# "all" expands to all 8 selections: siren, wang x2, zhao x2, yang x3.
-METHODS="${METHODS:-siren wang zhao_topk yang_rms}"
+# "all" expands to all 7 selections: siren, wang x2, zhao x2, yang x2.
+METHODS="${METHODS:-siren wang zhao_topk yang_refusal}"
 NULL_SEEDS="${NULL_SEEDS:-20}"
 CROSS_LAYER_SEEDS="${CROSS_LAYER_SEEDS:-5}"
 # The cross-layer sweep is the slow step; at METHODS=all it is 28 heatmaps.
 RUN_CROSS_LAYER="${RUN_CROSS_LAYER:-1}"
 CROSS_LAYER_METHODS="${CROSS_LAYER_METHODS:-$METHODS}"
-CROSS_LAYER_BUDGET="${CROSS_LAYER_BUDGET:-2500}"
+CROSS_LAYER_BUDGET="${CROSS_LAYER_BUDGET:-2294}"
 # Suffix appended to every analysis output filename. Set it whenever you run a
 # second configuration against the SAME dataset, or the two runs overwrite each
 # other's CSVs and figures:

@@ -11,7 +11,7 @@
 # can run alongside another job.
 #
 # Always set RUN_TAG, or this will overwrite the earlier run's outputs:
-#   RUN_TAG=all8 DATASETS=wildguard METHODS=all BUDGETS="2500 5000 10000" \
+#   RUN_TAG=all7 DATASETS=wildguard METHODS=all BUDGETS="459 2294 4588 9175" \
 #       sbatch --export=ALL,RUN_TAG,DATASETS,METHODS,BUDGETS cka/cka_analysis.sbatch
 #
 # It fails immediately if the activations are missing rather than starting a

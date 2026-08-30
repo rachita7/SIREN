@@ -255,7 +255,7 @@ def main():
                              "project out dataset identity.")
     parser.add_argument("--max_prompts", type=int, default=2000,
                         help="Total prompts (half per class). >=2000 is "
-                             "advisable: with a 2500-neuron budget, fewer "
+                             "advisable: with a 2294-neuron budget, fewer "
                              "prompts than neurons makes the prompt-similarity "
                              "matrix rank-deficient and inflates biased CKA.")
     parser.add_argument("--model_path", default="meta-llama/Meta-Llama-3-8B-Instruct",

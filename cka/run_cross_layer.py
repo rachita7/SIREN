@@ -90,7 +90,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--activations", required=True)
     parser.add_argument("--methods", nargs="+", default=list(ns.DEFAULT_METHODS))
-    parser.add_argument("--budget", type=int, default=2500, choices=ns.BUDGETS)
+    parser.add_argument("--budget", type=int, default=ns.DEFAULT_BUDGET,
+                        choices=ns.BUDGETS)
     parser.add_argument("--variant", default="class+length",
                         choices=["raw", "class", "class+length"],
                         help="Residualization; the default is the strictest.")

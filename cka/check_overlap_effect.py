@@ -2,11 +2,11 @@
 
 Motivation
 ----------
-The methods overlap unevenly. At N=2500 SIREN and Wang share 663 neurons
-(26.5% of each set) while SIREN and Zhao share only 116 (4.6%). Shared
-neurons are *literally identical columns* in both matrices, which raises CKA
-for reasons that have nothing to do with the two methods independently
-converging on the same structure.
+The methods overlap unevenly (in an earlier export SIREN and Wang shared 26.5%
+of their neurons while SIREN and Zhao shared 4.6%). Shared neurons are
+*literally identical columns* in both matrices, which raises CKA for reasons
+that have nothing to do with the two methods independently converging on the
+same structure.
 
 So for any pair that scores above its null, the question is whether the signal
 survives deleting the intersection. This script recomputes CKA on the
@@ -55,7 +55,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--activations", required=True)
     parser.add_argument("--methods", nargs="+", default=list(ns.DEFAULT_METHODS))
-    parser.add_argument("--budget", type=int, default=2500, choices=ns.BUDGETS)
+    parser.add_argument("--budget", type=int, default=ns.DEFAULT_BUDGET,
+                        choices=ns.BUDGETS)
     parser.add_argument("--variant", default="class+length",
                         choices=["raw", "class", "class+length"])
     parser.add_argument("--null_seeds", type=int, default=10)

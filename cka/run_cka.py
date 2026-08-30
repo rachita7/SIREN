@@ -132,7 +132,8 @@ def main():
                              "cka/extract_activations.py")
     parser.add_argument("--methods", nargs="+", default=list(ns.DEFAULT_METHODS),
                         help=f"choose from {list(ns.ALL_METHODS)}, or 'all'")
-    parser.add_argument("--budget", type=int, default=2500, choices=ns.BUDGETS,
+    parser.add_argument("--budget", type=int, default=ns.DEFAULT_BUDGET,
+                        choices=ns.BUDGETS,
                         help="Neuron budget; all methods are compared at the "
                              "same budget so set sizes cannot drive the result.")
     parser.add_argument("--null_seeds", type=int, default=20,

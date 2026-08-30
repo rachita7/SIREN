@@ -1,513 +1,177 @@
-# CKA analysis: do the four safety-neuron methods find the same representation?
+# CKA analysis: do the safety-neuron methods find the same representation?
 
-The four methods select almost disjoint neurons. The question this folder
-answers is whether their *populations* nevertheless encode the same
-information. CKA is the right tool for that, because it compares two
-representations of the same prompts without requiring the individual dimensions
-to correspond.
+The methods select almost disjoint neurons (Jaccard ≈ 0.02–0.16). This folder
+tests whether their *populations* nevertheless encode the same information,
+using linear CKA on held-out prompts. Full methodology and report-ready prose:
+`METHODS.md`.
 
-Methods compared (all on Llama-3-8B-Instruct):
+All selections live in the same space: the input to
+`model.layers[l].mlp.down_proj` of Llama-3-8B-Instruct (32 × 14336 = 458,752
+neurons), matching `mlpneuron_mean` in `utils/model_hooks.py`.
 
-| key | method | paper |
-|---|---|---|
-| `siren` | SIREN | Jiao et al., *LLM Safety From Within: Detecting Harmful Content with Internal Representations* |
-| `wang`, `wang_robust` | Wang | *Neuron-Level Safety Alignment for LLMs* |
-| `zhao_topk`, `zhao_eps` | Zhao | *Understanding and Enhancing Safety Mechanisms* |
-| `yang_rms`, `yang_refusal`, `yang_harmfulness` | Yang | Yang, Sondej, Mayne, Lee & Mahdi (EMNLP 2025), *How Does DPO Reduce Toxicity? A Mechanistic Neuron-Level Analysis* |
+| key | method |
+|---|---|
+| `siren` | SIREN — Jiao et al., *LLM Safety From Within* |
+| `wang`, `wang_robust` | Wang — *Neuron-Level Safety Alignment for LLMs* |
+| `zhao_topk`, `zhao_eps` | Zhao — *Understanding and Enhancing Safety Mechanisms* |
+| `yang_refusal`, `yang_harmfulness` | Yang et al. — *How Does DPO Reduce Toxicity?* (EMNLP 2025) |
 
----
-
-## Assessment of the proposed plan
-
-### What was right
-
-**The activation definition is correct and, importantly, it is forced.** All
-four selections index the same coordinate space, verified against every file in
-`results/`: layers span 0–31 and neuron indices span 0–14335, i.e. the input to
-`model.layers[l].mlp.down_proj`, which is exactly
-`SiLU(W_gate x) ⊙ (W_up x)`. This is not a modelling choice you get to make —
-it is what the saved indices mean. It also happens to be the tensor
-`utils/model_hooks.py` already captures as `mlpneuron_mean`, so the analysis
-sits in the same space SIREN's own probes were fit in. `cka/extract_activations.py`
-reuses that hook definition.
-
-**One shared pooling rule for all methods is right,** and mean pooling is the
-correct primary choice since SIREN's selection used `mlpneuron_mean`.
-`--pooling last` is implemented as a robustness check.
-
-**Class-residualization is a genuinely important control,** and the intuition
-about the two outcomes (agreement only on the coarse harmful/benign axis vs.
-agreement on within-class structure) is exactly the right framing.
-
-### What was wrong or badly underweighted
-
-**1. The random control is the entire experiment, not a caveat.** This is the
-big one. All four methods select subsets of *one* population of 32 × 14336 =
-458,752 neurons in a single model. Two arbitrary subsets of that population
-already share the model's global variance structure, so they will score a high
-CKA before anyone mentions safety. The smoke test in this folder demonstrates
-the failure mode concretely: on synthetic activations with a shared global
-factor, **layer-matched random neuron sets score CKA = 0.997**. A reported
-"CKA(SIREN, Wang) = 0.85" under those conditions would be a null result
-misread as a discovery. So every number here is reported against a
-layer-matched random null over 20 seeds, and the headline quantity is a
-normalized score, not a raw CKA.
-
-**2. Prompt length is a confound at least as serious as the class label.** Mean
-pooling divides by the token count, so length leaks into every neuron and is
-often a leading principal component of the pooled representation. HarmBench and
-Alpaca prompts differ systematically in length, and so do the harmful and
-benign halves of essentially every safety benchmark. Removing class means does
-not remove this. So the strictest variant here, `class+length`, projects out
-class dummies *and* a polynomial in the token count (and dataset identity, when
-sources are pooled). `extract_activations.py` prints the per-class token-count
-gap so you can see how big the problem is on your data.
-
-**3. There is no ceiling reference in the plan, so "high" is undefined.** CKA
-between two representations of the same 2000 prompts is never going to be 1.0
-even for genuinely equivalent populations. This folder computes the ceiling
-empirically: split one method's own selection into two disjoint halves and
-measure CKA between them. That is what "same information, same procedure"
-scores on this data. Cross-method CKA is then reported as
-`(observed − null) / (ceiling − null)`: 0 means indistinguishable from random
-neurons, 1 means as similar as a method is to itself.
-
-**4. The 32 × 32 cross-layer heatmap, as proposed, would have produced a
-spurious finding.** Layer *l* and layer *m* of a residual network are
-intrinsically correlated — consecutive layers add small increments to a shared
-stream — so *any* neuron subset of layer *l* scores high against *any* subset
-of a nearby layer *m*. A raw heatmap shows a broad diagonal band no matter what
-the methods did, and the hoped-for result ("SIREN layer 7 aligns with Yang
-layer 25") is far more likely to be the model's own layer geometry than a fact
-about the selections. `run_cross_layer.py` therefore recomputes the whole
-32 × 32 map with layer-matched random neurons *per layer pair* and reports the
-z-score of the excess. The raw panel is still plotted, next to the z panel, so
-you can see how misleading it is.
-
-**5. Yang's selection is degenerate per layer** and would have produced
-garbage cells. `yang_rms` at N=2500 puts 1641 of its 2500 neurons in layer 31
-and only 2–4 neurons in each of layers 14–22. CKA from 2 neurons is noise.
-`--min_neurons` (default 10) masks those cells. Worth knowing before you
-interpret anything: Yang's method is concentrated almost entirely in the last
-three layers, whereas SIREN, Wang and Zhao spread across all 32.
-
-**6. Use the unbiased HSIC estimator for headline numbers.** The biased
-estimator that the proposed snippet implements inflates when the prompt count
-is small, and it inflates by different amounts for matrices of different width
-— which matters here because the methods have different per-layer structure.
-Both are reported (`cka` and `cka_unbiased`); if they disagree, trust the
-unbiased one and add prompts.
-
-**7. CKA is known to be dominated by a handful of very-high-variance
-directions** (Davari et al. 2022, *Reliability of CKA as a Similarity Measure*).
-On Llama-3 that is a live hazard, because the model has massive-activation
-outlier neurons. Two consequences: per-neuron z-scoring is not cosmetic, it
-changes the answer (so it is the default, with `--no_zscore` as a sensitivity
-check), and a second, rank-based measure is reported alongside — Spearman RSA
-on the prompt-similarity matrices, which cannot be driven by outlier scaling.
-If CKA is high and RSA is not, the CKA is an artifact.
-
-**8. It is not a 4 × 4 comparison unless you choose canonical variants.**
-`results/` holds 8 selections: two Wang variants, two Zhao variants, three Yang
-rankings. The default is one per method (`siren wang zhao_topk yang_rms`), but
-`--methods all` gives the full 8 × 8 — and the *within*-method comparisons
-there are a useful extra reference. If Wang vs. Wang-robust only reaches 0.6,
-then 0.6 across methods is high.
-
-**9. Two smaller things.** Dead/near-constant neurons must be dropped before
-z-scoring or they become pure amplified noise (handled, and the count is
-printed). And 1000 prompts is too few: with a 2500-neuron budget the
-prompt-similarity matrix is rank-limited by the prompt count, which inflates
-biased CKA. Use ≥ 2000.
-
-### Held-out data
-
-You selected the neurons on HarmBench + Alpaca (`data_files/`), so the
-recommendation to use different data is right. The defaults:
-
-- **`wildguard`** (primary) — WildGuard test split, prompt-level harm labels,
-  diverse, both classes, disjoint from HarmBench/Alpaca.
-- **`xstest`** (stress test) — safe prompts that *look* harmful plus genuinely
-  unsafe ones. This is the more valuable of the two for your question: because
-  surface form is decoupled from the label, a high CKA here cannot be explained
-  away as "all four methods encode harmful-sounding wording".
-
-| dataset | rows | balanced size | HF access |
-|---|---|---|---|
-| `wildguard` | 1,725 | 1,508 (754 harmful) | **gated** — accept terms + token |
-| `xstest` | 450 | 400 (200 unsafe) | ungated |
-| `aegis2` | 1,964 | both classes | **gated** |
-| `toxic_chat` | 5,082 | small (heavily benign-skewed) | **gated** |
-| `openai_moderation` | 1,680 | both classes | ungated |
-| `beavertails` | 3,021 | both (response-level labels) | ungated |
-| `advbench` | 520 | harmful only | ungated |
-
-**The minority class, not `--max_prompts`, is what usually binds.** WildGuard's
-test split has 1,725 prompts but only 754 harmful ones, so a class-balanced set
-is 1,508 no matter what you ask for. To get past that, pool corpora — pass
-several to `--dataset`, or join them with `+` in `DATASETS`:
-
-```bash
-python cka/build_prompts.py --dataset wildguard openai_moderation --max_prompts 2000
-DATASETS="wildguard+openai_moderation xstest" bash cka/run_all.sh
-```
-
-Pooling deduplicates prompts first (identical rows would create a block of
-maximal similarity shared by every method, inflating all CKAs) and records the
-source in a `dataset` column. `run_cka.py` then projects dataset identity out
-alongside class and length in the residualized variants, because sources differ
-in style and formatting and "which corpus is this from" would otherwise be a
-strong axis every method shares regardless of neuron choice.
-
-`build_prompts.py` loads these directly rather than through
-`train/preprocess.py`, for two reasons. `preprocess.py` splits every corpus
-into train/val/test for probe training, but none of these corpora were used to
-select any method's neurons, so the whole dataset is held out and splitting it
-just discards prompts — for XSTest that would have left 90 prompts, far too few.
-And `preprocess.py`'s wildguard path also loads `wildguardtrain` (~87k rows),
-a large download of a gated config with no use here.
-
-Prompts are wrapped in the Llama-3 chat template with the backbone's own
-tokenizer, reproducing the `formatted_input` column of `data_files/*.csv`, so
-the activations sit in the same regime the neurons were selected under.
-
----
+Budgets N = **459 / 2294 / 4588 / 9175** (0.1 / 0.5 / 1 / 2 % of all MLP
+neurons). Defaults: `siren wang zhao_topk yang_refusal` at N=2294;
+`--methods all` runs all 7.
 
 ## Setup
 
-Everything needed is already in the repo's conda environment:
-
 ```bash
-conda activate siren
+conda activate siren            # everything needed is already there
+python cka/smoke_test.py        # verify pipeline, no GPU (~30 s)
+python cka/neuron_sets.py       # inspect selections + Jaccard, no GPU
 ```
 
-### HuggingFace access
+HuggingFace (one-time): accept terms for
+[Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct)
+and [allenai/wildguardmix](https://huggingface.co/datasets/allenai/wildguardmix),
+then `huggingface-cli login`. XSTest is ungated. On Euler, run
+`build_prompts.py` on a **login node** (compute nodes may be offline).
 
-The backbone (`meta-llama/Meta-Llama-3-8B-Instruct`) is gated, and so are the
-two recommended prompt sets. One-time setup:
-
-1. While logged in to HuggingFace, click *Agree and access* on each page you
-   need: [Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct),
-   [allenai/wildguardmix](https://huggingface.co/datasets/allenai/wildguardmix).
-   XSTest needs nothing.
-2. Authenticate on the cluster:
+## Run
 
 ```bash
-huggingface-cli login          # or: export HF_TOKEN=hf_...
+bash cka/run_all.sh          # local: 4 methods, N=2294, wildguard + xstest
+sbatch cka/cka.sbatch        # same on SLURM (GPU)
 ```
 
-3. Confirm access before queueing a GPU job:
+Sweeps via environment variables:
 
 ```bash
-python -c "from datasets import load_dataset; \
-d=load_dataset('allenai/wildguardmix','wildguardtest')['test']; \
-print(len(d), d.column_names)"
+METHODS=all BUDGETS="459 2294 4588 9175" bash cka/run_all.sh   # everything
+POOLINGS="mean last" bash cka/run_all.sh                       # pooling robustness
+DATASETS="wildguard+openai_moderation xstest" bash cka/run_all.sh  # pool corpora
 ```
 
-If that fails, `build_prompts.py` prints the fix and lists the ungated
-alternatives; nothing else in the pipeline cares which held-out set you use.
-On ETH Euler, run `build_prompts.py` on a **login node** — compute nodes may not
-reach the Hub, and the resulting CSV is all the GPU step needs.
+The GPU steps (prompts + activation extraction) run once per dataset; every
+budget/method/seed sweep after that is CPU-only and rereads the saved
+activations.
 
-Verify the pipeline without a GPU or any downloads (~25 s). This checks the CKA
-implementation against cases with known answers, the neuron loaders against all
-8 selections × 3 budgets, and runs both analysis scripts end to end on
-synthetic activations:
+Step by step, if you prefer:
 
 ```bash
-python cka/smoke_test.py
+python cka/build_prompts.py --dataset wildguard --max_prompts 2000   # CPU, HF access
+python cka/extract_activations.py --prompts cka/prompts/wildguard.csv \
+    --pooling mean --batch_size 8                                    # GPU, ~10 min
+python cka/run_cka.py --activations cka/activations/wildguard_mean.npy      # CPU
+python cka/run_cross_layer.py --activations cka/activations/wildguard_mean.npy \
+    --variant class+length                                           # CPU
+python cka/check_overlap_effect.py \
+    --activations cka/activations/wildguard_mean.npy                 # CPU
 ```
 
-Inspect what is in `results/` before running anything expensive:
+### Concurrent runs
+
+Outputs are named by dataset + pooling, so a second configuration on the same
+dataset must set `RUN_TAG` (or it overwrites the first) and `SKIP_EXTRACT=1`
+(reuse existing activations; no GPU needed):
 
 ```bash
-python cka/neuron_sets.py --budget 2500
-```
-
-This prints each method's size and layer profile and the pairwise index-level
-Jaccard — the near-zero overlap that motivates the whole analysis.
-
-## Scope: how many methods, which budgets
-
-`results/` holds **8 selections**, not 4: SIREN, Wang ×2 (`wang`,
-`wang_robust`), Zhao ×2 (`zhao_topk`, `zhao_eps`), Yang ×3 (`yang_rms`,
-`yang_refusal`, `yang_harmfulness`), at each of N = 2500 / 5000 / 10000.
-
-**The default is 4 canonical methods at N=2500 — one per paper.** That is the
-right place to start: it is the comparison your question is actually about, it
-produces a readable 4×4, and 6 pairs instead of 28 keeps the output small
-enough to reason about. Get those numbers first.
-
-Then widen, because the two extra axes each answer a distinct question:
-
-- **All 8 selections** (`METHODS=all`) adds the *within-method* pairs, and
-  those are the single most useful extra reference in the whole analysis.
-  Wang vs. Wang-robust are two genuine implementations of the *same* method, so
-  their CKA is what "same method, different procedural choices" scores. If
-  Wang vs. Wang-robust only reaches 0.6, then a cross-method 0.6 is not a weak
-  result — it is at parity with a method's agreement with itself. Every row is
-  tagged `family_pair` = `within` / `cross`, and the mean of each is printed.
-- **The budget sweep** (`BUDGETS="2500 5000 10000"`) tests whether the
-  conclusion is an artifact of how aggressively each method was truncated. All
-  methods are always compared at the *same* budget, so set size can never
-  drive a single number — but the trend across budgets matters. If similarity
-  rises sharply with N, the methods are converging simply because larger
-  subsets of a shared population must overlap in what they encode.
-
-Recommended progression:
-
-```bash
-bash cka/run_all.sh                                          # 1. start here
-METHODS=all bash cka/run_all.sh                              # 2. add within-method refs
-METHODS=all BUDGETS="2500 5000 10000" bash cka/run_all.sh     # 3. full sweep
-```
-
-Steps 1–2 of the pipeline (prompts, GPU extraction) run **once per dataset**
-regardless of how many methods or budgets you sweep, so widening the scope
-costs only CPU time.
-
-## Runtime
-
-Per dataset, 2000 prompts, on one 24 GB GPU + 4 CPU cores:
-
-| step | 4 methods, N=2500 | all 8, all 3 budgets | hardware |
-|---|---|---|---|
-| 1. build prompts | 1–5 min (mostly download) | same | CPU + network |
-| 2. extract activations | 5–10 min (incl. ~2 min model load) | same | GPU |
-| 3. cross-method CKA | 5–10 min | 30–60 min | CPU |
-| 4. cross-layer CKA | 10–20 min | 30–60 min | CPU |
-
-So the default two-dataset run is **≈45–75 min total**, and the full 8-method,
-3-budget sweep over both datasets is **≈3–4 h** — within the 6 h wall time in
-`cka.sbatch`, but check it before adding more.
-
-Pairwise comparison itself is cheap: each prepared representation caches its
-prompt-by-prompt Gram matrix, so a pair costs one `sum(K * L)` rather than
-recomputing both self-norms. That is what keeps 28 pairs affordable; without it
-the N=10000 sweep would repeat the dominant O(N²k) work ~8× per matrix. Cost is
-128 MB of Gram cache at N=2000 with 8 methods.
-
-Levers if it is too slow: `--skip_rsa` removes the slowest measure (RSA is
-~40% of step 3); `RUN_CROSS_LAYER=0` skips step 4; `CROSS_LAYER_METHODS` lets
-you sweep all 8 in step 3 while keeping step 4 on the canonical 4. Going the
-other way, `--null_seeds 100` for publication figures roughly quintuples
-step 3. Steps 3–4 reread the saved activations, so iterate freely without
-re-running the GPU.
-
-## Running it
-
-The short version, from the repo root:
-
-```bash
-bash cka/run_all.sh
-```
-
-or on SLURM:
-
-```bash
-sbatch cka/cka.sbatch
-```
-
-If your compute nodes are offline, build the prompt sets on a login node first
-(`python cka/build_prompts.py --dataset wildguard`).
-
-### Step by step
-
-**1. Build a held-out prompt set** (CPU, needs HF access):
-
-```bash
-python cka/build_prompts.py --dataset wildguard openai_moderation --max_prompts 2000
-python cka/build_prompts.py --dataset xstest
-```
-
-Writes `cka/prompts/{tag}.csv`, deduplicated, class-balanced and
-chat-templated. Passing several datasets pools them into one set tagged
-`a+b`; see the table above for why you usually want to.
-
-**2. Extract activations** (GPU, ~5–10 min for 2000 prompts on a 24 GB card):
-
-```bash
-python cka/extract_activations.py \
-    --prompts cka/prompts/wildguard.csv \
-    --pooling mean --batch_size 8
-```
-
-Writes `cka/activations/wildguard_mean.npy`, a float16
-`[N, 32, 14336]` array (~1.8 GB), plus a `.meta.csv` with labels and token
-counts. Every neuron is stored, not just the selected ones, so all downstream
-analysis — any method, any budget, any random seed, the full cross-layer sweep
-— reruns on CPU without touching the GPU again.
-
-**3. Cross-method CKA** (CPU, ~5–15 min):
-
-```bash
-python cka/run_cka.py --activations cka/activations/wildguard_mean.npy
-```
-
-**4. Cross-layer CKA** (CPU, ~10–20 min):
-
-```bash
-python cka/run_cross_layer.py \
-    --activations cka/activations/wildguard_mean.npy \
-    --variant class+length
-```
-
-### Running two configurations at once
-
-Analysis outputs are named after the dataset and pooling, so a second run on the
-same dataset would overwrite the first. Set `RUN_TAG` to keep them apart, and
-`SKIP_EXTRACT=1` to reuse the activations the first job already wrote instead of
-racing to rebuild them:
-
-```bash
-RUN_TAG=all8 SKIP_EXTRACT=1 DATASETS=wildguard METHODS=all \
-    BUDGETS="2500 5000 10000" bash cka/run_all.sh
-```
-
-Outputs become `cka_wildguard_mean_all8_N2500.csv` and so on, alongside the
-untagged originals. Because steps 3–4 are CPU-only, **this second job needs no
-GPU** — submit it with the CPU-only script, which queues much faster:
-
-```bash
-RUN_TAG=all8 DATASETS=wildguard METHODS=all BUDGETS="2500 5000 10000" \
+RUN_TAG=all7 DATASETS=wildguard METHODS=all BUDGETS="459 2294 4588 9175" \
     sbatch --export=ALL,RUN_TAG,DATASETS,METHODS,BUDGETS cka/cka_analysis.sbatch
 ```
 
-`SKIP_EXTRACT=1` fails immediately if the activations are absent rather than
-starting a duplicate extraction, so it is safe to submit while the GPU job is
-still running — you just have to resubmit once extraction finishes. Activation
-files are written to a temporary name and renamed into place, so a `.npy` that
-exists is always complete and never half-written.
+### Runtime (2000 prompts, 24 GB GPU)
 
-### Useful variations
+Prompts 1–5 min; extraction 5–10 min (GPU); cross-method CKA 5–10 min;
+cross-layer 10–20 min. Defaults ≈ 1 h total. `METHODS=all` over all budgets
+≈ 3–4 h. Levers: `--skip_rsa`, `RUN_CROSS_LAYER=0`, `--null_seeds`.
 
-```bash
-# All 8 selections, so within-method variants give an extra reference point
-python cka/run_cka.py --activations ... --methods all
+## Controls (why raw CKA is never reported alone)
 
-# One specific method family against SIREN
-python cka/run_cka.py --activations ... \
-    --methods siren yang_rms yang_refusal yang_harmfulness
+- **Layer-matched random null** — random neurons with each method's per-layer
+  counts. Two random subsets of one model already score CKA ≈ 0.9+, so a raw
+  number means nothing without this. 20 seeds; reported as mean, std and
+  `z_vs_null`.
+- **Ceiling** — CKA between two disjoint halves of one method's *own*
+  selection: what "same information, same procedure" scores. Includes a
+  half-size random baseline, since halving lowers CKA by itself.
+- **Residualization variants** — `raw`; `class` (harmful/benign means
+  projected out); `class+length` (also token count, and dataset identity when
+  corpora are pooled). The strict variant is the one that supports claims.
+- **Robustness measures** — unbiased-HSIC CKA (small-sample), Spearman RSA
+  (outlier neurons), per-neuron z-scoring (`--no_zscore` to check).
+- **Overlap control** — `check_overlap_effect.py` deletes the neurons two
+  methods *share* and recomputes. A pair whose z collapses was only scoring
+  high because both matrices contained identical columns.
 
-# Does the conclusion depend on the neuron budget?
-for N in 2500 5000 10000; do python cka/run_cka.py --activations ... --budget $N; done
+## Evaluating the results
 
-# Sensitivity to the z-score, given Llama-3's outlier neurons
-python cka/run_cka.py --activations ... --no_zscore --label wildguard_nozscore
+Everything lands in `cka/results/`. Main table: `cka_{tag}_N{budget}.csv`,
+one row per (variant, pair). Figures: `cka_matrix_*` (observed/null/normalized
+heatmaps), `cka_pairs_*` (bars vs null with ceiling), `cka_variants_*`
+(normalized across variants), `crosslayer_*` (32×32 maps),
+`layer_profiles_*`.
 
-# Robustness to the pooling rule
-python cka/extract_activations.py --prompts cka/prompts/wildguard.csv --pooling last
-python cka/run_cka.py --activations cka/activations/wildguard_last.npy
+**Primary statistic: `z_vs_null`** — standard deviations above (+) or below
+(−) the layer-matched random null. |z| > 3 is significant.
 
-# Publication-quality nulls (slower)
-python cka/run_cka.py --activations ... --null_seeds 100 --ceiling_seeds 20
-```
-
-## Output
-
-Everything lands in `cka/results/`:
-
-| file | contents |
+| observation | meaning |
 |---|---|
-| `cka_{tag}_N{budget}.csv` | one row per (variant, method pair): `cka`, `cka_unbiased`, `rsa_spearman`, both nulls with std, ceiling, `z_vs_null`, `normalized`, `jaccard`, `family_pair` |
-| `cka_{tag}_N{budget}.json` | the same plus per-method ceilings and run configuration |
-| `cka_matrix_{tag}_N{budget}_{variant}.png` | observed / null / normalized matrices side by side |
-| `cka_pairs_{tag}_N{budget}_{variant}.png` | observed vs. null bars with the ceiling marked |
-| `cka_variants_{tag}_N{budget}.png` | normalized score across the three residualizations |
-| `layer_profiles_{tag}_N{budget}.png` | each method's layer distribution |
-| `crosslayer_{...}_{a}_vs_{b}.png` | raw 32×32 CKA next to the null-normalized z map |
-| `crosslayer_{...}_{a}_vs_{b}_{cka,zscore}.csv` | the underlying matrices |
-| `crosslayer_long_{...}.csv` | tidy per-(layer, layer) rows for your own plotting |
+| z ≈ 0 | Pair is indistinguishable from random neurons in the same layers. The near-zero Jaccard is the whole story. |
+| z ≫ 0 and `normalized` ≈ 1 | Populations are representationally interchangeable despite disjoint neurons — the interesting positive result. Confirm with `check_overlap_effect.py`. |
+| z ≪ 0 | Selections are *less* mutually aligned than random sets: each method finds distinctive but different structure. |
 
-## Reading the results
+`normalized` rescales CKA so 0 = null and 1 = ceiling. It is NaN when the
+ceiling does not sit above the null (small datasets, e.g. XSTest's 400
+prompts, cannot resolve the scale) — fall back to z.
 
-The column to look at is **`normalized`**, not `cka`:
+Then read across variants: high on `raw` but collapsing on `class` means the
+methods only share the coarse harmful/benign axis; surviving `class+length` is
+the strong claim.
 
-- **≈ 0** — the selected neurons are no more similar to each other than random
-  neurons from the same layers. The methods genuinely find different things,
-  and the near-zero Jaccard is the whole story.
-- **≈ 1** — as similar as two disjoint halves of one method's own selection.
-  The populations are representationally interchangeable despite selecting
-  almost disjoint neurons. This is the interesting result.
-- **intermediate** — partial overlap in what is encoded; report the number
-  rather than a verdict.
+Consistency checks: `cka` ≈ `cka_unbiased` (else add prompts);
+`rsa_spearman` moves with `cka` (else outlier neurons drive it). With
+`--methods all`, compare `family_pair` `within` vs `cross` rows: cross-method
+scores at within-method level is the strongest form of the result.
 
-Then read across the three variants:
+Cross-layer maps: read the **z panel only**; the raw panel shows a diagonal
+band for any subsets because neighboring layers share the residual stream.
+Off-diagonal z peaks = same structure at different depths. Cells with fewer
+than `--min_neurons` (10) are masked — Yang concentrates ~80% of its neurons
+in layers 29–31.
 
-- high on `raw`, collapses on `class` → the methods only agree on the coarse
-  harmful-vs-benign distinction. Real, but weak.
-- still high on `class+length` → they agree on fine-grained structure *within*
-  each class that is not prompt length. This is the strong claim, and the one
-  worth writing up.
+## Data
 
-Two consistency checks before you believe any of it: `cka` and `cka_unbiased`
-should agree (if not, add prompts), and `rsa_spearman` should move with `cka`
-(if not, a few outlier neurons are driving the CKA).
-
-If you ran `--methods all`, compare the `within` and `cross` rows of
-`family_pair` — the mean of each is printed per variant. Cross-method scores at
-or above the within-method level is the strongest form of the result: the four
-papers agree with each other as much as each paper's own variants agree with
-themselves.
-
-For the cross-layer maps, read the **z panel, not the raw panel**. The raw
-panel will show a diagonal band regardless. Off-diagonal z peaks are the
-finding worth chasing: the same structure recovered at different network
-depths.
+Neurons were selected on HarmBench + Alpaca, so those are excluded here.
+Defaults: **wildguard** (primary; gated; balanced to 1508 prompts by its 754
+harmful rows) and **xstest** (stress test; 400 prompts whose surface form is
+decoupled from the label). Ungated alternatives: `openai_moderation`,
+`beavertails`, `advbench`. Pool corpora (`--dataset a b` or `DATASETS="a+b"`)
+to get past a small minority class; pooled runs deduplicate and residualize
+dataset identity automatically.
 
 ## Troubleshooting
 
-**`RuntimeWarning: overflow/divide-by-zero encountered in matmul` on macOS.**
-Spurious. NumPy 2.x with Apple's Accelerate BLAS raises bogus floating-point
-warnings on large matmuls; the results are exact (the smoke test's
-`CKA(X, X) == 1.000000` checks run through the same code path). It does not
-occur on the Linux cluster. Silence it with `python -W ignore::RuntimeWarning`.
-
-**Out of memory in `run_cka.py`.** Peak usage is roughly
-`num_methods × num_prompts × budget × 4 bytes × 3`. At the defaults that is
-under 1 GB, but `--methods all --budget 10000` needs ~10 GB. Reduce the budget,
-the method count, or pass `--skip_rsa` (RSA is the one step that materializes
-an N × N matrix).
-
-**Gated HuggingFace datasets.** `wildguard`, `aegis2` and `toxic_chat` require
-accepting terms on the Hub plus a token (see *HuggingFace access* above). Use
-`xstest`, `openai_moderation` or `beavertails` instead — the analysis does not
-care which held-out set you use, only that the four methods did not select on it.
-
-**`FileNotFoundError: siren @ N=2500: missing results/rachita_neurons/...`**
-The repo's `.gitignore` has a blanket `*.json` rule, which silently excluded
-SIREN's exported neuron JSONs while the other methods' CSVs were committed. Now
-fixed with a `!results/**/*.json` negation. If you hit it on an older checkout,
-`git pull` and confirm with `python cka/neuron_sets.py`.
-
-**CUDA out of memory during extraction.** Drop to `--batch_size 4`. Activations
-are pooled inside the hook rather than after the forward pass, so peak memory
-is ~3.7 GB lower than the extractor in `utils/model_hooks.py`, but batch 8 at
-512 tokens next to the 16 GB bf16 model is still a snug fit on a 24 GB card.
+- **`RuntimeWarning ... in matmul` on macOS** — spurious (Accelerate BLAS);
+  results are exact. `python -W ignore::RuntimeWarning` silences it.
+- **CUDA OOM during extraction** — `--batch_size 4`.
+- **CPU OOM in `run_cka.py`** — reduce budget/methods, or `--skip_rsa`.
+- **Missing SIREN JSONs on the cluster** — `git pull`; `.gitignore` needs the
+  `!results/**/*.json` negation. Verify with `python cka/neuron_sets.py`.
 
 ## Files
 
 | file | role |
 |---|---|
-| `neuron_sets.py` | loaders for all 8 selections; layer-matched and global nulls; disjoint-half splits; matrix construction. Runnable for a summary. |
-| `cka_core.py` | linear CKA (biased and unbiased HSIC), Spearman RSA, residualization, preprocessing, normalized scores |
-| `build_prompts.py` | held-out, class-balanced, chat-templated prompt sets |
-| `extract_activations.py` | `down_proj`-input activations for all 32 × 14336 neurons |
+| `neuron_sets.py` | selection loaders, nulls, half-splits; runnable summary |
+| `cka_core.py` | CKA (biased/unbiased), RSA, residualization, normalization |
+| `build_prompts.py` | held-out, balanced, chat-templated prompt sets |
+| `extract_activations.py` | `[N, 32, 14336]` float16 activations + metadata |
 | `run_cka.py` | cross-method analysis with all controls |
-| `run_cross_layer.py` | 32 × 32 cross-layer analysis with per-layer-pair nulls |
-| `plots.py` | figures |
-| `smoke_test.py` | correctness checks and an end-to-end synthetic run |
-| `run_all.sh` | driver; `cka.sbatch` (GPU, full pipeline) and `cka_analysis.sbatch` (CPU-only rerun) wrap it |
-| `METHODS.md` | report-ready write-up of the methodology, data and interpretation |
+| `run_cross_layer.py` | 32×32 cross-layer analysis, per-layer-pair nulls |
+| `check_overlap_effect.py` | shared-neuron control |
+| `plots.py`, `smoke_test.py` | figures; correctness + end-to-end checks |
+| `run_all.sh`, `cka.sbatch`, `cka_analysis.sbatch` | drivers (local / GPU / CPU-only) |
+| `METHODS.md` | report-ready methodology write-up |
 
 ## References
 
-- Kornblith, Norouzi, Lee & Hinton (2019). *Similarity of Neural Network
-  Representations Revisited.* ICML. — linear CKA.
-- Song, Smola, Gretton, Bedo & Borgwardt (2012). *Feature Selection via
-  Dependence Maximization.* JMLR. — unbiased HSIC estimator.
-- Davari, Horoi, Natik, Lajoie, Wolf & Belilovsky (2022). *Reliability of CKA as
-  a Similarity Measure in Deep Learning.* — the outlier-direction sensitivity
-  that motivates z-scoring and the RSA cross-check.
-- Kriegeskorte, Mur & Bandettini (2008). *Representational similarity
-  analysis.* — the RSA measure.
+Kornblith et al. 2019 (linear CKA) · Song et al. 2012 (unbiased HSIC) ·
+Davari et al. 2022 (CKA outlier sensitivity) · Kriegeskorte et al. 2008 (RSA).

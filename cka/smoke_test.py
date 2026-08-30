@@ -139,16 +139,18 @@ def test_selections():
                 check(f"{method} @ N={budget}", False, "file missing")
                 continue
             total = ns.size(sel)
-            ok = abs(total - budget) <= 3  # zhao_topk files are 1-2 rows short
+            # zhao files run a few rows over/under the nominal budget (ties).
+            ok = abs(total - budget) <= max(5, budget // 200)
             check(f"{method} @ N={budget}", ok, f"total={total}")
 
     rng = np.random.default_rng(0)
+    budget = ns.DEFAULT_BUDGET
     reference = next((m for m in ns.ALL_METHODS
-                      if os.path.exists(ns.selection_path(m, 2500))), None)
+                      if os.path.exists(ns.selection_path(m, budget))), None)
     if reference is None:
         check("a selection file exists to test the controls with", False)
         return None
-    sel = ns.load_selection(reference, 2500)
+    sel = ns.load_selection(reference, budget)
     rnd = ns.random_layer_matched(sel, rng)
     check("layer-matched null preserves per-layer counts",
           ns.layer_counts(sel) == ns.layer_counts(rnd))
@@ -162,7 +164,7 @@ def test_selections():
           abs(ns.size(h1) - ns.size(sel) / 2) < 40,
           f"{ns.size(h1)} vs {ns.size(sel) / 2:.0f}")
     return [m for m in ns.DEFAULT_METHODS
-            if os.path.exists(ns.selection_path(m, 2500))]
+            if os.path.exists(ns.selection_path(m, budget))]
 
 
 def make_synthetic(out_dir, n_prompts=260, seed=0):
@@ -211,8 +213,9 @@ def test_scripts(methods):
         results = os.path.join(tmp, "results")
         env = dict(os.environ, MPLBACKEND="Agg")
 
+        budget = str(ns.DEFAULT_BUDGET)
         cmd = [sys.executable, os.path.join(HERE, "run_cka.py"),
-               "--activations", acts_path, "--budget", "2500",
+               "--activations", acts_path, "--budget", budget,
                "--methods", *methods,
                "--null_seeds", "3", "--ceiling_seeds", "2",
                "--variants", "raw", "class+length",
@@ -225,7 +228,7 @@ def test_scripts(methods):
             print(proc.stderr[-3000:])
             return
 
-        csv = os.path.join(results, "cka_synthetic_mean_N2500.csv")
+        csv = os.path.join(results, f"cka_synthetic_mean_N{budget}.csv")
         check("pairwise CSV written", os.path.exists(csv))
         if os.path.exists(csv):
             frame = pd.read_csv(csv)
@@ -245,7 +248,7 @@ def test_scripts(methods):
                   f"raw={raw:.4f} class+length={res:.4f}")
 
         cmd = [sys.executable, os.path.join(HERE, "run_cross_layer.py"),
-               "--activations", acts_path, "--budget", "2500",
+               "--activations", acts_path, "--budget", budget,
                "--methods", *pair, "--variant", "class+length",
                "--null_seeds", "2", "--output_dir", results]
         proc = subprocess.run(cmd, capture_output=True, text=True, env=env)
@@ -255,7 +258,7 @@ def test_scripts(methods):
             print(proc.stdout[-3000:])
             print(proc.stderr[-3000:])
             return
-        stem = (f"crosslayer_synthetic_mean_N2500_class-length_"
+        stem = (f"crosslayer_synthetic_mean_N{budget}_class-length_"
                 f"{pair[0]}_vs_{pair[1]}")
         check("cross-layer CKA CSV written",
               os.path.exists(os.path.join(results, stem + "_cka.csv")))
