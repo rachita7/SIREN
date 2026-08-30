@@ -1,180 +1,160 @@
 # Refusal-direction / DFA: do the safety-neuron methods feed the same mechanism?
 
-Companion analysis to `cka/`, based on Arditi et al. 2024, *Refusal in
-Language Models Is Mediated by a Single Direction*
+Companion to `cka/`, based on Arditi et al. 2024
 ([arXiv:2406.11717](https://arxiv.org/abs/2406.11717)). CKA asks whether the
-selected populations encode similar *representations*; this folder asks a
-mechanistically stronger question: **do the neurons selected by SIREN, Wang,
-Zhao and Yang write into the same refusal direction of the residual
-stream?** Two methods can share zero neurons (Jaccard ≈ 0.02–0.16), score
-mid-range CKA, and still converge here — or vice versa.
+selected populations encode similar *representations*; this asks the
+mechanistic question: **do the neurons selected by SIREN, Wang, Zhao and
+Yang write into the same refusal direction of the residual stream?**
 
-## Method in one paragraph
+## Method
 
-A refusal direction `r = mean_harmful(x) − mean_harmless(x)` is fitted from
-residual-stream states at the last prompt token on a corpus none of the
-methods ever saw, with the layer chosen by held-out AUROC (capped at 80% of
-depth, following the paper). Each MLP neuron `(l, j)` writes
-`a_{l,j}(x) · W_down^(l)[:, j]` into the residual stream, so its per-neuron
-refusal contribution — the paper's Direct Feature Attribution pushed down to
-neurons — is `DFA_{l,j} = (E_harmful[a] − E_benign[a]) · (W_down^(l)[:, j] · r̂)`,
-evaluated on the held-out prompts already used by the CKA analysis. Summing
-each method's contributions gives one residual-stream **write vector** `v_M`
-per method; the pairwise `cos(v_A, v_B)` matrix (plus each `cos(v_M, r̂)`) is
-the functional analogue of the CKA matrix. Finally, `run_ablation.py` zeroes
-each method's neurons during generation and checks whether `x · r̂` and
-refusal behavior actually drop — attribution says what the neurons write,
-ablation says whether it matters.
+1. **Direction.** `r = mean_harmful(x) − mean_harmless(x)` over
+   residual-stream states at the last prompt token; the layer is chosen by
+   held-out AUROC, capped at 80% of depth (per the paper).
+2. **Per-neuron DFA.** FFN neuron `(l, j)` writes
+   `a_{l,j}(x) · W_down^(l)[:, j]` into the residual stream, so
+   `DFA_{l,j} = (E_harmful[a] − E_benign[a]) · (W_down^(l)[:, j] · r̂)` —
+   the paper's Direct Feature Attribution pushed down to single neurons.
+3. **Write vectors.** Summing a method's contributions gives one
+   residual-stream vector `v_M`; the pairwise `cos(v_A, v_B)` matrix (plus
+   `cos(v_M, r̂)`) is the functional analogue of the CKA matrix. Two methods
+   can share zero neurons and still score cos ≈ 1 here.
+4. **Ablation.** Zero each method's neurons during generation: does `x · r̂`
+   drop, does refusal on harmful prompts drop, does benign behavior survive?
+   Attribution says what the neurons write; ablation says whether it matters.
 
-All selections live in the same space as everywhere else in the repo: the
-input to `mlp.down_proj` of Llama-3-8B-Instruct (32 × 14336 neurons), loaded
-through `cka/neuron_sets.py`. Budgets N = 459 / 2294 / 4588 / 9175.
+Selections are the same `(layer, neuron)` sets as everywhere in the repo
+(input to `mlp.down_proj`, 32 × 14336 neurons, loaded via
+`cka/neuron_sets.py`). Budgets N = 459 / 2294 / 4588 / 9175
+(0.1 / 0.5 / 1 / 2%); default N=2294 with the four canonical methods
+`siren wang zhao_topk yang_refusal`; `METHODS=all` runs all 7 variants.
 
-## One dataset framework: WildGuard train/val/test
-
-The whole comparison lives inside WildGuard's **official** splits — our
-controlled adaptation of Arditi et al.'s train → validation → evaluation
-protocol (they use different corpora; the principle that matters is that
-prompts used to construct/select the direction are never the prompts used
-for final evaluation):
+## Data: one WildGuard train/val/test framework
 
 | split | purpose |
 |---|---|
-| WildGuardTrain → fit subset | construct the difference-in-means direction r |
-| WildGuardTrain → val subset | choose r's layer (held-out AUROC, 80%-depth cap) |
-| **WildGuardTest** (= `cka/prompts/wildguard.csv`) | **everything that is reported**: CKA, DFA, write-vector cosines, ablation |
+| WildGuardTrain → fit subset | construct r |
+| WildGuardTrain → val subset | choose r's layer |
+| **WildGuardTest** = `cka/prompts/wildguard.csv` (1508 balanced prompts) | **everything reported**: CKA, DFA, cosines, ablation |
 
-`cka/prompts/wildguard.csv` is the frozen master evaluation file: CKA and
-DFA read the very same activation arrays and the ablation samples its
-prompts from the same CSV, so if CKA and DFA disagree about a method pair,
-the dataset cannot be blamed — both saw identical prompts. WildGuardTest is
-never split further; its 1,508 balanced prompts stay intact as the official
-human-annotated test set (the train split's labels are GPT-4-derived with
-auditing, which is fine for fitting a mean difference).
+The official train/test split provides the one principle that matters:
+prompts that construct/select the direction never appear in the evaluation
+(`build_direction_prompts.py` additionally drops any exact-text overlap).
+CKA, DFA and the ablation all read the same frozen evaluation file, so
+disagreements between measures cannot be blamed on the data. HarmBench +
+Alpaca are upstream provenance only (neuron selection, before this
+experiment starts).
 
-HarmBench + Alpaca appear only as upstream provenance: the four neuron sets
-were selected on them before this experiment starts, and they are used
-nowhere inside it. As a belt-and-braces guard on top of the official split,
-`build_direction_prompts.py` drops any direction prompt whose text also
-appears in the evaluation CSVs. Fitting on a different corpus entirely
-(e.g. `--dataset openai_moderation`) remains available as a robustness
-check that r is not WildGuard-specific.
-
-## Setup and run
+## Run
 
 ```bash
-conda activate siren                      # everything needed is already there
-python refusal_direction/smoke_test.py    # verify pipeline, no GPU (~1 min)
-
-bash refusal_direction/run_all.sh         # local (needs GPU for 3 steps)
-sbatch refusal_direction/refusal.sbatch   # same on SLURM
+conda activate siren
+python refusal_direction/smoke_test.py     # verify pipeline, no GPU (~1 min)
 ```
 
-Step by step, if you prefer:
+**1. Prompt sets — login node (needs internet):**
 
 ```bash
-# 1. direction prompts from WildGuardTrain (CPU, HF access): balanced fit/val
-#    splits, any exact-text overlap with the eval CSVs removed
 python refusal_direction/build_direction_prompts.py --dataset wildguard_train
-
-# 2. residual-stream states at the last prompt token (GPU, ~5 min)
-python refusal_direction/extract_residuals.py \
-    --prompts refusal_direction/prompts/wildguard_train_fit.csv
-python refusal_direction/extract_residuals.py \
-    --prompts refusal_direction/prompts/wildguard_train_val.csv
-
-# 3. fit r on the fit split, select its layer on the val split (CPU)
-python refusal_direction/fit_direction.py \
-    --fit_residuals refusal_direction/residuals/wildguard_train_fit_last.npy \
-    --val_residuals refusal_direction/residuals/wildguard_train_val_last.npy
-
-# 4. WildGuardTest activations -- same script/format as the CKA analysis (GPU, ~10 min)
-python cka/extract_activations.py --prompts cka/prompts/wildguard.csv --pooling last
-
-# 5. the headline DFA analysis (CPU; streams down_proj weights from the HF cache)
-python refusal_direction/run_dfa.py \
-    --activations cka/activations/wildguard_last.npy \
-    --direction refusal_direction/directions/wildguard_train_last.npz
-
-# 6. causal validation (GPU, ~1 h at the defaults)
-python refusal_direction/run_ablation.py \
-    --prompts cka/prompts/wildguard.csv \
-    --direction refusal_direction/directions/wildguard_train_last.npz
+python cka/build_prompts.py --dataset wildguard      # skip if it exists
 ```
 
-Sweeps via environment variables, mirroring `cka/run_all.sh`:
+**2. First pass without ablation — GPU job, ~30–40 min** (residuals →
+direction → WildGuardTest activations → DFA analysis):
 
 ```bash
-BUDGETS="459 2294 4588 9175" bash refusal_direction/run_all.sh
-METHODS=all RUN_ABLATION=0 bash refusal_direction/run_all.sh
-DIRECTION_MODE=per_layer RUN_TAG=perlayer bash refusal_direction/run_all.sh
-POOLING=mean bash refusal_direction/run_all.sh   # reuse the CKA activations
-DIRECTION_DATASETS=openai_moderation bash refusal_direction/run_all.sh
-    # robustness: fit r on a different corpus; alignment surviving a corpus
-    # swap shows r is not WildGuard-specific
+RUN_ABLATION=0 sbatch --export=ALL,RUN_ABLATION refusal_direction/refusal.sbatch
 ```
 
-## Controls (why raw numbers are never reported alone)
+**3. Check for signal:**
 
-- **Layer-matched random null** — the entire MLP stack writes a substantial
-  refusal component on harmful prompts, so random neurons from the same
-  layers already show positive DFA sums and positive write-vector cosines.
-  Every observed value is reported with the null mean/std and `z_vs_null`
-  (20 seeds for write vectors, 200 for scalar sums); |z| > 3 is significant.
-- **All-MLP reference** — the write vector of *all* 458,752 neurons: the
-  ceiling direction any subset is pulled toward, and the yardstick for "the
-  method captures the stack's refusal writing with 0.5% of neurons".
-- **Direction-ablation reference** (ablation only) — Arditi et al.'s full
-  removal of r̂ from the residual stream: the maximum behavioral effect the
-  direction can account for, against which diffuse neuron ablations are read.
-- **Benign-prompt check** (ablation only) — refusal on benign prompts must
-  stay near baseline, otherwise the ablation merely broke the model.
-- **`per_layer` direction mode** — recomputes projections against the
-  direction fitted at each layer's own output, guarding against the single
-  chosen direction rotating across depth.
+```bash
+grep -A2 "Chosen hidden state" logs/refusal-dfa_<jobid>.out    # want AUROC ~0.9+
+column -s, -t refusal_direction/results/dfa_summary_wildguard_last_dir-wildguard_train_N2294.csv
+column -s, -t refusal_direction/results/writevec_cos_wildguard_last_dir-wildguard_train_N2294.csv
+```
 
-## Evaluating the results
+Signal = `z_sum_vs_null` (and pairwise `z_vs_null`) well beyond ±3.
+If everything sits at |z| < 3, skip the ablation — the finding is already
+"not preferentially on the refusal circuit".
 
-Everything lands in `refusal_direction/results/`.
+**4. Causal ablation — GPU job, ~1 h** (all earlier artifacts are skipped;
+only the ablation runs):
+
+```bash
+sbatch refusal_direction/refusal.sbatch
+```
+
+**5. Sweeps** (all artifacts exist; `SKIP_EXTRACT=1` means no GPU extraction):
+
+```bash
+# all 7 method variants at 1% budget
+SKIP_EXTRACT=1 RUN_ABLATION=0 METHODS=all BUDGETS="4588" RUN_TAG=all7 \
+    sbatch --export=ALL,SKIP_EXTRACT,RUN_ABLATION,METHODS,BUDGETS,RUN_TAG \
+    refusal_direction/refusal.sbatch
+
+# budget sweep, canonical 4 methods
+SKIP_EXTRACT=1 RUN_ABLATION=0 BUDGETS="459 4588 9175" \
+    sbatch --export=ALL,SKIP_EXTRACT,RUN_ABLATION,BUDGETS \
+    refusal_direction/refusal.sbatch
+
+# robustness: mean pooling, per-layer directions, different direction corpus
+SKIP_EXTRACT=1 RUN_ABLATION=0 POOLING=mean \
+    sbatch --export=ALL,SKIP_EXTRACT,RUN_ABLATION,POOLING \
+    refusal_direction/refusal.sbatch
+SKIP_EXTRACT=1 RUN_ABLATION=0 DIRECTION_MODE=per_layer RUN_TAG=perlayer \
+    sbatch --export=ALL,SKIP_EXTRACT,RUN_ABLATION,DIRECTION_MODE,RUN_TAG \
+    refusal_direction/refusal.sbatch
+RUN_ABLATION=0 DIRECTION_DATASETS=openai_moderation \
+    sbatch --export=ALL,RUN_ABLATION,DIRECTION_DATASETS \
+    refusal_direction/refusal.sbatch
+```
+
+Fetch results: `scp "euler:~/SIREN/refusal_direction/results/*" ~/Downloads/refusal-results/`
+
+## Controls (raw numbers are never reported alone)
+
+- **Layer-matched random null** — the whole MLP stack writes refusal on
+  harmful prompts, so random neuron subsets already show positive DFA and
+  cosines. Only the excess counts: every value comes with a null mean/std
+  and `z_vs_null`; |z| > 3 is significant.
+- **All-MLP reference** — the write vector of all 458,752 neurons; the
+  ceiling any subset is pulled toward.
+- **Ablation references** — `direction ablation` (Arditi's full removal of
+  r̂) is the maximum effect; `random[method]` is each method's own control;
+  benign-prompt refusal must stay near baseline or the ablation just broke
+  the model.
+
+## Reading the results (`refusal_direction/results/`)
 
 | file | content |
 |---|---|
-| `dfa_summary_{tag}.csv` | per method: DFA sum, `z_sum_vs_null`, `frac_positive`, `cos_r` + its null and z |
-| `writevec_cos_{tag}.csv` + `writevec_matrix_*.png` | the 4×4 (+ All MLP) functional-similarity matrix: observed / null / z |
-| `direction_alignment_*.png` | `cos(v_M, r̂)` per method vs its random control |
-| `dfa_dist_*.png`, `dfa_layers_*.png`, `dfa_neurons_{tag}.csv` | per-neuron distributions and where in depth each method's refusal-writing sits |
-| `dfa_map_{label}.npy` | full 32×14336 DFA map — rerun any selection/null offline for free |
-| `writevecs_{tag}.npz` | the raw write vectors and r̂ |
-| `ablation_{tag}.csv/.png`, `ablation_generations_*.csv` | causal results + raw completions |
+| `dfa_summary_{tag}.csv` | per method: DFA sum + `z_sum_vs_null`, `frac_positive`, `cos_r` + null + z |
+| `writevec_cos_{tag}.csv`, `writevec_matrix_*.png` | method×method cosine matrix: observed / null / **z (read this panel)** |
+| `direction_profile_*.png` | direction health: val AUROC by depth — check this first |
+| `direction_alignment_*.png`, `dfa_dist_*.png`, `dfa_layers_*.png` | alignment bars, per-neuron distributions, depth profile |
+| `dfa_map_{label}.npy`, `writevecs_{tag}.npz`, `dfa_neurons_{tag}.csv` | raw artifacts — rerun any selection offline for free |
+| `ablation_{tag}.csv/.png`, `ablation_generations_*.csv` | causal results + raw completions (skim them; substring refusal detection is crude) |
 
 | observation | meaning |
 |---|---|
 | `z_sum_vs_null` ≈ 0 | the method's neurons write no more refusal than random neurons in the same layers |
-| cross-method `cos(v_A, v_B)` high with z ≫ 0 | different neurons, same functional direction — the convergence result |
-| method X aligns, method Y does not | Y tracks a different component of safety than the refusal circuit (plausible for Yang's DPO/toxicity neurons) |
-| DFA z ≫ 0 but ablation ≈ its random control | the neurons write refusal but redundantly — attribution without necessity |
+| cross-method cos high with z ≫ 3 | different neurons, same functional direction — the convergence result |
+| method X aligns, Y does not | Y tracks a different component of safety than the refusal circuit |
+| DFA z ≫ 3 but ablation ≈ its random control | writes refusal but redundantly — attribution without necessity |
+| within-family pairs (`METHODS=all`) | empirical ceiling; cross-family scores at that level are the strongest result |
 
-Read the DFA and CKA results together: same-representation (CKA) and
-same-functional-direction (DFA) are logically independent, and the four
-combinations mean different things.
+Compare z-scores within one budget only — null spreads differ across
+selection sizes.
 
 ## Caveats
 
-- **Refusal ≠ all of safety.** r̂ mediates *refusal* specifically. A method
-  whose neurons ignore r̂ may still capture harmfulness perception or other
-  safety components; later work (Wollschläger et al. 2025, concept cones)
-  suggests replacing the single direction with a small subspace — the
-  natural extension if the 1-D version shows signal.
-- **Pooled activations.** DFA uses the same pooled-per-prompt activations as
-  the CKA analysis. `--pooling last` (the default here) matches the token
-  position where r̂ was fitted; `mean` blurs across positions but lets you
-  reuse existing CKA activation files.
-- **Substring refusal detection is crude.** Skim
-  `ablation_generations_*.csv` before trusting refusal rates.
-- **No z-scoring, deliberately.** DFA is a physical quantity in
-  residual-stream units; massive-activation neurons dominating a write
-  vector is a real effect, not an artifact. `dfa_median` and
-  `frac_positive` in the summary are the outlier-robust companions.
+- **Refusal ≠ all of safety**: r̂ mediates refusal specifically; a
+  non-aligned method may track another safety component (a refusal
+  *subspace* à la Wollschläger et al. 2025 is the natural extension).
+- **No z-scoring, deliberately**: DFA is a physical quantity; outlier
+  neurons dominating a write vector is real. `dfa_median`/`frac_positive`
+  are the robust companions.
 
 ## Files
 
@@ -182,10 +162,10 @@ combinations mean different things.
 |---|---|
 | `refusal_core.py` | direction math, AUROC layer selection, DFA identities, refusal markers |
 | `downproj.py` | streams `down_proj` weights from safetensors (no full-model load) |
-| `build_direction_prompts.py` | disjoint fit/val prompt sets |
+| `build_direction_prompts.py` | WildGuardTrain fit/val prompt sets, eval overlap removed |
 | `extract_residuals.py` | residual-stream states at the last prompt token (GPU) |
 | `fit_direction.py` | difference-in-means direction + validated layer choice |
-| `run_dfa.py` | per-neuron DFA, write vectors, cosine matrix, all controls |
+| `run_dfa.py` | per-neuron DFA, write vectors, cosine matrix, all controls (CPU) |
 | `run_ablation.py` | causal neuron/direction ablation with generation (GPU) |
 | `plots.py`, `smoke_test.py` | figures; correctness + end-to-end checks |
 | `run_all.sh`, `refusal.sbatch` | drivers (local / SLURM) |
@@ -193,5 +173,5 @@ combinations mean different things.
 ## References
 
 Arditi et al. 2024 (refusal direction, DFA, directional ablation) ·
-Wollschläger et al. 2025 (refusal concept cones) · nostalgebraist 2020 /
-Elhage et al. 2021 (residual stream as a shared write space).
+Wollschläger et al. 2025 (refusal concept cones) · Elhage et al. 2021
+(residual stream as a shared write space).
