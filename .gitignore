@@ -208,6 +208,7 @@ __marimo__/
 probes/
 data/
 logs/
+refusal_direction/residuals/
 EXPERIMENT_LOG.md
 .venv-*/
 
