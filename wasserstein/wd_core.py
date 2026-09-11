@@ -105,10 +105,33 @@ def match(R, signed=False):
     """Optimal one-to-one matching under cost 1 - |R| (or 1 - R).
 
     Returns (rows, cols, cost) with cost[i] = c(rows[i], cols[i]).
+    Default is |R| (older WildGuard pipeline). Soft Matching / Khosla &
+    Williams uses signed=True; prefer soft_matching() for that experiment.
     """
     cost_matrix = 1.0 - (R if signed else np.abs(R))
     rows, cols = linear_sum_assignment(cost_matrix)
     return rows, cols, cost_matrix[rows, cols]
+
+
+def soft_matching(XA, XB):
+    """Khosla & Williams Soft Matching correlation (signed Pearson).
+
+    Neurons are columns of XA, XB (same number of rows = shared prompts).
+    Cost is 1 - corr, NOT 1 - |corr|. Equal sizes only: this is a square
+    assignment, not a rectangular one.
+
+    Returns the mean signed Pearson correlation of the optimally matched
+    pairs (higher = more similarly tuned neurons).
+    """
+    if XA.shape[0] != XB.shape[0]:
+        raise ValueError(f"prompt counts differ: {XA.shape[0]} vs {XB.shape[0]}")
+    if XA.shape[1] != XB.shape[1]:
+        raise ValueError(
+            f"unequal neuron counts {XA.shape[1]} vs {XB.shape[1]}; "
+            "construct equal-sized valid sets before calling soft_matching")
+    R = cross_correlation(XA, XB)
+    rows, cols = linear_sum_assignment(1.0 - R)
+    return float(R[rows, cols].mean())
 
 
 def profile_wasserstein(XA, XB, signed=False, ids_a=None, ids_b=None,

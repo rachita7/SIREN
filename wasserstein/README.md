@@ -73,6 +73,19 @@ divides depth out by construction — the null draw has W1 = 0 to its own
 method — so this is complementary, not comparable. At N=2294 Yang sits
 12–16 layers from everyone else; all other pairs are within 1–4 layers.
 
+## Soft Matching on AdvBench (Khosla & Williams)
+
+Isolated experiment: signed Pearson assignment, top 1% (N=4588), all 7
+methods, raw AdvBench activations, one layer-matched random control.
+Does not touch WildGuard or `run_wasserstein.py`.
+
+```bash
+python wasserstein/run_soft_matching.py --activations cka/activations/advbench_mean.npy
+sbatch wasserstein/soft_matching_advbench.sbatch
+```
+
+Writes only `wasserstein/results/soft_matching_advbench_N4588.{png,csv}`.
+
 ## Setup
 
 ```bash
