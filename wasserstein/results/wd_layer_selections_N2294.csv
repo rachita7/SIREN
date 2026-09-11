@@ -1,0 +1,22 @@
+method_a,method_b,pair,family_pair,jaccard,layer_w1
+siren,wang,SIREN / Wang,cross,0.16005056890012642,2.2898866608544033
+siren,wang_robust,SIREN / Wang (robust),cross,0.16358102967283794,3.3077593722755014
+siren,zhao_topk,SIREN / Zhao,cross,0.021579532814238044,3.9713063101002124
+siren,zhao_eps,SIREN / Zhao (rel-eps),cross,0.018201997780244172,2.687739988768364
+siren,yang_refusal,SIREN / Yang (refusal),cross,0.020462633451957295,16.068439407149086
+siren,yang_harmfulness,SIREN / Yang (harmfulness),cross,0.01932903799155743,16.138186573670446
+wang,wang_robust,Wang / Wang (robust),within,0.5986062717770034,2.448561464690497
+wang,zhao_topk,Wang / Zhao,cross,0.07667057444314185,2.109146120769131
+wang,zhao_eps,Wang / Zhao (rel-eps),cross,0.057643532395665206,1.906559746866149
+wang,yang_refusal,Wang / Yang (refusal),cross,0.039184597961494906,13.822144725370531
+wang,yang_harmfulness,Wang / Yang (harmfulness),cross,0.041307308216069,13.891891891891895
+wang_robust,zhao_topk,Wang (robust) / Zhao,cross,0.08327435715970748,0.935546470415501
+wang_robust,zhao_eps,Wang (robust) / Zhao (rel-eps),cross,0.05496780128794848,3.2822691858888975
+wang_robust,yang_refusal,Wang (robust) / Yang (refusal),cross,0.0640074211502783,12.814734088927636
+wang_robust,yang_harmfulness,Wang (robust) / Yang (harmfulness),cross,0.06648070664807067,12.884481255448998
+zhao_topk,zhao_eps,Zhao / Zhao (rel-eps),within,0.3962895377128954,3.0733008129711
+zhao_topk,yang_refusal,Zhao / Yang (refusal),cross,0.0799623706491063,12.097133097048872
+zhao_topk,yang_harmfulness,Zhao / Yang (harmfulness),cross,0.08583589501064082,12.166880263570231
+zhao_eps,yang_refusal,Zhao (rel-eps) / Yang (refusal),cross,0.04558924093913836,14.222720033033328
+zhao_eps,yang_harmfulness,Zhao (rel-eps) / Yang (harmfulness),cross,0.0498970016021973,14.29246719955469
+yang_refusal,yang_harmfulness,Yang (refusal) / Yang (harmfulness),within,0.37365269461077844,0.08195292066259809
