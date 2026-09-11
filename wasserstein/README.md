@@ -132,7 +132,8 @@ otherwise it falls back to the internal CKA columns and says so.
 
 ### AdvBench (alongside an already-running WildGuard job)
 
-AdvBench is ungated (`walledai/AdvBench`), harmful-only (~520 prompts). Every
+AdvBench is the official GitHub CSV (not the gated `walledai/AdvBench` Hub
+mirror), harmful-only (~520 prompts). Every
 file is tagged `advbench`, so it cannot overwrite `wd_wildguard_*`. The
 shared layer-W1 tables are skipped (`SKIP_LAYER_W1=1`).
 

@@ -142,12 +142,20 @@ def _beavertails():
     return _clean(frame)
 
 
-def _advbench():
-    """AdvBench, ungated. HARMFUL ONLY -- no class-residualized variant."""
-    from datasets import load_dataset
+# Official Zou et al. CSV. The HF mirror `walledai/AdvBench` is gated; this
+# is the same 520-goal file train/preprocess.py already uses.
+ADVBENCH_CSV_URL = (
+    "https://raw.githubusercontent.com/llm-attacks/llm-attacks/main/"
+    "data/advbench/harmful_behaviors.csv"
+)
 
-    frame = load_dataset("walledai/AdvBench")["train"].to_pandas()
-    frame["text"] = frame["prompt"]
+
+def _advbench():
+    """AdvBench harmful behaviors (GitHub). HARMFUL ONLY -- class residualization
+    is uninformative. No HuggingFace token needed."""
+    frame = pd.read_csv(ADVBENCH_CSV_URL)
+    col = "goal" if "goal" in frame.columns else "prompt"
+    frame["text"] = frame[col]
     frame["label"] = 1
     return _clean(frame)
 

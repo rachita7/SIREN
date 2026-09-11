@@ -15,8 +15,8 @@
 #   sbatch wasserstein/wasserstein_advbench.sbatch
 #   METHODS=all sbatch --export=ALL,METHODS wasserstein/wasserstein_advbench.sbatch
 #
-# If compute nodes cannot reach HuggingFace, download the prompt CSV first
-# on a login node (ungated, no access request):
+# If compute nodes cannot reach GitHub, download the prompt CSV first on a
+# login node (official llm-attacks CSV, no HuggingFace access request):
 #   python cka/build_prompts.py --dataset advbench --max_prompts 2000
 #
 # Outputs (will not collide with wildguard):
