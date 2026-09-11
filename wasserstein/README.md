@@ -130,6 +130,31 @@ Use the **same** `RUN_TAG`/`DATASETS`/`METHODS`/`BUDGETS` as the CKA job so
 `compare_to_cka.py` finds a matching `cka/results/cka_{tag}_N{budget}.csv`;
 otherwise it falls back to the internal CKA columns and says so.
 
+### AdvBench (alongside an already-running WildGuard job)
+
+AdvBench is ungated (`walledai/AdvBench`), harmful-only (~520 prompts). Every
+file is tagged `advbench`, so it cannot overwrite `wd_wildguard_*`. The
+shared layer-W1 tables are skipped (`SKIP_LAYER_W1=1`).
+
+On a login node if compute nodes are offline:
+
+```bash
+conda activate siren
+python cka/build_prompts.py --dataset advbench --max_prompts 2000
+```
+
+Then from the repo root (GPU: extracts `cka/activations/advbench_mean.npy` if
+needed, then runs Wasserstein):
+
+```bash
+sbatch wasserstein/wasserstein_advbench.sbatch
+METHODS=all sbatch --export=ALL,METHODS wasserstein/wasserstein_advbench.sbatch
+```
+
+Read `wasserstein/results/wd_advbench_mean_N2294.csv` and
+`wd_vs_cka_advbench_mean_N2294.csv`. Because every prompt is harmful, the
+`class` variant is uninformative; use `raw` and `class+length`.
+
 Runtime: ~1000 assignment problems per residualization variant (nulls +
 ceilings + observed). N=2294 with 7 methods: ~10 min per dataset. Assignment
 is O(k³), so N=9175 is ~30× slower per call — lower `NULL_SEEDS` there.

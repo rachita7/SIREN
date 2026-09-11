@@ -32,6 +32,9 @@ NULL_SEEDS="${NULL_SEEDS:-20}"
 CEILING_SEEDS="${CEILING_SEEDS:-10}"
 RUN_TAG="${RUN_TAG:-}"
 SKIP_EXTRACT="${SKIP_EXTRACT:-0}"
+# Layer W1 does not use activations and writes wd_layer_selections_*.csv.
+# A second dataset job must skip it or it overwrites the first job's files.
+SKIP_LAYER_W1="${SKIP_LAYER_W1:-0}"
 # Extra flags for run_wasserstein.py, e.g. WD_FLAGS="--signed --save_matching"
 WD_FLAGS="${WD_FLAGS:-}"
 
@@ -44,16 +47,22 @@ echo "poolings   : $POOLINGS"
 echo "budgets    : $BUDGETS"
 echo "methods    : $METHODS"
 echo "run tag    : ${RUN_TAG:-<none>}   skip extract: $SKIP_EXTRACT"
+echo "skip layer : $SKIP_LAYER_W1"
 echo "wd flags   : ${WD_FLAGS:-<none>}"
 echo "=============================================================="
 
-echo ""
-echo "### [0/3] Layer W1 (needs no activations)"
-for BUDGET in $BUDGETS; do
-    python wasserstein/run_wasserstein.py --layer_only \
-        --methods $METHODS --budget "$BUDGET" \
-        --label "selections${RUN_TAG:+_$RUN_TAG}"
-done
+if [ "$SKIP_LAYER_W1" = "1" ]; then
+    echo ""
+    echo "### [0/3] Layer W1 skipped (SKIP_LAYER_W1=1; files are dataset-independent)"
+else
+    echo ""
+    echo "### [0/3] Layer W1 (needs no activations)"
+    for BUDGET in $BUDGETS; do
+        python wasserstein/run_wasserstein.py --layer_only \
+            --methods $METHODS --budget "$BUDGET" \
+            --label "selections${RUN_TAG:+_$RUN_TAG}"
+    done
+fi
 
 for DATASET in $DATASETS; do
     MEMBERS="${DATASET//+/ }"

@@ -137,8 +137,11 @@ def test_measures():
     rect = wd_core.profile_wasserstein(X, Y[:, :k - 7])
     check("unequal sizes: n_matched = min(k), n_unmatched = difference",
           rect["n_matched"] == k - 7 and rect["n_unmatched"] == 7)
-    check("W symmetric", abs(wd_core.profile_wasserstein(Y, X)["wasserstein"]
-                             - ind["wasserstein"]) < 1e-9)
+    # Assignment on C vs C^T can differ at BLAS rounding; 1e-9 is too tight
+    # on some machines (the earlier local run passed, Euler failed).
+    w_yx = wd_core.profile_wasserstein(Y, X)["wasserstein"]
+    check("W symmetric", abs(w_yx - ind["wasserstein"]) < 1e-6,
+          f"W(X,Y)={ind['wasserstein']:.8f}  W(Y,X)={w_yx:.8f}")
 
     # ---- layer W1
     check("layer W1: identical histograms -> 0",
