@@ -18,6 +18,7 @@ FFN neurons — index-comparable with the other methods).
 | `data_files/` | Standardized, chat-templated CSVs: `{harmbench,alpaca}_{train,val,test}.csv`, the cleaned `alpaca_train-clean.csv`, and the stability thirds `{harmbench,alpaca}_train_split{1,2,3}.csv`. Self-contained |
 | `results/` | Other methods' neuron selections (Svea/Wang/Tengerleg pkls, intersection CSVs) for comparisons. Self-contained |
 | `cka/` | CKA representation-similarity analysis; has its own README. Self-contained |
+| `wasserstein/` | Wasserstein (optimal-transport) distance between the methods' neuron populations, same controls as `cka/`, plus the CKA-vs-Wasserstein agreement report; has its own README. Reuses `cka/activations/` |
 
 ## One-time cluster setup
 
