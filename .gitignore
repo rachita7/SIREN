@@ -216,6 +216,9 @@ EXPERIMENT_LOG.md
 # Selected-neuron exports are small and are inputs to analysis/ and cka/,
 # so they must be tracked despite the blanket *.json rule above.
 !results/**/*.json
+!rank_ensemble/methods.json
+!rank_ensemble/data/
+!rank_ensemble/data/**
 # *.sh
 *.html
 *.pdf

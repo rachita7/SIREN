@@ -1,7 +1,8 @@
 """Load the rank-ensemble configuration.
 
-Method identities live in methods.yaml so adding or dropping a method does
-not require editing the aggregation or evaluation code.
+Method identities can live in methods.json. That file is optional: the
+same defaults are embedded here so a job still runs if methods.json was
+not checked in (the repo gitignores *.json).
 """
 from __future__ import annotations
 
@@ -11,6 +12,127 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parent
 DEFAULT_CONFIG_PATH = HERE / "methods.json"
+
+# Kept in sync with methods.json. Edit either; JSON wins when present.
+DEFAULT_RAW = {
+    "num_layers": 32,
+    "intermediate_size": 14336,
+    "default_budgets": [459, 2294, 4588, 9175],
+    "eval_seed": 4242,
+    "random_seed": 1000,
+    "model": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "num_layers": 32,
+        "intermediate_size": 14336,
+    },
+    "methods": [
+        {
+            "id": "siren",
+            "display": "SIREN",
+            "ranking": {
+                "path": "results/siren_mlpneuron_full_ranking.csv",
+                "rank_column": "global_rank",
+                "layer_column": "layer",
+                "neuron_column": "neuron_index",
+                "score_column": "abs_weight",
+            },
+            "topn": {
+                "path": "results/rachita_neurons/llama3-8b-instruct_mlpneuron_mean-std-mlpneuron_mean-clean_selected_neurons_top{n}.json",
+                "kind": "layer_json",
+            },
+        },
+        {
+            "id": "yang_harmfulness",
+            "display": "Yang (harmfulness)",
+            "ranking": {
+                "path": "results/yang_full_ranking_delta_harmfulness.csv",
+                "rank_column": "rank",
+                "layer_column": "layer",
+                "neuron_column": "within_layer_index",
+                "score_column": "abs_score",
+            },
+            "topn": {
+                "path": "results/tengerleg_neurons/neurons_delta_harmfulness_N{n}.csv",
+                "kind": "csv",
+            },
+        },
+        {
+            "id": "yang_refusal",
+            "display": "Yang (refusal)",
+            "ranking": {
+                "path": "results/full_ranking_delta_refusal.csv",
+                "rank_column": "rank",
+                "layer_column": "layer",
+                "neuron_column": "within_layer_index",
+                "score_column": "abs_score",
+            },
+            "topn": {
+                "path": "results/tengerleg_neurons/neurons_delta_refusal_N{n}.csv",
+                "kind": "csv",
+            },
+        },
+        {
+            "id": "zhao_topk",
+            "display": "Zhao (top-k)",
+            "ranking": {
+                "path": "results/full_ranking_neurons_zhao_topk_matching.csv",
+                "rank_column": "rank",
+                "layer_column": "layer",
+                "neuron_column": "neuron_index",
+                "score_column": "score",
+            },
+            "topn": {
+                "path": "results/svea_neurons/fulltest_neurons_zhao_topk_N{n}.csv",
+                "kind": "csv",
+            },
+        },
+        {
+            "id": "zhao_relative_epsilon",
+            "display": "Zhao (rel-eps)",
+            "ranking": {
+                "path": "results/full_ranking_neurons_zhao_relative_epsilon_matching.csv",
+                "rank_column": "rank",
+                "layer_column": "layer",
+                "neuron_column": "neuron_index",
+                "score_column": "score",
+            },
+            "topn": {
+                "path": "results/svea_neurons/fulltest_neurons_zhao_relative_epsilon_N{n}.csv",
+                "kind": "csv",
+            },
+        },
+        {
+            "id": "wang",
+            "display": "Wang",
+            "ranking": {
+                "path": "results/full_ranking_neurons_wang_matching.csv",
+                "rank_column": "rank",
+                "layer_column": "layer",
+                "neuron_column": "neuron_index",
+                "score_column": "score",
+            },
+            "topn": {
+                "path": "results/svea_neurons/fulltest_neurons_wang_N{n}.csv",
+                "kind": "csv",
+            },
+        },
+        {
+            "id": "wang_robust",
+            "display": "Wang (robust)",
+            "ranking": {
+                "path": "results/full_ranking_neurons_wang_robust_matching.csv",
+                "rank_column": "rank",
+                "layer_column": "layer",
+                "neuron_column": "neuron_index",
+                "score_column": "score",
+            },
+            "topn": {
+                "path": "results/svea_neurons/fulltest_neurons_wang_robust_N{n}.csv",
+                "kind": "csv",
+            },
+        },
+    ],
+}
 
 
 def _read_config_file(path):
@@ -31,8 +153,15 @@ def _read_config_file(path):
 
 
 def load_config(path=None):
-    path = Path(path) if path else DEFAULT_CONFIG_PATH
-    raw = _read_config_file(path)
+    if path is not None:
+        path = Path(path)
+        raw = _read_config_file(path)
+    elif DEFAULT_CONFIG_PATH.exists():
+        path = DEFAULT_CONFIG_PATH
+        raw = _read_config_file(path)
+    else:
+        path = DEFAULT_CONFIG_PATH
+        raw = DEFAULT_RAW
     if not raw or "methods" not in raw:
         raise ValueError(f"{path} has no methods: list")
     methods = []
