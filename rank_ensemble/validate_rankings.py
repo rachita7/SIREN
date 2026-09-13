@@ -165,7 +165,7 @@ def render_report(cfg, inspections, universe_pairs, prefix_rows, identical, budg
     lines.append("method's published top-N set.")
     lines.append("")
     lines.append(f"- Config: `{cfg['path']}`")
-    lines.append(f"- Methods: {', '.join(cfg['method_ids'])}")
+    lines.append(f"- Methods: {', '.join(m['method'] for m in inspections)}")
     lines.append(f"- Expected neuron universe: {cfg['num_layers']} layers × "
                  f"{cfg['intermediate_size']} = {cfg['universe_size']}")
     lines.append(f"- Budgets checked: {budgets}")

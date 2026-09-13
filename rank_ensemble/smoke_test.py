@@ -22,7 +22,7 @@ from aggregators import (  # noqa: E402
     random_pairs,
     rank_consensus_at_n,
 )
-from config import load_config  # noqa: E402
+from config import load_config, resolve_experiment  # noqa: E402
 from load_rankings import (  # noqa: E402
     candidate_pool,
     load_all_rankings,
@@ -253,12 +253,34 @@ def test_real_data():
             check("quota never leaves its own top-N", True)
 
 
+def test_experiments():
+    print("named experiments")
+    all7 = resolve_experiment("all7")
+    four = resolve_experiment("siren_yang_wang_zhao")
+    two = resolve_experiment("siren_yang_harm")
+    check("all7 writes to the original results/",
+          all7["results_dir"] == HERE / "results")
+    check("4-method has its own folder",
+          four["results_dir"] == HERE / "experiments" / "siren_yang_wang_zhao" / "results")
+    check("2-method has its own folder",
+          two["results_dir"] == HERE / "experiments" / "siren_yang_harm" / "results")
+    check("new experiments do not share all7 results dir",
+          four["results_dir"] != all7["results_dir"]
+          and two["results_dir"] != all7["results_dir"]
+          and four["results_dir"] != two["results_dir"])
+    check("4-method ids",
+          four["methods"] == ["siren", "yang_harmfulness", "wang_robust", "zhao_topk"])
+    check("2-method ids",
+          two["methods"] == ["siren", "yang_harmfulness"])
+
+
 def main():
     test_synthetic()
     test_refusal()
     test_hook()
     test_random_repo_b()
     test_real_data()
+    test_experiments()
     print()
     if FAILS:
         print(f"{len(FAILS)} check(s) failed:")

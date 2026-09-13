@@ -5,6 +5,7 @@ top-N safety-neuron file, the script stops.
 
     python rank_ensemble/build_ensembles.py
     python rank_ensemble/build_ensembles.py --budgets 459 2294 4588 9175
+    python rank_ensemble/build_ensembles.py --experiment siren_yang_wang_zhao
 """
 from __future__ import annotations
 
@@ -25,7 +26,7 @@ from aggregators import (
     rank_consensus_at_n,
     save_target_json,
 )
-from config import HERE as CFG_HERE, display_name, load_config, method_ids
+from config import EXPERIMENTS, display_name, load_config, method_ids, resolve_experiment
 from load_rankings import (
     load_all_rankings,
     load_all_topn,
@@ -142,6 +143,10 @@ def build_budget(cfg, rankings, n, methods, selections_dir, results_dir,
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--config", default=None)
+    parser.add_argument("--experiment", default="all7", choices=list(EXPERIMENTS),
+                        help="Named method subset + output folder. "
+                             "all7 writes to rank_ensemble/{selections,results}; "
+                             "other names write under experiments/<name>/")
     parser.add_argument("--budgets", type=int, nargs="+", default=None,
                         help="Neuron budgets (default: values in methods.json)")
     parser.add_argument("--methods", nargs="+", default=None)
@@ -154,10 +159,15 @@ def main():
     args = parser.parse_args()
 
     cfg = load_config(args.config)
-    methods = method_ids(cfg, args.methods)
+    exp = resolve_experiment(args.experiment)
+    methods = method_ids(cfg, args.methods or exp["methods"])
     budgets = args.budgets or cfg["default_budgets"]
-    selections_dir = Path(args.selections_dir) if args.selections_dir else CFG_HERE / "selections"
-    results_dir = Path(args.results_dir) if args.results_dir else CFG_HERE / "results"
+    selections_dir = Path(args.selections_dir) if args.selections_dir else exp["selections_dir"]
+    results_dir = Path(args.results_dir) if args.results_dir else exp["results_dir"]
+    print(f"experiment={exp['name']} ({exp['display']})")
+    print(f"methods={methods}")
+    print(f"selections_dir={selections_dir}")
+    print(f"results_dir={results_dir}")
     selections_dir.mkdir(parents=True, exist_ok=True)
     results_dir.mkdir(parents=True, exist_ok=True)
 

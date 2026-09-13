@@ -208,6 +208,44 @@ def display_name(cfg, method_id):
     return cfg["method_by_id"][method_id].get("display", method_id)
 
 
+# Named experiment variants. all7 keeps writing to rank_ensemble/results
+# and rank_ensemble/selections (the original run). Other names write under
+# rank_ensemble/experiments/<name>/ so they never overwrite all7.
+EXPERIMENTS = {
+    "all7": {
+        "display": "all 7 methods",
+        "methods": None,
+        "root": HERE,
+    },
+    "siren_yang_wang_zhao": {
+        "display": "SIREN + Yang (harmfulness) + Wang (robust) + Zhao (top-k)",
+        "methods": ["siren", "yang_harmfulness", "wang_robust", "zhao_topk"],
+        "root": HERE / "experiments" / "siren_yang_wang_zhao",
+    },
+    "siren_yang_harm": {
+        "display": "SIREN + Yang (harmfulness)",
+        "methods": ["siren", "yang_harmfulness"],
+        "root": HERE / "experiments" / "siren_yang_harm",
+    },
+}
+
+
+def resolve_experiment(name):
+    if name not in EXPERIMENTS:
+        known = ", ".join(EXPERIMENTS)
+        raise KeyError(f"unknown experiment {name!r}; known: {known}")
+    spec = EXPERIMENTS[name]
+    root = Path(spec["root"])
+    return {
+        "name": name,
+        "display": spec["display"],
+        "methods": spec["methods"],
+        "root": root,
+        "selections_dir": root / "selections",
+        "results_dir": root / "results",
+    }
+
+
 def resolve(cfg, rel):
     p = Path(rel)
     if p.is_absolute():

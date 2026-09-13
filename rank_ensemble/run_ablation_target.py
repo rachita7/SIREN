@@ -37,7 +37,7 @@ from ablation import (
     remove_hooks,
     eval_mmlu,
 )
-from config import HERE as CFG_HERE, load_config
+from config import EXPERIMENTS, load_config, resolve_experiment
 import torch
 
 
@@ -112,6 +112,8 @@ def pending_targets(targets_dir, output_dir, target_name=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--config", default=None)
+    parser.add_argument("--experiment", default="all7", choices=list(EXPERIMENTS),
+                        help="Must match the --experiment used when building ensembles")
     parser.add_argument("--budget", type=int, default=None,
                         help="Use results/targets_N{budget}/ built by build_ensembles.py")
     parser.add_argument("--targets-dir", default=None)
@@ -129,23 +131,26 @@ def main():
     args = parser.parse_args()
 
     cfg = load_config(args.config)
+    exp = resolve_experiment(args.experiment)
     seed = args.eval_seed if args.eval_seed is not None else cfg["eval_seed"]
     if args.targets_dir:
         targets_dir = Path(args.targets_dir)
     elif args.budget is not None:
-        targets_dir = CFG_HERE / "results" / f"targets_N{args.budget}"
+        targets_dir = exp["results_dir"] / f"targets_N{args.budget}"
     else:
         raise SystemExit("pass --budget N or --targets-dir")
     if not targets_dir.exists():
         raise SystemExit(
             f"{targets_dir} does not exist; run "
-            f"python rank_ensemble/build_ensembles.py --budgets {args.budget}"
+            f"python rank_ensemble/build_ensembles.py "
+            f"--experiment {args.experiment} --budgets {args.budget}"
         )
 
     out_dir = Path(args.output_dir) if args.output_dir else (
-        CFG_HERE / "results" / f"N{args.budget}" if args.budget is not None
-        else CFG_HERE / "results"
+        exp["results_dir"] / f"N{args.budget}" if args.budget is not None
+        else exp["results_dir"]
     )
+    print(f"experiment={exp['name']} targets={targets_dir} output={out_dir}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     pending = pending_targets(targets_dir, out_dir, args.target_name)

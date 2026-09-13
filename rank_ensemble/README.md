@@ -290,6 +290,22 @@ python rank_ensemble/build_ensembles.py
 python rank_ensemble/build_ensembles.py --budgets 459 2294 4588 9175
 ```
 
+Named subsets write to **separate folders** and never touch the original
+7-method `results/` / `selections/`:
+
+| `--experiment` | Methods | Output root |
+|---|---|---|
+| `all7` (default) | all 7 | `rank_ensemble/{selections,results}` |
+| `siren_yang_wang_zhao` | SIREN, Yang (harmfulness), Wang (robust), Zhao (top-k) | `rank_ensemble/experiments/siren_yang_wang_zhao/` |
+| `siren_yang_harm` | SIREN, Yang (harmfulness) | `rank_ensemble/experiments/siren_yang_harm/` |
+
+```bash
+python rank_ensemble/build_ensembles.py --experiment siren_yang_wang_zhao \
+    --budgets 459 2294 4588 9175
+python rank_ensemble/build_ensembles.py --experiment siren_yang_harm \
+    --budgets 459 2294 4588 9175
+```
+
 Individual builders:
 
 ```bash
@@ -310,6 +326,12 @@ set changes.**
 python rank_ensemble/run_ablation_target.py --budget 2294
 python rank_ensemble/run_ablation_target.py --budget 2294 --target-name rank_consensus
 BUDGETS="459 2294 4588 9175" sbatch --export=ALL,BUDGETS rank_ensemble/rank_ensemble.sbatch
+
+# 4-method and 2-method variants (do not overwrite all7)
+EXPERIMENT=siren_yang_wang_zhao BUDGETS="459 2294 4588 9175" \
+    sbatch --export=ALL,EXPERIMENT,BUDGETS rank_ensemble/rank_ensemble.sbatch
+EXPERIMENT=siren_yang_harm BUDGETS="459 2294 4588 9175" \
+    sbatch --export=ALL,EXPERIMENT,BUDGETS rank_ensemble/rank_ensemble.sbatch
 ```
 
 Optional DPO adapter (Repo B's cluster path is not required at runtime):

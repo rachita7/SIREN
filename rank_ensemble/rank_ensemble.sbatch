@@ -9,9 +9,13 @@
 #SBATCH --error=logs/%x_%j.err
 #
 # Submit from the repo root:
-#   sbatch rank_ensemble/rank_ensemble.sbatch                          # N=2294, ~2 h
+#   sbatch rank_ensemble/rank_ensemble.sbatch                          # all7, N=2294
 #   BUDGETS="459 2294 4588 9175" sbatch --export=ALL,BUDGETS \
-#       rank_ensemble/rank_ensemble.sbatch                             # ~6-10 h
+#       rank_ensemble/rank_ensemble.sbatch                             # all7, all N
+#   EXPERIMENT=siren_yang_wang_zhao BUDGETS="459 2294 4588 9175" \
+#       sbatch --export=ALL,EXPERIMENT,BUDGETS rank_ensemble/rank_ensemble.sbatch
+#   EXPERIMENT=siren_yang_harm BUDGETS="459 2294 4588 9175" \
+#       sbatch --export=ALL,EXPERIMENT,BUDGETS rank_ensemble/rank_ensemble.sbatch
 #
 # MMLU is downloaded from Hugging Face. On offline compute nodes, warm the
 # cache on a login node first:

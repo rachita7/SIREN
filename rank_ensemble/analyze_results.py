@@ -19,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from config import HERE as CFG_HERE, display_name, load_config, method_ids
+from config import EXPERIMENTS, display_name, load_config, method_ids, resolve_experiment
 
 
 def collect_results(results_root, budgets):
@@ -153,14 +153,17 @@ def plot_plane(df, cfg, path, title):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--config", default=None)
+    parser.add_argument("--experiment", default="all7", choices=list(EXPERIMENTS))
     parser.add_argument("--budgets", type=int, nargs="+", default=None)
     parser.add_argument("--results-dir", default=None)
     args = parser.parse_args()
 
     cfg = load_config(args.config)
-    methods = method_ids(cfg)
+    exp = resolve_experiment(args.experiment)
+    methods = method_ids(cfg, exp["methods"])
     budgets = args.budgets or cfg["default_budgets"]
-    results_dir = Path(args.results_dir) if args.results_dir else CFG_HERE / "results"
+    results_dir = Path(args.results_dir) if args.results_dir else exp["results_dir"]
+    print(f"experiment={exp['name']} results_dir={results_dir}")
     df = collect_results(results_dir, budgets)
     if df.empty:
         raise SystemExit(
